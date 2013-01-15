@@ -3,3 +3,8 @@
 .project
 /.settings/
 /db/
+*.class
+# Package Files #
+*.jar
+*.war
+*.ear
