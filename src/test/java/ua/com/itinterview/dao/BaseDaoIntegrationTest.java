@@ -50,7 +50,11 @@ public abstract class BaseDaoIntegrationTest extends
 
 	@Before
 	public void setUp() throws IOException {
-		cleanUpDb();
+		try {
+			cleanUpDb();
+		} catch (RuntimeException ex) {
+			// TODO create smart structure of insert before, clean up after
+		}
 		final String sql = readDbUpdateScriptFromFile(new File(
 				"sql/itinterview_ddl_schema.sql"));
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
