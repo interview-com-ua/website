@@ -8,3 +8,4 @@ pmorozov
 sLisnychyi
 onovokshonov
 andriyromaniv
+MaximPedich
