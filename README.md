@@ -1,5 +1,3 @@
-website
-=======
 DimaVolskyIntelliJ
 DimaVolsky
 stokito
@@ -9,12 +7,9 @@ sLisnychyi
 onovokshonov
 andriyromaniv
 MaximPedich
-<<<<<<< HEAD
 VovaChirkov
 DmitryButolin
 TimofiyBilyi
-=======
 VovaChirkov
 DmitryButolin
 ArtemMosolov
-
