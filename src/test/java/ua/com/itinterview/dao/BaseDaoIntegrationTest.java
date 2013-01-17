@@ -43,25 +43,17 @@ public abstract class BaseDaoIntegrationTest extends
 
 	private final List<Class<?>> entities;
 
-	private final static String CLEANUP_TABLE_SQL = "delete %s";
+	private final static String CLEANUP_TABLE_SQL = "delete from %s";
 
 	public BaseDaoIntegrationTest() {
 		entities = new ArrayList<Class<?>>();
 		entities.add(UserEntity.class);
-		entities.add(InterviewEntity.class);
+//		entities.add(InterviewEntity.class);
 	}
 
 	@Before
 	public void setUp() throws IOException {
-		try {
-			cleanUpDb();
-		} catch (RuntimeException ex) {
-            System.err.println("Error during cleanUpDb");
-            ex.printStackTrace();
-            throw ex;
-		}
-		final String sql = readDbUpdateScriptFromFile(new File(
-				"sql/itinterview_ddl_schema.sql"));
+		final String sql = readDbUpdateScriptFromFile(new File("sql/itinterview_ddl_schema.sql"));
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		jdbcTemplate.execute(new StatementCallback<Object>() {
 			public Object doInStatement(Statement stmt) throws SQLException,
@@ -94,7 +86,11 @@ public abstract class BaseDaoIntegrationTest extends
 		return buffer.toString();
 	}
 
-	@After
+    @After
+    public void afterTest(){
+        cleanUpDb();
+    }
+
 	@Transactional
 	public void cleanUpDb() {
 		try {
@@ -105,7 +101,10 @@ public abstract class BaseDaoIntegrationTest extends
                 query.executeUpdate();
 			}
 		} catch (Exception ex) {
-			throw new RuntimeException(ex);
+            System.err.println("Error during cleanUpDb");
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
 		}
 	}
+
 }
