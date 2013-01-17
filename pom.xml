@@ -107,6 +107,14 @@
             <plugin>
                 <groupId>org.dbmaintain</groupId>
                 <artifactId>dbmaintain-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>updateDatabase</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <databases>
                         <database>

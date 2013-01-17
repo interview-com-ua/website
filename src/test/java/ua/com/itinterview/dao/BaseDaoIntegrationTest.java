@@ -28,6 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import ua.com.itinterview.entity.CommentEntity;
+import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.UserEntity;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -49,16 +50,15 @@ public abstract class BaseDaoIntegrationTest extends
 		entities = new ArrayList<Class<?>>();
 		entities.add(UserEntity.class);
 		entities.add(CommentEntity.class);
-//		entities.add(InterviewEntity.class);
+		entities.add(InterviewEntity.class);
 	}
 
 	@Before
 	public void setUp() {
-//        cleanUpDb();
+        cleanUpDb();
     }
 
-	public String readDbUpdateScriptFromFile(final File file)
-			throws IOException {
+	public String readDbUpdateScriptFromFile(final File file) throws IOException {
 		StringBuffer buffer = new StringBuffer();
 		FileInputStream fis = new FileInputStream(file);
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
