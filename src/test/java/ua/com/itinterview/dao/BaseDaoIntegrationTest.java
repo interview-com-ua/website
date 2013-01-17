@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -26,6 +27,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.UserEntity;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -46,6 +48,7 @@ public abstract class BaseDaoIntegrationTest extends
 	public BaseDaoIntegrationTest() {
 		entities = new ArrayList<Class<?>>();
 		entities.add(UserEntity.class);
+		entities.add(InterviewEntity.class);
 	}
 
 	@Before
@@ -53,7 +56,9 @@ public abstract class BaseDaoIntegrationTest extends
 		try {
 			cleanUpDb();
 		} catch (RuntimeException ex) {
-			// TODO create smart structure of insert before, clean up after
+            System.err.println("Error during cleanUpDb");
+            ex.printStackTrace();
+            throw ex;
 		}
 		final String sql = readDbUpdateScriptFromFile(new File(
 				"sql/itinterview_ddl_schema.sql"));
@@ -65,9 +70,11 @@ public abstract class BaseDaoIntegrationTest extends
 				for (String script : scripts) {
 					try {
 						stmt.execute(script);
-					} catch (Exception e) {
-						// TODO create auto ddl script
-					}
+					} catch (SQLException e) {
+                        System.err.println("Error during SQL executing " + script);
+                        e.printStackTrace();
+                        throw e;
+                    }
 				}
 				return null;
 			}
@@ -93,9 +100,9 @@ public abstract class BaseDaoIntegrationTest extends
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			for (Class<?> ent : entities) {
-				session.createQuery(
-						String.format(CLEANUP_TABLE_SQL, ent.getSimpleName()))
-						.executeUpdate();
+                String sqlQueryCleanupTable = String.format(CLEANUP_TABLE_SQL, ent.getSimpleName());
+                Query query = session.createQuery(sqlQueryCleanupTable);
+                query.executeUpdate();
 			}
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
