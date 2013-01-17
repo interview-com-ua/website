@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import ua.com.itinterview.entity.InterviewEntity;
+import ua.com.itinterview.entity.CommentEntity;
 import ua.com.itinterview.entity.UserEntity;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -48,30 +48,14 @@ public abstract class BaseDaoIntegrationTest extends
 	public BaseDaoIntegrationTest() {
 		entities = new ArrayList<Class<?>>();
 		entities.add(UserEntity.class);
+		entities.add(CommentEntity.class);
 //		entities.add(InterviewEntity.class);
 	}
 
 	@Before
-	public void setUp() throws IOException {
-		final String sql = readDbUpdateScriptFromFile(new File("sql/itinterview_ddl_schema.sql"));
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcTemplate.execute(new StatementCallback<Object>() {
-			public Object doInStatement(Statement stmt) throws SQLException,
-					DataAccessException {
-				String[] scripts = sql.split(";");
-				for (String script : scripts) {
-					try {
-						stmt.execute(script);
-					} catch (SQLException e) {
-                        System.err.println("Error during SQL executing " + script);
-                        e.printStackTrace();
-                        throw e;
-                    }
-				}
-				return null;
-			}
-		});
-	}
+	public void setUp() {
+//        cleanUpDb();
+    }
 
 	public String readDbUpdateScriptFromFile(final File file)
 			throws IOException {

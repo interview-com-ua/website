@@ -103,6 +103,31 @@
                     <fork>true</fork>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.dbmaintain</groupId>
+                <artifactId>dbmaintain-maven-plugin</artifactId>
+                <configuration>
+                    <databases>
+                        <database>
+                            <driverClassName>org.hsqldb.jdbcDriver</driverClassName>
+                            <userName>sa</userName>
+                            <password></password>
+                            <url>jdbc:hsqldb:file:./db/it-interview;shutdown=true;sql.syntax_pgs=true</url>
+                            <schemaNames>PUBLIC</schemaNames>
+                        </database>
+                    </databases>
+                    <scriptLocations>src/main/sql</scriptLocations>
+                    <autoCreateDbMaintainScriptsTable>true</autoCreateDbMaintainScriptsTable>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.hsqldb</groupId>
+                        <artifactId>hsqldb</artifactId>
+                        <version>2.2.8</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
     </build>
 </project>
