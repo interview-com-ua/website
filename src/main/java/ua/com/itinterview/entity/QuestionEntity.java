@@ -10,10 +10,10 @@ import javax.persistence.Table;
 public class QuestionEntity extends EntityWithId {
     private Integer interviewId;
     private String question;
+    private Integer userId;
 
     public Integer getInterviewId() {
         return interviewId;
-
     }
 
     public void setInterviewId(Integer interviewId) {
@@ -23,9 +23,16 @@ public class QuestionEntity extends EntityWithId {
     public String getQuestion() {
         return question;
     }
+    public Integer getUserId() {
+        return userId;
+    }
 
     public void setQuestion(String question) {
         this.question = question;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -38,6 +45,7 @@ public class QuestionEntity extends EntityWithId {
 
         if (!interviewId.equals(that.interviewId)) return false;
         if (!question.equals(that.question)) return false;
+        if (!userId.equals(that.userId)) return false;
 
         return true;
     }
@@ -46,7 +54,9 @@ public class QuestionEntity extends EntityWithId {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + interviewId.hashCode();
+        result = 31 * result + userId.hashCode();
         result = 31 * result + question.hashCode();
         return result;
     }
+
 }

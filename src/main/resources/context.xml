@@ -42,5 +42,6 @@
     <!--  Dao beans -->
     
     <bean id="userDao" class="ua.com.itinterview.dao.UserDao" />
-       
+    <bean id="questionDao" class="ua.com.itinterview.dao.QuestionDao" />
+
 </beans>
