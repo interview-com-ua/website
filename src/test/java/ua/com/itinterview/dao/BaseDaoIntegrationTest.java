@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +17,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.StatementCallback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import ua.com.itinterview.entity.CommentEntity;
+import ua.com.itinterview.entity.CompanyEntity;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.QuestionEntity;
 import ua.com.itinterview.entity.UserEntity;
@@ -50,6 +46,7 @@ public abstract class BaseDaoIntegrationTest extends
 	public BaseDaoIntegrationTest() {
 		entities = new ArrayList<Class<?>>();
 		entities.add(UserEntity.class);
+		entities.add(CompanyEntity.class);
 		entities.add(CommentEntity.class);
 		entities.add(InterviewEntity.class);
 		entities.add(QuestionEntity.class);
