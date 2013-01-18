@@ -20,6 +20,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk>1.6</jdk>
+        <db.dir>${project.build.directory}/db</db.dir>
         <sonar.language>java</sonar.language>
     </properties>
 
@@ -121,7 +122,7 @@
                             <driverClassName>org.hsqldb.jdbcDriver</driverClassName>
                             <userName>sa</userName>
                             <password></password>
-                            <url>jdbc:hsqldb:file:./db/it-interview;shutdown=true;sql.syntax_pgs=true</url>
+                            <url>jdbc:hsqldb:file:${db.dir}/it-interview;shutdown=true;sql.syntax_pgs=true</url>
                             <schemaNames>PUBLIC</schemaNames>
                         </database>
                     </databases>
@@ -137,5 +138,26 @@
                 </dependencies>
             </plugin>
         </plugins>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </testResource>
+        </testResources>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 </project>
