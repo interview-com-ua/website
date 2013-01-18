@@ -22,4 +22,14 @@ public abstract class BaseEntityWithIdDaoIntegrationTest<T extends EntityWithId>
 
 	protected abstract EntityWithIdDao<T> getEntityWithIdDao();
 
+	@Test
+	 public void plus() {
+	  int a = 10;
+	  assertEquals(a, plus1(2,8));
+	 }
+	 
+	 public int plus1(int a, int b) {
+	  return a+b;
+	 }
 }
+
