@@ -23,8 +23,17 @@ public class QuestionEntity extends EntityWithId {
     public String getQuestion() {
         return question;
     }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
     public Integer getUserId() {
         return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Override
