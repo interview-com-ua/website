@@ -27,8 +27,8 @@ public class InterviewDaoTest extends
 	UserEntity user = new UserEntity();
 	user.setEmail("dsakdj");
 	user.setPassword("vcndt");
-	userDao.save(user);
-	interview.setUserId(user.getId());
+	user = userDao.save(user);
+	interview.setUser(user);
 	return interview;
     }
 
@@ -40,19 +40,19 @@ public class InterviewDaoTest extends
     @Test
     public void testGetInterviewsByUser() {
 	UserEntity user = new UserEntity();
-	userDao.save(user);
+	user = userDao.save(user);
 	InterviewEntity inter1 = new InterviewEntity();
 	InterviewEntity inter2 = new InterviewEntity();
-	inter1.setUserId(user.getId());
-	inter2.setUserId(user.getId());
-	interDao.save(inter1);
-	interDao.save(inter2);
+	inter1.setUser(user);
+	inter2.setUser(user);
+	inter1 = interDao.save(inter1);
+	inter2 = interDao.save(inter2);
 	// When
 	List<InterviewEntity> list = interDao.getInterviewsByUser(user);
 	// Then
 	assertEquals(2, list.size());
-	assertEquals(user.getId(), list.get(0).getUserId().intValue());
-	assertEquals(user.getId(), list.get(1).getUserId().intValue());
+	assertEquals(user, list.get(0).getUser());
+	assertEquals(user, list.get(1).getUser());
     }
 
 }

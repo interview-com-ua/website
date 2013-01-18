@@ -3,6 +3,8 @@ package ua.com.itinterview.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -11,7 +13,9 @@ import javax.persistence.Table;
 @SequenceGenerator(name = "sequence", sequenceName = "interview_id", allocationSize = 1)
 public class InterviewEntity extends EntityWithId {
 
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private UserEntity user;
     private String feedback;
     private Date created;
 
@@ -19,12 +23,12 @@ public class InterviewEntity extends EntityWithId {
 
     }
 
-    public Integer getUserId() {
-	return userId;
+    public UserEntity getUser() {
+	return user;
     }
 
-    public void setUserId(Integer userId) {
-	this.userId = userId;
+    public void setUser(UserEntity user) {
+	this.user = user;
     }
 
     public String getFeedback() {
@@ -50,7 +54,7 @@ public class InterviewEntity extends EntityWithId {
 	result = prime * result + ((created == null) ? 0 : created.hashCode());
 	result = prime * result
 		+ ((feedback == null) ? 0 : feedback.hashCode());
-	result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+	result = prime * result + ((user == null) ? 0 : user.hashCode());
 	return result;
     }
 
@@ -73,17 +77,17 @@ public class InterviewEntity extends EntityWithId {
 		return false;
 	} else if (!feedback.equals(other.feedback))
 	    return false;
-	if (userId == null) {
-	    if (other.userId != null)
+	if (user == null) {
+	    if (other.user != null)
 		return false;
-	} else if (!userId.equals(other.userId))
+	} else if (!user.equals(other.user))
 	    return false;
 	return true;
     }
 
     @Override
     public String toString() {
-	return "InterviewEntity [userId=" + userId + ", feedback=" + feedback
+	return "InterviewEntity [user=" + user + ", feedback=" + feedback
 		+ ", created=" + created + "]";
     }
 

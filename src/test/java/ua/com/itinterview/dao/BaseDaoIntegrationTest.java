@@ -46,12 +46,13 @@ public abstract class BaseDaoIntegrationTest extends
 
     public BaseDaoIntegrationTest() {
 	entities = new ArrayList<Class<?>>();
+	entities.add(UserEntity.class);
 	entities.add(CommentEntity.class);
 	entities.add(InterviewEntity.class);
 	entities.add(QuestionEntity.class);
 	entities.add(PositionEntity.class);
 	entities.add(TechnologyEntity.class);
-	entities.add(UserEntity.class);
+
     }
 
     @Before

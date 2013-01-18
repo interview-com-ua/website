@@ -12,11 +12,12 @@ import ua.com.itinterview.entity.UserEntity;
 
 public class InterviewEntityDao extends EntityWithIdDao<InterviewEntity> {
 
+    @SuppressWarnings("unchecked")
     @Transactional
     public List<InterviewEntity> getInterviewsByUser(UserEntity user) {
 	Session session = sessionFactory.getCurrentSession();
 	Criteria criteria = session.createCriteria(InterviewEntity.class);
-	criteria.add(Restrictions.eq("userId", user.getId()));
+	criteria.add(Restrictions.eq("user", user));
 	return criteria.list();
     }
 
