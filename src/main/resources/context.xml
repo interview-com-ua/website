@@ -37,5 +37,6 @@
     <!--  Dao beans -->
     
     <bean id="userDao" class="ua.com.itinterview.dao.UserDao" />
+    <bean id="companyDao" class="ua.com.itinterview.dao.CompanyDao" />
        
 </beans>
