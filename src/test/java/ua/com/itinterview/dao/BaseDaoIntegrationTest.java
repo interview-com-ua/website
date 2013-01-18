@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ua.com.itinterview.entity.CommentEntity;
 import ua.com.itinterview.entity.InterviewEntity;
+import ua.com.itinterview.entity.QuestionEntity;
 import ua.com.itinterview.entity.UserEntity;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -51,6 +52,7 @@ public abstract class BaseDaoIntegrationTest extends
 		entities.add(UserEntity.class);
 		entities.add(CommentEntity.class);
 		entities.add(InterviewEntity.class);
+		entities.add(QuestionEntity.class);
 	}
 
 	@Before

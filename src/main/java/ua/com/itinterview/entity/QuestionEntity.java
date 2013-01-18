@@ -27,14 +27,6 @@ public class QuestionEntity extends EntityWithId {
         return userId;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -43,9 +35,9 @@ public class QuestionEntity extends EntityWithId {
 
         QuestionEntity that = (QuestionEntity) o;
 
-        if (!interviewId.equals(that.interviewId)) return false;
-        if (!question.equals(that.question)) return false;
-        if (!userId.equals(that.userId)) return false;
+        if (interviewId != null ? !interviewId.equals(that.interviewId) : that.interviewId != null) return false;
+        if (question != null ? !question.equals(that.question) : that.question != null) return false;
+        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
 
         return true;
     }
@@ -53,10 +45,9 @@ public class QuestionEntity extends EntityWithId {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + interviewId.hashCode();
-        result = 31 * result + userId.hashCode();
-        result = 31 * result + question.hashCode();
+        result = 31 * result + (interviewId != null ? interviewId.hashCode() : 0);
+        result = 31 * result + (question != null ? question.hashCode() : 0);
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
         return result;
     }
-
 }
