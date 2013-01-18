@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "feedbacks")
-@SequenceGenerator(name = "sequence", sequenceName = "feedback_id", allocationSize = 1)
+@SequenceGenerator(name = "sequence", sequenceName = "feedbacks_id", allocationSize = 1)
 public class FeedbackEntity extends EntityWithId {
     // text
     // timestamp
