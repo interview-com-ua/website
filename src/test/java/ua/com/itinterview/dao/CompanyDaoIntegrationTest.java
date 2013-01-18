@@ -38,7 +38,7 @@ public class CompanyDaoIntegrationTest extends
 	
 	CompanyEntity companyEntity2 = new CompanyEntity();
 	companyEntity2.setCompanyName("ACompany");
-	companyEntity2.setType(CompanyType.gt200lt800);
+	companyEntity2.setType(CompanyType.gt80lt200);
 	companyDao.save(companyEntity2);
 	
 	CompanyEntity companyEntity3 = new CompanyEntity();
@@ -48,15 +48,52 @@ public class CompanyDaoIntegrationTest extends
     }
     
     @Test
-    public void testGetAllCompanies() {
-	List<CompanyEntity> companies = companyDao.getCompanies();
-	assertEquals(4, companies.size());
+    public void testGetCompaniesByName() {
+	CompanyEntity company = companyDao.getCompanyByCompanyName("BCompany");
+	assertEquals(company.getCompanyName(), "BCompany");
     }
     
     @Test
-    public void testGetAllCompaniesOrdered() {
-	List<CompanyEntity> companies = companyDao.getAllCompaniesOrdered("companyName");
+    public void testGetCompanies() {
+	List<CompanyEntity> companies = companyDao.getCompanies();
+	assertEquals(3, companies.size());
+    }
+    
+    @Test
+    public void testGetCompaniesLimit() {
+	List<CompanyEntity> companies = companyDao.getCompanies(2);
+	assertEquals(2, companies.size());
+    }
+    
+    @Test
+    public void testGetCompaniesOrdered() {
+	List<CompanyEntity> companies = companyDao.getCompaniesOrdered("companyName");
 	assertEquals("ACompany", companies.get(0).getCompanyName());
+    }
+    
+    @Test
+    public void testGetCompaniesOrderedLimit() {
+	List<CompanyEntity> companies = companyDao.getCompaniesOrdered("companyName", 2);
+	assertEquals("ACompany", companies.get(0).getCompanyName());
+	assertEquals(2, companies.size());
+    }
+    
+    @Test
+    public void testGetCompaniesByType() {
+	List<CompanyEntity> companies1 = companyDao.getCompaniesByType(CompanyType.gt80lt200);
+	assertEquals(2, companies1.size());
+	
+	List<CompanyEntity> companies2 = companyDao.getCompaniesByType(CompanyType.lt80);
+	assertEquals(1, companies2.size());
+    }
+    
+    @Test
+    public void testGetCompaniesByTypeLimit() {
+	List<CompanyEntity> companies1 = companyDao.getCompaniesByType(CompanyType.gt80lt200, 1);
+	assertEquals(1, companies1.size());
+	
+	List<CompanyEntity> companies2 = companyDao.getCompaniesByType(CompanyType.lt80);
+	assertEquals(1, companies2.size());
     }
 
     @Override
