@@ -27,12 +27,17 @@
             </value>
         </property>
     </bean>
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
-        <property name="url" value="jdbc:hsqldb:file:./target/it-interview;shutdown=true;sql.syntax_pgs=true;ifexists=true"/>
-        <property name="username" value="sa"/>
-        <property name="password" value=""/>
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="classpath:persistence.properties"/>
     </bean>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${database.driverClassName}"/>
+        <property name="url" value="${database.url}"/>
+        <property name="username" value="${database.userName}"/>
+        <property name="password" value="${database.password}"/>
+    </bean>
+
     
     <!--  Dao beans -->
     
