@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -26,8 +27,14 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+<<<<<<< HEAD
 import ua.com.itinterview.entity.PositionEntity;
 import ua.com.itinterview.entity.TechnologyEntity;
+=======
+import ua.com.itinterview.entity.CommentEntity;
+import ua.com.itinterview.entity.InterviewEntity;
+import ua.com.itinterview.entity.QuestionEntity;
+>>>>>>> afe8a3bc2fc178715c6060b85302eeef056f52a4
 import ua.com.itinterview.entity.UserEntity;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,6 +50,7 @@ public abstract class BaseDaoIntegrationTest extends
 
     private final List<Class<?>> entities;
 
+<<<<<<< HEAD
     private final static String CLEANUP_TABLE_SQL = "delete %s";
 
     public BaseDaoIntegrationTest() {
@@ -72,6 +80,30 @@ public abstract class BaseDaoIntegrationTest extends
 		    } catch (Exception e) {
 			// TODO create auto ddl script
 		    }
+=======
+	private final static String CLEANUP_TABLE_SQL = "delete from %s";
+
+	public BaseDaoIntegrationTest() {
+		entities = new ArrayList<Class<?>>();
+		entities.add(UserEntity.class);
+		entities.add(CommentEntity.class);
+		entities.add(InterviewEntity.class);
+		entities.add(QuestionEntity.class);
+	}
+
+	@Before
+	public void setUp() {
+        cleanUpDb();
+    }
+
+	public String readDbUpdateScriptFromFile(final File file) throws IOException {
+		StringBuffer buffer = new StringBuffer();
+		FileInputStream fis = new FileInputStream(file);
+		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+		String line = "";
+		while ((line = br.readLine()) != null) {
+			buffer.append(line);
+>>>>>>> afe8a3bc2fc178715c6060b85302eeef056f52a4
 		}
 		return null;
 	    }
@@ -92,6 +124,7 @@ public abstract class BaseDaoIntegrationTest extends
     }
 
     @After
+<<<<<<< HEAD
     @Transactional
     public void cleanUpDb() {
 	try {
@@ -105,4 +138,26 @@ public abstract class BaseDaoIntegrationTest extends
 	    throw new RuntimeException(ex);
 	}
     }
+=======
+    public void afterTest(){
+        cleanUpDb();
+    }
+
+	@Transactional
+	public void cleanUpDb() {
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			for (Class<?> ent : entities) {
+                String sqlQueryCleanupTable = String.format(CLEANUP_TABLE_SQL, ent.getSimpleName());
+                Query query = session.createQuery(sqlQueryCleanupTable);
+                query.executeUpdate();
+			}
+		} catch (Exception ex) {
+            System.err.println("Error during cleanUpDb");
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+		}
+	}
+
+>>>>>>> afe8a3bc2fc178715c6060b85302eeef056f52a4
 }
