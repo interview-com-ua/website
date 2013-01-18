@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -26,6 +27,9 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import ua.com.itinterview.entity.CommentEntity;
+import ua.com.itinterview.entity.InterviewEntity;
+import ua.com.itinterview.entity.QuestionEntity;
 import ua.com.itinterview.entity.UserEntity;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -41,41 +45,22 @@ public abstract class BaseDaoIntegrationTest extends
 
 	private final List<Class<?>> entities;
 
-	private final static String CLEANUP_TABLE_SQL = "delete %s";
+	private final static String CLEANUP_TABLE_SQL = "delete from %s";
 
 	public BaseDaoIntegrationTest() {
 		entities = new ArrayList<Class<?>>();
 		entities.add(UserEntity.class);
+		entities.add(CommentEntity.class);
+		entities.add(InterviewEntity.class);
+		entities.add(QuestionEntity.class);
 	}
 
 	@Before
-	public void setUp() throws IOException {
-		try {
-			cleanUpDb();
-		} catch (RuntimeException ex) {
-			// TODO create smart structure of insert before, clean up after
-		}
-		final String sql = readDbUpdateScriptFromFile(new File(
-				"sql/itinterview_ddl_schema.sql"));
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcTemplate.execute(new StatementCallback<Object>() {
-			public Object doInStatement(Statement stmt) throws SQLException,
-					DataAccessException {
-				String[] scripts = sql.split(";");
-				for (String script : scripts) {
-					try {
-						stmt.execute(script);
-					} catch (Exception e) {
-						// TODO create auto ddl script
-					}
-				}
-				return null;
-			}
-		});
-	}
+	public void setUp() {
+        cleanUpDb();
+    }
 
-	public String readDbUpdateScriptFromFile(final File file)
-			throws IOException {
+	public String readDbUpdateScriptFromFile(final File file) throws IOException {
 		StringBuffer buffer = new StringBuffer();
 		FileInputStream fis = new FileInputStream(file);
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
@@ -87,18 +72,25 @@ public abstract class BaseDaoIntegrationTest extends
 		return buffer.toString();
 	}
 
-	@After
+    @After
+    public void afterTest(){
+        cleanUpDb();
+    }
+
 	@Transactional
 	public void cleanUpDb() {
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			for (Class<?> ent : entities) {
-				session.createQuery(
-						String.format(CLEANUP_TABLE_SQL, ent.getSimpleName()))
-						.executeUpdate();
+                String sqlQueryCleanupTable = String.format(CLEANUP_TABLE_SQL, ent.getSimpleName());
+                Query query = session.createQuery(sqlQueryCleanupTable);
+                query.executeUpdate();
 			}
 		} catch (Exception ex) {
-			throw new RuntimeException(ex);
+            System.err.println("Error during cleanUpDb");
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
 		}
 	}
+
 }

@@ -23,3 +23,4 @@ public abstract class BaseEntityWithIdDaoIntegrationTest<T extends EntityWithId>
 	protected abstract EntityWithIdDao<T> getEntityWithIdDao();
 
 }
+
