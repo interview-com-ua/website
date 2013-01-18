@@ -42,4 +42,49 @@ public class InterviewEntity extends EntityWithId {
     public void setCreated(Date created) {
 	this.created = created;
     }
+
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = super.hashCode();
+	result = prime * result + ((created == null) ? 0 : created.hashCode());
+	result = prime * result
+		+ ((feedback == null) ? 0 : feedback.hashCode());
+	result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+	return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (!super.equals(obj))
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	InterviewEntity other = (InterviewEntity) obj;
+	if (created == null) {
+	    if (other.created != null)
+		return false;
+	} else if (!created.equals(other.created))
+	    return false;
+	if (feedback == null) {
+	    if (other.feedback != null)
+		return false;
+	} else if (!feedback.equals(other.feedback))
+	    return false;
+	if (userId == null) {
+	    if (other.userId != null)
+		return false;
+	} else if (!userId.equals(other.userId))
+	    return false;
+	return true;
+    }
+
+    @Override
+    public String toString() {
+	return "InterviewEntity [userId=" + userId + ", feedback=" + feedback
+		+ ", created=" + created + "]";
+    }
+
 }

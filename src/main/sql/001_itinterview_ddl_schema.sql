@@ -22,9 +22,11 @@ CREATE TABLE comments (
 CREATE SEQUENCE comments_id START WITH 1;
 
 CREATE TABLE interview (
+	id INTEGER NOT NULL,
     userId INTEGER NOT NULL,
     feedback VARCHAR(255),
-    created TIMESTAMP
+    created TIMESTAMP,
+    PRIMARY KEY (id)
 );
 
 CREATE SEQUENCE interview_id START WITH 1;
