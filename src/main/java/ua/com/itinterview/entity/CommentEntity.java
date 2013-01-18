@@ -1,5 +1,6 @@
 package ua.com.itinterview.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -9,9 +10,10 @@ import javax.persistence.Table;
 @SequenceGenerator(name = "sequence", sequenceName = "comments_id", allocationSize = 1)
 public class CommentEntity extends EntityWithId {
 
+    @Column(name = "question_id")
     private int questionId; // TODO: a reference to QuestionEntity might be
 			    // needed here, appropriately annotated.
-    private int rate;
+    private int rate = 0;
     private String authorName;
     private String email;
     private String commentText;
