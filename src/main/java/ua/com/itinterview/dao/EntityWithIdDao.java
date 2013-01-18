@@ -5,6 +5,8 @@ import java.lang.reflect.Type;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,35 +16,37 @@ import ua.com.itinterview.entity.EntityWithId;
 
 public class EntityWithIdDao<T extends EntityWithId> {
 
-	@Autowired
-	protected SessionFactory sessionFactory;
+    @Autowired
+    protected SessionFactory sessionFactory;
 
-	private Class<?> clazz;
+    private Class<?> clazz;
 
-	public EntityWithIdDao() {
-		Type t = getClass().getGenericSuperclass();
-		if (t instanceof ParameterizedType) {
-			ParameterizedType paramType = (ParameterizedType) t;
-			clazz = (Class<?>) paramType.getActualTypeArguments()[0];
-		}
+    public EntityWithIdDao() {
+	Type t = getClass().getGenericSuperclass();
+	if (t instanceof ParameterizedType) {
+	    ParameterizedType paramType = (ParameterizedType) t;
+	    clazz = (Class<?>) paramType.getActualTypeArguments()[0];
 	}
+    }
 
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public T save(T entity) {
-		return (T) sessionFactory.getCurrentSession().merge(entity);
-	}
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public T save(T entity) {
+	return (T) sessionFactory.getCurrentSession().merge(entity);
+    }
 
-	@Transactional
-	@SuppressWarnings("unchecked")
-	public T getOneResultByParameter(String fieldName, Object parameter) {
-		T result = (T) sessionFactory.getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq(fieldName, parameter)).uniqueResult();
-		if (result == null) {
-			throw new EntityNotFoundException("Could not get entity "
-					+ clazz.getSimpleName() + " for " + fieldName + "="
-					+ parameter);
-		}
-		return result;
+    @Transactional
+    @SuppressWarnings("unchecked")
+    public T getOneResultByParameter(String fieldName, Object parameter) {
+	Session session = sessionFactory.getCurrentSession();
+	Criteria criteria = session.createCriteria(clazz);
+	criteria.add(Restrictions.eq(fieldName, parameter));
+	T result = (T) criteria.uniqueResult();
+	if (result == null) {
+	    throw new EntityNotFoundException("Could not get entity "
+		    + clazz.getSimpleName() + " for " + fieldName + "="
+		    + parameter);
 	}
+	return result;
+    }
 }
