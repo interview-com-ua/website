@@ -1,7 +1,7 @@
 package ua.com.itinterview.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -10,21 +10,20 @@ import javax.persistence.Table;
 @SequenceGenerator(name = "sequence", sequenceName = "comments_id", allocationSize = 1)
 public class CommentEntity extends EntityWithId {
 
-    @Column(name = "question_id")
-    private int questionId; // TODO: a reference to QuestionEntity might be
-			    // needed here, appropriately annotated.
+    @ManyToOne
+    private QuestionEntity questionEntity;
     private int rate = 0;
     private String authorName;
     private String email;
     private String commentText;
     private String userpicUrl;
 
-    public int getQuestionId() {
-	return questionId;
+    public QuestionEntity getQuestionEntity() {
+	return questionEntity;
     }
 
-    public void setQuestionId(int questionId) {
-	this.questionId = questionId;
+    public void setQuestionEntity(QuestionEntity questionEntity) {
+	this.questionEntity = questionEntity;
     }
 
     public int getRate() {
@@ -76,7 +75,8 @@ public class CommentEntity extends EntityWithId {
 	result = prime * result
 		+ ((commentText == null) ? 0 : commentText.hashCode());
 	result = prime * result + ((email == null) ? 0 : email.hashCode());
-	result = prime * result + questionId;
+	result = prime * result
+		+ ((questionEntity == null) ? 0 : questionEntity.hashCode());
 	result = prime * result + rate;
 	result = prime * result
 		+ ((userpicUrl == null) ? 0 : userpicUrl.hashCode());
@@ -107,7 +107,10 @@ public class CommentEntity extends EntityWithId {
 		return false;
 	} else if (!email.equals(other.email))
 	    return false;
-	if (questionId != other.questionId)
+	if (questionEntity == null) {
+	    if (other.questionEntity != null)
+		return false;
+	} else if (!questionEntity.equals(other.questionEntity))
 	    return false;
 	if (rate != other.rate)
 	    return false;
@@ -121,8 +124,8 @@ public class CommentEntity extends EntityWithId {
 
     @Override
     public String toString() {
-	return "CommentEntity [questionId=" + questionId + ", rate=" + rate
-		+ ", authorName=" + authorName + ", email=" + email
+	return "CommentEntity [questionEntity=" + questionEntity + ", rate="
+		+ rate + ", authorName=" + authorName + ", email=" + email
 		+ ", commentText=" + commentText + ", userpicUrl=" + userpicUrl
 		+ "]";
     }
