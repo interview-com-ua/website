@@ -16,7 +16,80 @@
         <developerConnection>https://github.com/interview-com-ua/website.git</developerConnection>
         <url>https://github.com/interview-com-ua/website</url>
     </scm>
-
+      <developers>
+        <developer>
+            <name>Чирков Владимир Валериевич</name>
+			<email>voch83@mail.ru</email>
+		</developer>
+        <developer>
+            <name>Прутян Владимир Владимирович</name>
+			<email>vladprut@bigmir.net</email>
+		</developer>
+		<developer>
+            <name>Новокшонов Евгений Анатольевич</name>
+			<email>dzmk@i.ua</email>
+		</developer>
+		<developer>
+            <name>Novokshonov Oleksii</name>
+			<email>oleksii.novokshonov@gmail.com</email>
+		</developer>
+		<developer>
+            <name>Мосолов Артем Юрійович</name>
+			<email>kle0n@mail.ru</email>
+		</developer>
+		<developer>
+            <name>Педич Максим Михайлович</name>
+			<email>maximpedich@gmail.com</email>
+		</developer>
+		<developer>
+            <name>Романiв Андрій Володимирович</name>
+			<email>twentyyears@i.ua</email>
+		</developer>
+		<developer>
+            <name>Вольский Дмитрий Дмитриевич</name>
+			<email>skiman@i.ua</email>
+		</developer>
+		<developer>
+            <name>Бутолин Дмитрий Геннадьевич</name>
+			<email>djemen@gmail.com</email>
+		</developer>
+		<developer>
+            <name>Andrey Stasyuk</name>
+			<email>shmishleniy@gmail.com</email>
+		</developer>
+		<developer>
+            <name>Морозов Пётр Владимирович</name>
+			<email>petia.morozov@gmail.com</email>
+		</developer>
+		<developer>
+            <name>Тимофей</name>
+			<email>timofiy.bilyi@gmail.com</email>
+		</developer>
+		<developer>
+            <name>Гавриленко Олександр</name>
+			<email>gavrylenko.aleksandr@gmail.com</email>
+		</developer>
+		<developer>
+            <name>Целуйко Игорь Валентинович</name>
+			<email>igor7311@gmail.com</email>
+		</developer>
+		<developer>
+            <name>Євген Лазарев</name>
+			<email>lazarev4@ukr.net</email>
+		</developer>
+		<developer>
+            <name>Ольга Коструб</name>
+			<email>lolga_luga@mail.ru</email>
+		</developer>
+		<developer>
+            <name>Кравченко Свят Игоревич</name>
+			<email>cava150@bigmir.net</email>
+		</developer>
+		<developer>
+            <name>Лесничий Сергей Владимирович</name>
+			<email>ljore@ukr.net</email>
+		</developer>
+	</developers>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk>1.6</jdk>
