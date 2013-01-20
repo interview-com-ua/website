@@ -17,6 +17,7 @@ public class CommentEntity extends EntityWithId {
     private String email;
     private String commentText;
     private String userpicUrl;
+
     private int questionId;
 
     public void setQuestionId(int questionId) {
