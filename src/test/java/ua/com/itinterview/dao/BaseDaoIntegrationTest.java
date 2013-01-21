@@ -31,9 +31,9 @@ import ua.com.itinterview.entity.TechnologyEntity;
 import ua.com.itinterview.entity.UserEntity;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:context.xml" })
+@ContextConfiguration(locations = {"classpath:context.xml"})
 public abstract class BaseDaoIntegrationTest extends
-	AbstractTransactionalJUnit4SpringContextTests {
+        AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
     private DataSource dataSource;
@@ -46,55 +46,53 @@ public abstract class BaseDaoIntegrationTest extends
     private final static String CLEANUP_TABLE_SQL = "delete from %s";
 
     public BaseDaoIntegrationTest() {
-	entities = new ArrayList<Class<?>>();
-	entities.add(UserEntity.class);
-	entities.add(CommentEntity.class);
-	entities.add(InterviewEntity.class);
-	entities.add(QuestionEntity.class);
-	entities.add(PositionEntity.class);
-	entities.add(TechnologyEntity.class);
-	entities.add(FeedbackEntity.class);
-
+        entities = new ArrayList<Class<?>>();
+        entities.add(UserEntity.class);
+        entities.add(CommentEntity.class);
+        entities.add(InterviewEntity.class);
+        entities.add(QuestionEntity.class);
+        entities.add(PositionEntity.class);
+        entities.add(TechnologyEntity.class);
+        entities.add(FeedbackEntity.class);
     }
 
     @Before
     public void setUp() {
-	cleanUpDb();
+        cleanUpDb();
     }
 
     public String readDbUpdateScriptFromFile(final File file)
-	    throws IOException {
-	StringBuffer buffer = new StringBuffer();
-	FileInputStream fis = new FileInputStream(file);
-	BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-	String line = "";
-	while ((line = br.readLine()) != null) {
-	    buffer.append(line);
-	}
-	br.close();
-	return buffer.toString();
+            throws IOException {
+        StringBuffer buffer = new StringBuffer();
+        FileInputStream fis = new FileInputStream(file);
+        BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+        String line = "";
+        while ((line = br.readLine()) != null) {
+            buffer.append(line);
+        }
+        br.close();
+        return buffer.toString();
     }
 
     @After
     public void afterTest() {
-	cleanUpDb();
+        cleanUpDb();
     }
 
     @Transactional
     public void cleanUpDb() {
-	try {
-	    Session session = sessionFactory.getCurrentSession();
-	    for (Class<?> ent : entities) {
-		String sqlQueryCleanupTable = String.format(CLEANUP_TABLE_SQL,
-			ent.getSimpleName());
-		Query query = session.createQuery(sqlQueryCleanupTable);
-		query.executeUpdate();
-	    }
-	} catch (Exception ex) {
-	    System.err.println("Error during cleanUpDb");
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex);
-	}
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            for (Class<?> ent : entities) {
+                String sqlQueryCleanupTable = String.format(CLEANUP_TABLE_SQL, ent.getSimpleName());
+                Query query = session.createQuery(sqlQueryCleanupTable);
+                query.executeUpdate();
+            }
+        } catch (Exception ex) {
+            System.err.println("Error during cleanUpDb");
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
     }
 
 }
