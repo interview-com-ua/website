@@ -37,4 +37,10 @@ public class PositionDaoIntegrationTest extends
 	assertEquals("java", list.get(0).getPositionGroup());
 	assertEquals("junior", list.get(0).getPositionName());
     }
+
+    @Test
+    public void testgetAllPositionsWithoutPositions() {
+	List<PositionEntity> list = positionDao.getAllPositions();
+	assertEquals(0, list.size());
+    }
 }
