@@ -23,7 +23,6 @@ public class TechnologyDaoIntegrationTest extends
 
     @Override
     protected TechnologyDao getEntityWithIdDao() {
-	// TODO Auto-generated method stub
 	return technologyDao;
     }
 
