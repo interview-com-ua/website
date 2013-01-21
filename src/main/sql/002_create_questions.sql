@@ -1,8 +1,8 @@
 CREATE TABLE interview_question (
-  id INTEGER NOT NULL,
-  userId INTEGER,
+  id          INTEGER NOT NULL,
+  userId      INTEGER,
   interviewId INTEGER,
-  question TEXT,
+  question    TEXT,
   PRIMARY KEY (id)
 );
 

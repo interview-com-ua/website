@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.UserEntity;
 
+import static org.hibernate.criterion.Restrictions.eq;
+
 public class InterviewEntityDao extends EntityWithIdDao<InterviewEntity> {
 
     @SuppressWarnings("unchecked")
@@ -17,7 +19,7 @@ public class InterviewEntityDao extends EntityWithIdDao<InterviewEntity> {
     public List<InterviewEntity> getInterviewsByUser(UserEntity user) {
 	Session session = sessionFactory.getCurrentSession();
 	Criteria criteria = session.createCriteria(InterviewEntity.class);
-	criteria.add(Restrictions.eq("user", user));
+	criteria.add(eq("user", user));
 	return criteria.list();
     }
 

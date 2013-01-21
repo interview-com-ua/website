@@ -149,6 +149,11 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.5.6</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.stokito</groupId>
+            <artifactId>gag-annotations</artifactId>
+            <version>1.0.1</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>it-interview</finalName>
@@ -197,6 +202,7 @@
                     </databases>
                     <scriptLocations>src/main/sql</scriptLocations>
                     <autoCreateDbMaintainScriptsTable>true</autoCreateDbMaintainScriptsTable>
+                    <fromScratchEnabled>true</fromScratchEnabled>
                 </configuration>
                 <dependencies>
                     <dependency>
