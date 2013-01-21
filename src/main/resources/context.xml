@@ -45,4 +45,5 @@
     <bean id="companyDao" class="ua.com.itinterview.dao.CompanyDao" />
     <bean id="questionDao" class="ua.com.itinterview.dao.QuestionDao" />
 	<bean id="interviewDao" class="ua.com.itinterview.dao.InterviewEntityDao" />
+	<bean id="positionDao" class="ua.com.itinterview.dao.PositionDao" />
 </beans>
