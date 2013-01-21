@@ -45,9 +45,7 @@
     <bean id="companyDao" class="ua.com.itinterview.dao.CompanyDao" />
     <bean id="questionDao" class="ua.com.itinterview.dao.QuestionDao" />
 	<bean id="interviewDao" class="ua.com.itinterview.dao.InterviewEntityDao" />
-<<<<<<< HEAD
 	<bean id="positionDao" class="ua.com.itinterview.dao.PositionDao" />
-=======
 	<bean id="feedbackDao" class="ua.com.itinterview.dao.FeedbackDao" />
->>>>>>> 147030b4761b4097e5c05361ab266a76068bcd74
+
 </beans>
