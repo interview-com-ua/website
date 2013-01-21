@@ -8,8 +8,19 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.Query;
 import javax.sql.DataSource;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import ua.com.itinterview.entity.CommentEntity;
 import ua.com.itinterview.entity.FeedbackEntity;
@@ -19,7 +30,7 @@ import ua.com.itinterview.entity.QuestionEntity;
 import ua.com.itinterview.entity.TechnologyEntity;
 import ua.com.itinterview.entity.UserEntity;
 
-@RunWRith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:context.xml" })
 public abstract class BaseDaoIntegrationTest extends
 	AbstractTransactionalJUnit4SpringContextTests {
