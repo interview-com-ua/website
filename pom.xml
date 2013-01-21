@@ -197,6 +197,7 @@
                     </databases>
                     <scriptLocations>src/main/sql</scriptLocations>
                     <autoCreateDbMaintainScriptsTable>true</autoCreateDbMaintainScriptsTable>
+                    <fromScratchEnabled>true</fromScratchEnabled>
                 </configuration>
                 <dependencies>
                     <dependency>
