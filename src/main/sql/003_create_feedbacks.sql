@@ -1,7 +1,7 @@
 CREATE TABLE feedbacks (
-  id INTEGER NOT NULL,
-  createTime TIMESTAMP, 
-  checked BOOLEAN,
+  id           INTEGER NOT NULL,
+  createTime   TIMESTAMP,
+  checked      BOOLEAN,
   feedbackText TEXT,
   PRIMARY KEY (id)
 );
