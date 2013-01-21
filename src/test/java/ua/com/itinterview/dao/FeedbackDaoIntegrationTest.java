@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.github.stokito.gag.annotation.remark.Facepalm;
+import com.github.stokito.gag.annotation.remark.WTF;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,16 +30,14 @@ public class FeedbackDaoIntegrationTest extends
 
     @Override
     protected EntityWithIdDao<FeedbackEntity> getEntityWithIdDao() {
-	// TODO Auto-generated method stub
 	return feedbackDao;
     }
 
+    @Facepalm
     @Test
     public void testGetAllUncheckedFeedbacks() {
-
 	DateFormat formatter;
 	Date date;
-
 	FeedbackEntity entity = createEntity();
 
 	String str_date = "2012-12-07";
@@ -47,7 +47,6 @@ public class FeedbackDaoIntegrationTest extends
 	    java.sql.Timestamp timeStampDate = new Timestamp(date.getTime());
 	    entity.setCreateTime(timeStampDate);
 	} catch (ParseException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 
@@ -74,11 +73,10 @@ public class FeedbackDaoIntegrationTest extends
 	str_date = "2012-12-25";
 	formatter = new SimpleDateFormat("yyyy-MM-dd");
 	try {
-	    date = (Date) formatter.parse(str_date);
+	    date = (Date) formatter.parse(str_date); //WTF?
 	    java.sql.Timestamp timeStampDate = new Timestamp(date.getTime());
 	    entity2.setCreateTime(timeStampDate);
 	} catch (ParseException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 	entity2.setFeedbackText("hhhghghg33333");
@@ -89,7 +87,7 @@ public class FeedbackDaoIntegrationTest extends
 	str_date = "2013-01-20";
 	formatter = new SimpleDateFormat("yyyy-MM-dd");
 	try {
-	    date = (Date) formatter.parse(str_date);
+	    date = (Date) formatter.parse(str_date);   //WTF?
 	    java.sql.Timestamp timeStampDate = new Timestamp(date.getTime());
 	    entity3.setCreateTime(timeStampDate);
 	} catch (ParseException e) {
@@ -107,9 +105,9 @@ public class FeedbackDaoIntegrationTest extends
 
 	assertEquals(entity1, list.get(0));
 	assertEquals(entity3, list.get(1));
-
     }
 
+    @WTF
     @Test
     public void testGetFeedbacksForPeriod() throws ParseException {
 	DateFormat formatter;
