@@ -83,18 +83,22 @@ public abstract class BaseDaoIntegrationTest extends
     @Transactional
     public void cleanUpDb() {
 	try {
-	    Session session = sessionFactory.getCurrentSession();
 	    for (Class<?> ent : entities) {
-		String sqlQueryCleanupTable = String.format(CLEANUP_TABLE_SQL,
-			ent.getSimpleName());
-		Query query = session.createQuery(sqlQueryCleanupTable);
-		query.executeUpdate();
+		cleanUpEntity(ent);
 	    }
 	} catch (Exception ex) {
 	    System.err.println("Error during cleanUpDb");
 	    ex.printStackTrace();
 	    throw new RuntimeException(ex);
 	}
+    }
+
+    public void cleanUpEntity(Class<?> ent) {
+	Session session = sessionFactory.getCurrentSession();
+	String sqlQueryCleanupTable = String.format(CLEANUP_TABLE_SQL,
+		ent.getSimpleName());
+	Query query = session.createQuery(sqlQueryCleanupTable);
+	query.executeUpdate();
     }
 
 }
