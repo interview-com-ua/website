@@ -165,6 +165,11 @@
             <artifactId>servlet-api</artifactId>
             <version>3.0-alpha-1</version>
         </dependency>        
+        <dependency>
+            <groupId>com.github.stokito</groupId>
+            <artifactId>gag-annotations</artifactId>
+            <version>1.0.1</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>it-interview</finalName>
@@ -213,6 +218,7 @@
                     </databases>
                     <scriptLocations>src/main/sql</scriptLocations>
                     <autoCreateDbMaintainScriptsTable>true</autoCreateDbMaintainScriptsTable>
+                    <fromScratchEnabled>true</fromScratchEnabled>
                 </configuration>
                 <dependencies>
                     <dependency>

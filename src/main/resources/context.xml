@@ -7,5 +7,5 @@
 
 	<import resource="persistence-context.xml" />
 	<import resource="web-context.xml" />  
-	
+
 </beans>

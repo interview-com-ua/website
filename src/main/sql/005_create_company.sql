@@ -1,11 +1,11 @@
-create table company (
-   id integer not null,
-   companyName varchar(255),
-   companyPhone varchar (255),
-   companyLogoUrl varchar(255),
-   companyAddress varchar(255),
-   companyWebPage varchar(255),
-   companyType varchar(255),
-   primary key (id)
+CREATE TABLE company (
+  id             INTEGER NOT NULL,
+  companyName    VARCHAR(255),
+  companyPhone   VARCHAR(255),
+  companyLogoUrl VARCHAR(255),
+  companyAddress VARCHAR(255),
+  companyWebPage VARCHAR(255),
+  companyType    VARCHAR(255),
+  PRIMARY KEY (id)
 );
-create sequence company_id start with 1;
+CREATE SEQUENCE company_id START WITH 1;
