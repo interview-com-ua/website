@@ -9,17 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ua.com.itinterview.dao.paging.PagingFilter;
 import ua.com.itinterview.entity.CommentEntity;
+import ua.com.itinterview.entity.QuestionEntity;
 
 public class CommentDao extends EntityWithIdDao<CommentEntity> {
 
-    @SuppressWarnings("unchecked")
     @Transactional
     public List<CommentEntity> getCommentsForQuestionsOrderedByRate(
-	    int questionId, PagingFilter pagingFilter) {
+	    QuestionEntity questionEntity, PagingFilter pagingFilter) {
 	Criteria criteria = sessionFactory.getCurrentSession()
 		.createCriteria(CommentEntity.class)
-		.add(Restrictions.eq("questionId", questionId))
+		.add(Restrictions.eq("questionEntity", questionEntity))
 		.addOrder(Order.desc("rate"));
-	return criteria.list();
+	return getResultWithPaginator(criteria, pagingFilter);
     }
 }

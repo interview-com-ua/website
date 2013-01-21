@@ -1,6 +1,7 @@
 package ua.com.itinterview.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -11,22 +12,13 @@ import javax.persistence.Table;
 public class CommentEntity extends EntityWithId {
 
     @ManyToOne
+    @JoinColumn(name = "question_id")
     private QuestionEntity questionEntity;
     private int rate = 0;
     private String authorName;
     private String email;
     private String commentText;
     private String userpicUrl;
-
-    private int questionId;
-
-    public void setQuestionId(int questionId) {
-	this.questionId = questionId;
-    }
-
-    public int getQuestionId() {
-	return questionId;
-    }
 
     public QuestionEntity getQuestionEntity() {
 	return questionEntity;

@@ -2,6 +2,7 @@ package ua.com.itinterview.dao;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -12,6 +13,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import ua.com.itinterview.dao.paging.PagingFilter;
 import ua.com.itinterview.entity.EntityWithId;
 
 public class EntityWithIdDao<T extends EntityWithId> {
@@ -48,5 +50,14 @@ public class EntityWithIdDao<T extends EntityWithId> {
 		    + parameter);
 	}
 	return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected List<T> getResultWithPaginator(Criteria criteria,
+	    PagingFilter pagingFilter) {
+	int firstPosition = pagingFilter.getItemsPerPage()
+		* pagingFilter.getCurrentPage();
+	return criteria.setFirstResult(firstPosition)
+		.setMaxResults(pagingFilter.getItemsPerPage()).list();
     }
 }
