@@ -39,20 +39,20 @@ public class InterviewDaoTest extends
 
     @Test
     public void testGetInterviewsByUser() {
-	UserEntity user = new UserEntity();
-	user = userDao.save(user);
-	InterviewEntity inter1 = new InterviewEntity();
-	InterviewEntity inter2 = new InterviewEntity();
-	inter1.setUser(user);
-	inter2.setUser(user);
-	inter1 = interDao.save(inter1);
-	inter2 = interDao.save(inter2);
+	UserEntity interviewAuthor = new UserEntity();
+	interviewAuthor = userDao.save(interviewAuthor);
+	InterviewEntity interview1 = new InterviewEntity();
+	InterviewEntity interview2 = new InterviewEntity();
+	interview1.setUser(interviewAuthor);
+	interview2.setUser(interviewAuthor);
+	interDao.save(interview1);
+	interDao.save(interview2);
 	// When
-	List<InterviewEntity> list = interDao.getInterviewsByUser(user);
+	List<InterviewEntity> list = interDao.getInterviewsByUser(interviewAuthor);
 	// Then
 	assertEquals(2, list.size());
-	assertEquals(user, list.get(0).getUser());
-	assertEquals(user, list.get(1).getUser());
+	assertEquals(interviewAuthor, list.get(0).getUser());
+	assertEquals(interviewAuthor, list.get(1).getUser());
     }
 
 }
