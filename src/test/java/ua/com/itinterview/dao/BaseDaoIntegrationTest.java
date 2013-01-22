@@ -41,6 +41,15 @@ public abstract class BaseDaoIntegrationTest extends
     @Autowired
     private SessionFactory sessionFactory;
 
+    @Autowired
+    private UserDao userDao;
+
+    public final static String TEST_USER_NAME = "vkuchyn";
+
+    public final static String TEST_USER_EMAIL = "kuchin.victor@gmail.com";
+
+    protected UserEntity testUser;
+
     private final List<Class<?>> entities;
 
     private final static String CLEANUP_TABLE_SQL = "delete from %s";
@@ -59,6 +68,15 @@ public abstract class BaseDaoIntegrationTest extends
     @Before
     public void setUp() {
 	cleanUpDb();
+	testUser = createTestUser();
+    }
+
+    private UserEntity createTestUser() {
+	UserEntity user = new UserEntity();
+	user.setEmail(TEST_USER_EMAIL);
+	user.setUserName(TEST_USER_NAME);
+	user.setPassword("password");
+	return userDao.save(user);
     }
 
     public String readDbUpdateScriptFromFile(final File file)
