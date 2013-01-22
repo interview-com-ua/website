@@ -1,8 +1,10 @@
 package ua.com.itinterview.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +53,11 @@ public class CompanyDaoIntegrationTest extends
     public void testGetCompaniesByName() {
 	CompanyEntity company = companyDao.getCompanyByCompanyName("BCompany");
 	assertEquals(company.getCompanyName(), "BCompany");
+    }
+    
+    @Test(expected = EntityNotFoundException.class)
+    public void testGetUserByUserNameWhenNotExistsAndRecesiveException() {
+	companyDao.getCompanyByCompanyName("SomeWrongCompanyName!!!");
     }
     
     @Test
