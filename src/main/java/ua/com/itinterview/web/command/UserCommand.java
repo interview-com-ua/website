@@ -1,6 +1,7 @@
 package ua.com.itinterview.web.command;
 
 public class UserCommand {
+
     private String userName;
     private String email;
     private String name;
