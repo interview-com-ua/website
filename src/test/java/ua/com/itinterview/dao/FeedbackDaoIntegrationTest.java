@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ua.com.itinterview.entity.FeedbackEntity;
 
 public class FeedbackDaoIntegrationTest extends
-	BaseEntityWithIdDaoIntegrationTest {
+	BaseEntityWithIdDaoIntegrationTest<FeedbackEntity> {
 
     @Autowired
     private FeedbackDao feedbackDao;

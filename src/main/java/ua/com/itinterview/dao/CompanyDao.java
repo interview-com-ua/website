@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
+
 import ua.com.itinterview.entity.CompanyEntity;
 
 public class CompanyDao extends EntityWithIdDao<CompanyEntity> {
@@ -52,21 +52,5 @@ public class CompanyDao extends EntityWithIdDao<CompanyEntity> {
     @Transactional
     public List<CompanyEntity> getCompanies(int limit) {
 	return getAll(limit);
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<CompanyEntity> getAll(int limit) {
-	Session session = sessionFactory.getCurrentSession();
-	Criteria criteria = session.createCriteria(CompanyEntity.class)
-		.setMaxResults(limit);
-	return criteria.list();
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<CompanyEntity> getAllOrderedBy(String OrderBy, int limit) {
-	Session session = sessionFactory.getCurrentSession();
-	Criteria criteria = session.createCriteria(CompanyEntity.class)
-		.addOrder(Order.asc(OrderBy)).setMaxResults(limit);
-	return criteria.list();
     }
 }
