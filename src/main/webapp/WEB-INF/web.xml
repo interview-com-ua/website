@@ -13,6 +13,12 @@ id="WebApp_ID" version="3.0">
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:context.xml</param-value>
 	</context-param>
+	
+    <listener>
+        <listener-class>
+			org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>   	
   
     <description>Resource fore collecting experience visiting interviews in IT companies</description>
     
@@ -21,7 +27,7 @@ id="WebApp_ID" version="3.0">
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value></param-value>
+			<param-value>classpath:context.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
