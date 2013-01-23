@@ -3,6 +3,7 @@ CREATE TABLE interview_question (
   userId      INTEGER,
   interviewId INTEGER,
   question    TEXT,
+  created    DATE,
   PRIMARY KEY (id)
 );
 
