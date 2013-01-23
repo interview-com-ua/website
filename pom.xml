@@ -91,7 +91,7 @@
         <jdk>1.6</jdk>
         <db.dir>${project.build.directory}/db</db.dir>
         <sonar.language>java</sonar.language>
-	    <jetty.version>8.1.5.v20120716</jetty.version>
+	    <jetty.version>9.0.0.M4</jetty.version>
  	    <spring.version>3.1.2.RELEASE</spring.version>        
     </properties>
 
@@ -102,6 +102,12 @@
             <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
+	    <dependency>
+	      <groupId>org.easymock</groupId>
+	      <artifactId>easymock</artifactId>
+	      <version>3.0</version>
+	      <scope>test</scope>
+	    </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -154,12 +160,20 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
             <version>${jetty.version}</version>
+            <scope>test</scope>
         </dependency>        
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
             <version>${jetty.version}</version>
-        </dependency>        
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-jsp</artifactId>
+            <version>${jetty.version}</version>
+            <scope>test</scope>
+        </dependency>          
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>

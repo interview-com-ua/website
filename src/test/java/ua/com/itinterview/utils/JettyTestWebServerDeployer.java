@@ -10,6 +10,7 @@ public class JettyTestWebServerDeployer {
     private Server server;
 
     public static void main(String[] args) {
+	System.setProperty("org.apache.jasper.compiler.disablejsr199", "true");
 	JettyTestWebServerDeployer jettyTestServer = new JettyTestWebServerDeployer();
 	jettyTestServer.start();
     }
