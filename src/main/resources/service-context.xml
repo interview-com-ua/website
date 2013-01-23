@@ -9,5 +9,6 @@
     <bean id="interviewService" class="ua.com.itinterview.service.InterviewService"/>
     <bean id="commentService" class="ua.com.itinterview.service.CommentService"/>
     <bean id="questionService" class="ua.com.itinterview.service.QuestionService"/>
+    <bean id="feedbackService" class="ua.com.itinterview.service.FeedbackService"/>
         
 </beans>
