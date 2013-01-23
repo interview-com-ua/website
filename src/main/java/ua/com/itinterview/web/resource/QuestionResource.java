@@ -44,7 +44,7 @@ public class QuestionResource {
 	commentsToPrint.add(comment2);
 
 	ModelAndView view = new ModelAndView("show_comment_list");
-	view.addObject(commentsToPrint);
+	view.addObject("commentsToPrint", commentsToPrint);
 	
 	return view;
     }
