@@ -1,20 +1,9 @@
-package ua.com.itinterview.entity;
+package ua.com.itinterview.web.command;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import ua.com.itinterview.entity.CommentEntity;
+import ua.com.itinterview.entity.QuestionEntity;
 
-import ua.com.itinterview.web.command.CommentCommand;
-
-@Entity
-@Table(name = "comments")
-@SequenceGenerator(name = "sequence", sequenceName = "comments_id", allocationSize = 1)
-public class CommentEntity extends EntityWithId {
-
-    @ManyToOne
-    @JoinColumn(name = "question_id")
+public class CommentCommand {
     private QuestionEntity questionEntity;
     private int rate = 0;
     private String authorName;
@@ -22,15 +11,14 @@ public class CommentEntity extends EntityWithId {
     private String commentText;
     private String userpicUrl;
 
-    public CommentEntity(CommentCommand commandMock) {
-	authorName = commandMock.getAuthorName();
-	email = commandMock.getEmail();
-	commentText = commandMock.getCommentText();
-	userpicUrl = commandMock.getUserpicUrl();
-
+    public CommentCommand(CommentEntity entity) {
+	authorName = entity.getAuthorName();
+	email = entity.getEmail();
+	commentText = entity.getCommentText();
+	userpicUrl = entity.getUserpicUrl();
     }
 
-    public CommentEntity() {
+    public CommentCommand() {
 
     }
 
@@ -83,9 +71,17 @@ public class CommentEntity extends EntityWithId {
     }
 
     @Override
+    public String toString() {
+	return "CommentCommand [questionEntity=" + questionEntity + ", rate="
+		+ rate + ", authorName=" + authorName + ", email=" + email
+		+ ", commentText=" + commentText + ", userpicUrl=" + userpicUrl
+		+ "]";
+    }
+
+    @Override
     public int hashCode() {
 	final int prime = 31;
-	int result = super.hashCode();
+	int result = 1;
 	result = prime * result
 		+ ((authorName == null) ? 0 : authorName.hashCode());
 	result = prime * result
@@ -103,11 +99,11 @@ public class CommentEntity extends EntityWithId {
     public boolean equals(Object obj) {
 	if (this == obj)
 	    return true;
-	if (!super.equals(obj))
+	if (obj == null)
 	    return false;
 	if (getClass() != obj.getClass())
 	    return false;
-	CommentEntity other = (CommentEntity) obj;
+	CommentCommand other = (CommentCommand) obj;
 	if (authorName == null) {
 	    if (other.authorName != null)
 		return false;
@@ -136,14 +132,6 @@ public class CommentEntity extends EntityWithId {
 	} else if (!userpicUrl.equals(other.userpicUrl))
 	    return false;
 	return true;
-    }
-
-    @Override
-    public String toString() {
-	return "CommentEntity [questionEntity=" + questionEntity + ", rate="
-		+ rate + ", authorName=" + authorName + ", email=" + email
-		+ ", commentText=" + commentText + ", userpicUrl=" + userpicUrl
-		+ "]";
     }
 
 }
