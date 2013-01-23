@@ -9,6 +9,7 @@ import javax.persistence.EntityNotFoundException;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,5 +60,25 @@ public class EntityWithIdDao<T extends EntityWithId> {
 		* pagingFilter.getCurrentPage();
 	return criteria.setFirstResult(firstPosition)
 		.setMaxResults(pagingFilter.getItemsPerPage()).list();
+    }
+    
+    public List<T> getAll() {
+	return getAll(0);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<T> getAll(int limit) {
+	Session session = sessionFactory.getCurrentSession();
+	Criteria criteria = session.createCriteria(clazz)
+		.setMaxResults(limit);
+	return criteria.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<T> getAllOrderedBy(String orderBy, int limit) {
+	Session session = sessionFactory.getCurrentSession();
+	Criteria criteria = session.createCriteria(clazz)
+		.addOrder(Order.asc(orderBy)).setMaxResults(limit);
+	return criteria.list();
     }
 }

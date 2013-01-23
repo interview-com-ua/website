@@ -4,9 +4,9 @@
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans 
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
-
-	<import resource="persistence-context.xml" />
-	<import resource="web-context.xml" />
-	<import resource="service-context.xml" />    
-
+    
+    <bean id="userService" class="ua.com.itinterview.service.UserService"/>
+    <bean id="interviewService" class="ua.com.itinterview.service.InterviewService"/>
+    <bean id="commentService" class="ua.com.itinterview.service.CommentService"/>
+        
 </beans>

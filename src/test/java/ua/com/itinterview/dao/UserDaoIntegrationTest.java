@@ -1,6 +1,8 @@
 package ua.com.itinterview.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -17,19 +19,19 @@ public class UserDaoIntegrationTest extends
 
     @Test
     public void testGetUserByUserName() {
-	UserEntity user = new UserEntity();
-	user.setUserName("userName");
-	userDao.save(user);
-	UserEntity actual = userDao.getUserByUserName("userName");
-	assertEquals("userName", actual.getUserName());
+	UserEntity actual = userDao.getUserByUserName(TEST_USER_NAME);
+	assertEquals(TEST_USER_NAME, actual.getUserName());
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void testGetUserByUserNameWhenNotExistsAndRecesiveException() {
-	UserEntity user = new UserEntity();
-	user.setUserName("userName");
-	userDao.save(user);
 	userDao.getUserByUserName("userFakeName");
+    }
+
+    @Test
+    public void testDoesUserWithUserNameExists() {
+	assertFalse(userDao.doesUserExistsWithUserName("userName"));
+	assertTrue(userDao.doesUserExistsWithUserName(TEST_USER_NAME));
     }
 
     @Override
