@@ -23,13 +23,23 @@ public class FeedbackDao extends EntityWithIdDao<FeedbackEntity> {
 	Criteria criteria = session.createCriteria(FeedbackEntity.class);
 	criteria.add(Restrictions.eq("checked", false));
 	List<FeedbackEntity> unchecked = criteria.list();
+	if (unchecked.size() == 0) {
+	    System.out.println("Could not get entity for unchecked parameter");
+	}
 	return unchecked;
     }
 
     @Transactional
     public List<FeedbackEntity> getFeedbacksForPeriod(Date from, Date to) {
-	return sessionFactory.getCurrentSession()
-		.createCriteria(FeedbackEntity.class)
-		.add(Restrictions.between("createTime", from, to)).list();
+	Session session = sessionFactory.getCurrentSession();
+	Criteria criteria = session.createCriteria(FeedbackEntity.class);
+	criteria.add(Restrictions.between("createTime", from, to));
+	List<FeedbackEntity> createTime = criteria.list();
+	if (createTime.size() == 0) {
+	    System.out.println("Could not get entity of such period");
+
+	}
+	return createTime;
+
     }
 }
