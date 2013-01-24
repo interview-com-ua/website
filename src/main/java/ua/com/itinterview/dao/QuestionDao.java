@@ -22,6 +22,7 @@ public class QuestionDao extends EntityWithIdDao<QuestionEntity> {
 	criteria.createAlias("interview", "i");
 	criteria.add(eq("i.user", user));
 	return criteria.list();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -33,4 +34,5 @@ public class QuestionDao extends EntityWithIdDao<QuestionEntity> {
 	criteria.add(eq("interview", interview));
 	return criteria.list();
     }
+
 }

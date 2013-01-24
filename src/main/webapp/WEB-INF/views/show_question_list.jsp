@@ -9,7 +9,7 @@
 <table>
   <c:forEach var="question" items="${questionList}">
 	  <tr>
-	    <!-- <td><span>"${question.question}"</span></td>  -->
+	     <td>${question.question}</td>  
 	  </tr>
   </c:forEach>
 </table>

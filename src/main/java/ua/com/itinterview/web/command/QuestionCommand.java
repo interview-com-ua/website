@@ -1,8 +1,17 @@
 package ua.com.itinterview.web.command;
 
+import ua.com.itinterview.entity.QuestionEntity;
+
 public class QuestionCommand {
 
     private String question;
+
+    public QuestionCommand() {
+    }
+
+    public QuestionCommand(QuestionEntity questionEntity) {
+	this.question = questionEntity.getQuestion();
+    }
 
     public String getQuestion() {
 	return question;
