@@ -1,10 +1,9 @@
 package ua.com.itinterview.web.command;
 
 import ua.com.itinterview.entity.CommentEntity;
-import ua.com.itinterview.entity.QuestionEntity;
 
 public class CommentCommand {
-    private QuestionEntity questionEntity;
+
     private int rate = 0;
     private String authorName;
     private String email;
@@ -16,18 +15,11 @@ public class CommentCommand {
 	email = entity.getEmail();
 	commentText = entity.getCommentText();
 	userpicUrl = entity.getUserpicUrl();
+	rate = entity.getRate();
     }
 
     public CommentCommand() {
 
-    }
-
-    public QuestionEntity getQuestionEntity() {
-	return questionEntity;
-    }
-
-    public void setQuestionEntity(QuestionEntity questionEntity) {
-	this.questionEntity = questionEntity;
     }
 
     public int getRate() {
@@ -72,10 +64,9 @@ public class CommentCommand {
 
     @Override
     public String toString() {
-	return "CommentCommand [questionEntity=" + questionEntity + ", rate="
-		+ rate + ", authorName=" + authorName + ", email=" + email
-		+ ", commentText=" + commentText + ", userpicUrl=" + userpicUrl
-		+ "]";
+	return "CommentCommand [rate=" + rate + ", authorName=" + authorName
+		+ ", email=" + email + ", commentText=" + commentText
+		+ ", userpicUrl=" + userpicUrl + "]";
     }
 
     @Override
@@ -87,8 +78,6 @@ public class CommentCommand {
 	result = prime * result
 		+ ((commentText == null) ? 0 : commentText.hashCode());
 	result = prime * result + ((email == null) ? 0 : email.hashCode());
-	result = prime * result
-		+ ((questionEntity == null) ? 0 : questionEntity.hashCode());
 	result = prime * result + rate;
 	result = prime * result
 		+ ((userpicUrl == null) ? 0 : userpicUrl.hashCode());
@@ -118,11 +107,6 @@ public class CommentCommand {
 	    if (other.email != null)
 		return false;
 	} else if (!email.equals(other.email))
-	    return false;
-	if (questionEntity == null) {
-	    if (other.questionEntity != null)
-		return false;
-	} else if (!questionEntity.equals(other.questionEntity))
 	    return false;
 	if (rate != other.rate)
 	    return false;

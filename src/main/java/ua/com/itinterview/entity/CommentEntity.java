@@ -27,6 +27,7 @@ public class CommentEntity extends EntityWithId {
 	email = commandMock.getEmail();
 	commentText = commandMock.getCommentText();
 	userpicUrl = commandMock.getUserpicUrl();
+	rate = commandMock.getRate();
 
     }
 
