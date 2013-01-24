@@ -1,9 +1,11 @@
 package ua.com.itinterview.web.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,4 +30,23 @@ public class InterviewResource {
 	view.addObject("questionList", questionList);
 	return view;
     }
+
+    @RequestMapping(value = "/{interviewId}/add_question", method = RequestMethod.GET)
+    public ModelAndView getAddQuestionToInterviewPage(
+	    @PathVariable Integer interviewId) {
+	List<QuestionCommand> addQuestionList = new ArrayList<QuestionCommand>();
+	ModelAndView view = new ModelAndView("add_question");
+	view.addObject(new QuestionCommand());
+	view.addObject(addQuestionList);
+	return view;
+    }
+
+    @RequestMapping(value = "/{interviewId}/add_question", method = RequestMethod.POST)
+    public ModelAndView addQuestionForInterview(
+	    @PathVariable Integer interviewId,
+	    @ModelAttribute QuestionCommand questionCommand) {
+	System.out.println(questionCommand);
+	return new ModelAndView("/index");
+    }
+
 }
