@@ -1,6 +1,7 @@
 package ua.com.itinterview.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
 
 import ua.com.itinterview.dao.CommentDao;
 import ua.com.itinterview.entity.CommentEntity;
@@ -15,5 +16,8 @@ public class CommentService {
 	CommentEntity commentEntity = new CommentEntity(comment);
 	commentDao.save(commentEntity);
 
+    }
+    public List<CommentCommand> getCommentListForQuestion(int questionId) {
+	return null;
     }
 }
