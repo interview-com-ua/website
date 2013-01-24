@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import ua.com.itinterview.dao.CommentDao;
+import ua.com.itinterview.entity.CommentEntity;
 import ua.com.itinterview.web.command.CommentCommand;
 
 public class CommentService {
@@ -11,9 +12,9 @@ public class CommentService {
     @Autowired
     CommentDao commentDao;
 
-    public CommentCommand addCommentForQuestion(Integer questionId,
-	    CommentCommand comment) {
-	return comment;
+    public void addCommentForQuestion(Integer questionId, CommentCommand comment) {
+	CommentEntity commentEntity = new CommentEntity(comment);
+	commentDao.save(commentEntity);
 
     }
     public List<CommentCommand> getCommentListForQuestion(int questionId) {
