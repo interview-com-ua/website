@@ -48,13 +48,11 @@ public class QuestionDaoIntegrationTest extends
     }
 
     @Test
-    public void getQuestionsForInterview() {
+    public void testGetQuestionsForInterview() {
 	InterviewEntity interview1 = createInterview();
-	QuestionEntity question1 = new QuestionEntity();
-	question1.setInterview(interview1);
-	question1.setCreate(new Date());
-	question1.setQuestion("dkjdkf");
-	questionDao.save(question1);
+	InterviewEntity interview = createInterview();
+	QuestionEntity question1 = createQuestionAndInsertToDB(interview1);
+	createQuestionAndInsertToDB(interview);
 	// When
 	List<QuestionEntity> list = questionDao
 		.getQuestionsForInterview(interview1);
@@ -66,16 +64,20 @@ public class QuestionDaoIntegrationTest extends
     @Test
     public void getQuestionsForUser() {
 	InterviewEntity interview = createInterview();
-	QuestionEntity question = new QuestionEntity();
-	question.setInterview(interview);
-	question.setCreate(new Date());
-	question.setQuestion("dkjdkf");
-	questionDao.save(question);
+	QuestionEntity question = createQuestionAndInsertToDB(interview);
 	// When
 	List<QuestionEntity> list = questionDao.getQuestionsForUser(testUser);
 	// Then
 	assertEquals(1, list.size());
 	assertEquals(question, list.get(0));
+    }
+
+    private QuestionEntity createQuestionAndInsertToDB(InterviewEntity interview) {
+	QuestionEntity question = new QuestionEntity();
+	question.setInterview(interview);
+	question.setCreate(new Date());
+	question.setQuestion("dkjdkf");
+	return questionDao.save(question);
     }
 
 }

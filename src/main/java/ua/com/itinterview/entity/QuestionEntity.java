@@ -8,6 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import ua.com.itinterview.web.command.QuestionCommand;
+
 @Entity
 @Table(name = "interview_question")
 @SequenceGenerator(name = "sequence", sequenceName = "interview_question_id", allocationSize = 1)
@@ -21,6 +23,10 @@ public class QuestionEntity extends EntityWithId {
 
     public QuestionEntity() {
 
+    }
+
+    public QuestionEntity(QuestionCommand questionCommand) {
+	question = questionCommand.getQuestion();
     }
 
     public InterviewEntity getInterview() {
@@ -84,6 +90,12 @@ public class QuestionEntity extends EntityWithId {
 	} else if (!question.equals(other.question))
 	    return false;
 	return true;
+    }
+
+    @Override
+    public String toString() {
+	return "QuestionEntity [interview=" + interview + ", question="
+		+ question + ", created=" + created + "]";
     }
 
 }
