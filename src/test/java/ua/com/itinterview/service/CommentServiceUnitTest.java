@@ -9,20 +9,27 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ua.com.itinterview.dao.CommentDao;
+import ua.com.itinterview.dao.QuestionDao;
 import ua.com.itinterview.entity.CommentEntity;
 import ua.com.itinterview.entity.QuestionEntity;
 import ua.com.itinterview.web.command.CommentCommand;
 
 public class CommentServiceUnitTest {
     private CommentDao commentDaoMock;
+    private QuestionDao questionDaoMock;
+
     private CommentService commentService;
+
     private CommentCommand command;
     private CommentEntity entity;
 
     public void createDaoMockForCommentServiceandCommentService() {
 	commentDaoMock = EasyMock.createMock(CommentDao.class);
+	questionDaoMock = EasyMock.createMock(QuestionDao.class);
 	commentService = new CommentService();
 	commentService.commentDao = commentDaoMock;
+	commentService.questionDao = questionDaoMock;
+
     }
 
     @Before
@@ -47,17 +54,32 @@ public class CommentServiceUnitTest {
 	assertEquals(command, actual);
     }
 
-    // public void testAddCommentForQuestion() {
-    //
-    // }
     @Test
-    public void testAddCommentForQuestionInServiceCommentService() {
+    public void testAddCommentForQuestion() {
+	Integer questionId = new Integer(1);
+	QuestionEntity questionEntity = new QuestionEntity();
+	questionEntity.setId(questionId);
+
+	CommentEntity expectCommentEntity = new CommentEntity(command);
+	expectCommentEntity.setQuestionEntity(questionEntity);
 	EasyMock.expect(
-		commentDaoMock.save(EasyMock.anyObject(CommentEntity.class)))
-		.andReturn(null);
-	EasyMock.replay(commentDaoMock);
-	commentService.addCommentForQuestion(new Integer(1), command);
-	EasyMock.verify(commentDaoMock);
+		questionDaoMock.getOneResultByParameter("id", questionId))
+		.andReturn(questionEntity);
+
+	EasyMock.expect(commentDaoMock.save(expectCommentEntity)).andReturn(
+		expectCommentEntity);
+
+	EasyMock.replay(commentDaoMock, questionDaoMock);
+
+	CommentCommand actualCommentCommand = commentService
+		.addCommentForQuestion(questionId, command);
+
+	CommentCommand expectedCommentCommand = new CommentCommand(
+		expectCommentEntity);
+
+	assertEquals(expectedCommentCommand, actualCommentCommand);
+
+	EasyMock.verify(commentDaoMock, questionDaoMock);
     }
 
     public CommentCommand addInformationToCommand(CommentCommand command) {
