@@ -111,8 +111,42 @@ public class QuestionServiceUnitTest {
 	questionService.getQuestionListForInterview(Integer.valueOf(10));
     }
 
+    @Test
+    public void testAddQuestionToInterviewWhenInterviewExists() {
+
+	InterviewEntity interview = new InterviewEntity();
+	interview.setId(42);
+
+	QuestionEntity question = createTestQuestionEntity();
+	question.setInterview(interview);
+
+	EasyMock.expect(
+		interviewDao.getOneResultByParameter("id", interview.getId()))
+		.andReturn(interview);
+	EasyMock.expect(questionDao.save(question)).andReturn(question);
+
+	replayAllMocks();
+
+	assertEquals(new QuestionCommand(question),
+		questionService.addQuestionToInterview(interview.getId(),
+			createTestQuestionCommand()));
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void testAddQuestionToInterviewWhenInterviewDoesNotExist() {
+
+	EasyMock.expect(interviewDao.getOneResultByParameter("id", 42))
+		.andThrow(new EntityNotFoundException());
+
+	replayAllMocks();
+
+	questionService.addQuestionToInterview(42, null);
+    }
+
     @After
     public void verifyAllMocks() {
 	EasyMock.verify(interviewDao, questionDao);
+
     }
+
 }
