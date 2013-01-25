@@ -29,7 +29,7 @@ public class CommentDaoIntegrationTest extends
     @Override
     protected CommentEntity createEntity() {
 	CommentEntity entity = new CommentEntity();
-	entity.setQuestionEntity(questionEntity)
+	entity.setQuestionEntity(questionEntity);
 	entity.setAuthorName("");
 	entity.setCommentText("");
 	return entity;
