@@ -35,4 +35,18 @@ public class QuestionService {
 	return result;
     }
 
+    public QuestionCommand addQuestionToInterview(Integer interviewId,
+	    QuestionCommand question) {
+
+	InterviewEntity interview = interviewDao.getOneResultByParameter("id",
+		interviewId);
+
+	QuestionEntity questionEntity = new QuestionEntity(question);
+	questionEntity.setInterview(interview);
+
+	questionEntity = questionDao.save(questionEntity);
+
+	return new QuestionCommand(questionEntity);
+    }
+
 }
