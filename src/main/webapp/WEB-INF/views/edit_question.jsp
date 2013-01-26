@@ -2,14 +2,14 @@
 <%@page contentType="text/html;charset=UTF-8"%>
 <html>
 <head>
-<title>Добавить вопрос</title>
+<title>Редактировать вопрос</title>
 	</head>
 	<body>
-		<form:form action="../${interviewId}/add_question" method="post"
+		<form:form action="../${questionId}/edit" method="post"
 			commandName="questionCommand">
-			<legend> Разместить вопрос </legend>
+			<legend> Редактировать вопрос </legend>
 			<form:input type="text" path="question" />
-			<input type="submit" value="Добавить вопрос" />
+			<input type="submit" value="Сохранить" />
 		</form:form>
 	</body>
 </html>
