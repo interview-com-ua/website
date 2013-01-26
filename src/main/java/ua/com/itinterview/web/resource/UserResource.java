@@ -31,6 +31,7 @@ public class UserResource {
     private ModelAndView goToSignupPageWithCommand(UserCommand userCommand) {
 	ModelAndView view = new ModelAndView("signup");
 	view.addObject(userCommand);
+	view.addObject("view", false);
 	return view;
     }
 }
