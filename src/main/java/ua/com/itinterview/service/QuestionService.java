@@ -18,6 +18,13 @@ public class QuestionService {
     @Autowired
     QuestionDao questionDao;
 
+    public QuestionCommand getQuestionById(Integer questionId) {
+	QuestionEntity oneQuestionbyId = questionDao.getOneResultByParameter(
+		"id", questionId);
+	return new QuestionCommand(oneQuestionbyId);
+
+    }
+
     public List<QuestionCommand> getQuestionListForInterview(Integer interviewId) {
 	InterviewEntity interview = interviewDao.getOneResultByParameter("id",
 		interviewId);

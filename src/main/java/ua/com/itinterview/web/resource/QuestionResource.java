@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,9 +21,21 @@ public class QuestionResource {
 
     @Autowired
     private CommentService commentService;
-
     @Autowired
     private QuestionService questionService;
+
+    @RequestMapping(value = "/{questionId}/view", method = RequestMethod.GET)
+    public ModelAndView viewQuestion(@PathVariable("questionId") int questionId) {
+
+	// QuestionCommand oneQuestionCommand = questionService
+	// .getQuestionById(questionId);
+	QuestionCommand oneQuestionCommand = new QuestionCommand();
+	oneQuestionCommand.setQuestion("Вопрос номер один");
+
+	ModelAndView viewQuestion = new ModelAndView("view_question");
+	viewQuestion.addObject("oneQuestionCommand", oneQuestionCommand);
+	return viewQuestion;
+    }
 
     @RequestMapping(value = "/{questionId}/comment_list", method = RequestMethod.GET)
     public ModelAndView showCommentList(
@@ -54,20 +65,4 @@ public class QuestionResource {
 
 	return view;
     }
-
-    @RequestMapping(value = "/{questionId}/edit", method = RequestMethod.GET)
-    public ModelAndView getEditQuestionPage(@PathVariable Integer questionId) {
-	ModelAndView view = new ModelAndView("add_question");
-	view.addObject(new QuestionCommand());
-	view.addObject("edit", true);
-	return view;
-    }
-
-    @RequestMapping(value = "/{questionId}/edit", method = RequestMethod.POST)
-    public ModelAndView editQuestion(@PathVariable Integer questionId,
-	    @ModelAttribute QuestionCommand questionCommand) {
-	System.out.println(questionCommand);
-	return new ModelAndView("/index");
-    }
-
 }
