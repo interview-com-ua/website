@@ -1,6 +1,5 @@
 package ua.com.itinterview.web.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +33,11 @@ public class InterviewResource {
     @RequestMapping(value = "/{interviewId}/add_question", method = RequestMethod.GET)
     public ModelAndView getAddQuestionToInterviewPage(
 	    @PathVariable Integer interviewId) {
-	List<QuestionCommand> addQuestionList = new ArrayList<QuestionCommand>();
+	// List<QuestionCommand> addQuestionList = new
+	// ArrayList<QuestionCommand>();
 	ModelAndView view = new ModelAndView("add_question");
 	view.addObject(new QuestionCommand());
-	view.addObject(addQuestionList);
+	// view.addObject(addQuestionList);
 	return view;
     }
 
