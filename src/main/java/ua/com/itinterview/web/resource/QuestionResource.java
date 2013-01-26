@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import ua.com.itinterview.service.CommentService;
+import ua.com.itinterview.service.QuestionService;
 import ua.com.itinterview.web.command.CommentCommand;
 import ua.com.itinterview.web.command.QuestionCommand;
 
@@ -21,6 +22,9 @@ public class QuestionResource {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private QuestionService questionService;
 
     @RequestMapping(value = "/{questionId}/comment_list", method = RequestMethod.GET)
     public ModelAndView showCommentList(
@@ -53,9 +57,9 @@ public class QuestionResource {
 
     @RequestMapping(value = "/{questionId}/edit", method = RequestMethod.GET)
     public ModelAndView getEditQuestionPage(@PathVariable Integer questionId) {
-	ModelAndView view = new ModelAndView("edit_question");
+	ModelAndView view = new ModelAndView("add_question");
 	view.addObject(new QuestionCommand());
-
+	view.addObject("edit", true);
 	return view;
     }
 
