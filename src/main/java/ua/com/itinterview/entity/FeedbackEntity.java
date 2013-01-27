@@ -23,6 +23,10 @@ public class FeedbackEntity extends EntityWithId {
 	checked = commandMock.isChecked();
     }
 
+    public FeedbackEntity() {
+
+    }
+
     public Date getCreateTime() {
 	return createTime;
     }
