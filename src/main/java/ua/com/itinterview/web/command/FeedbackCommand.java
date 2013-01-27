@@ -1,38 +1,23 @@
-package ua.com.itinterview.entity;
+package ua.com.itinterview.web.command;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import ua.com.itinterview.entity.FeedbackEntity;
 
-import ua.com.itinterview.web.command.FeedbackCommand;
-
-@Entity
-@Table(name = "feedbacks")
-@SequenceGenerator(name = "sequence", sequenceName = "feedbacks_id", allocationSize = 1)
-public class FeedbackEntity extends EntityWithId {
+public class FeedbackCommand {
 
     private String feedbackText;
     private Date createTime;
     private boolean checked;
 
-    public FeedbackEntity(FeedbackCommand commandMock) {
-	feedbackText = commandMock.getFeedbackText();
-	createTime = commandMock.getCreateTime();
-	checked = commandMock.isChecked();
+    public FeedbackCommand(FeedbackEntity entity) {
+	feedbackText = entity.getFeedbackText();
+	createTime = entity.getCreateTime();
+	checked = entity.isChecked();
     }
 
-    public FeedbackEntity() {
+    public FeedbackCommand() {
 
-    }
-
-    public Date getCreateTime() {
-	return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-	this.createTime = createTime;
     }
 
     public String getFeedbackText() {
@@ -41,6 +26,14 @@ public class FeedbackEntity extends EntityWithId {
 
     public void setFeedbackText(String feedbackText) {
 	this.feedbackText = feedbackText;
+    }
+
+    public Date getCreateTime() {
+	return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+	this.createTime = createTime;
     }
 
     public boolean isChecked() {
@@ -54,7 +47,7 @@ public class FeedbackEntity extends EntityWithId {
     @Override
     public int hashCode() {
 	final int prime = 31;
-	int result = super.hashCode();
+	int result = 1;
 	result = prime * result + (checked ? 1231 : 1237);
 	result = prime * result
 		+ ((createTime == null) ? 0 : createTime.hashCode());
@@ -67,11 +60,11 @@ public class FeedbackEntity extends EntityWithId {
     public boolean equals(Object obj) {
 	if (this == obj)
 	    return true;
-	if (!super.equals(obj))
+	if (obj == null)
 	    return false;
 	if (getClass() != obj.getClass())
 	    return false;
-	FeedbackEntity other = (FeedbackEntity) obj;
+	FeedbackCommand other = (FeedbackCommand) obj;
 	if (checked != other.checked)
 	    return false;
 	if (createTime == null) {
@@ -89,8 +82,8 @@ public class FeedbackEntity extends EntityWithId {
 
     @Override
     public String toString() {
-	return "FeedbackEntity [feedbackText=" + feedbackText + ", createTime="
-		+ createTime + ", checked=" + checked + "]";
+	return "FeedbackCommand [feedbackText=" + feedbackText
+		+ ", createTime=" + createTime + ", checked=" + checked + "]";
     }
 
 }

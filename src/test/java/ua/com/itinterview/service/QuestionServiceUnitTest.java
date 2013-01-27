@@ -73,6 +73,26 @@ public class QuestionServiceUnitTest {
     }
 
     @Test
+    public void getQuestionById() {
+	Integer questionId = 10;
+	QuestionEntity questionEntity = new QuestionEntity();
+	QuestionCommand questioncom = new QuestionCommand();
+	EasyMock.expect(questionDao.getOneResultByParameter("id", questionId))
+		.andReturn(questionEntity);
+	replayAllMocks();
+	assertEquals(questionService.getQuestionById(questionId),
+		new QuestionCommand(questionEntity));
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void getQuestionByIdWhenNotQuestion() {
+	EasyMock.expect(questionDao.getOneResultByParameter("id", 10))
+		.andThrow(new EntityNotFoundException());
+	replayAllMocks();
+	questionService.getQuestionById(10);
+    }
+
+    @Test
     public void testConvertFromEntityToCommand() {
 	replayAllMocks();
 	QuestionCommand expected = createTestQuestionCommand();
