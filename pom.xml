@@ -91,6 +91,7 @@
         <jdk>1.6</jdk>
         <db.dir>${project.build.directory}/db</db.dir>
         <sonar.language>java</sonar.language>
+        <sonar.host.url>http://home.stokito.name:9000/</sonar.host.url>
 	    <jetty.version>9.0.0.M4</jetty.version>
  	    <spring.version>3.1.2.RELEASE</spring.version>        
     </properties>
