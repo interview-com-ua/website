@@ -85,7 +85,7 @@ public class QuestionServiceUnitTest {
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void getQuestionByIdWhenNotQuestion() {
+    public void getQuestionByIdWhenQuestionDoesNotExist() {
 	EasyMock.expect(questionDao.getOneResultByParameter("id", 10))
 		.andThrow(new EntityNotFoundException());
 	replayAllMocks();
