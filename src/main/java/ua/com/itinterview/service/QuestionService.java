@@ -56,4 +56,9 @@ public class QuestionService {
 	return new QuestionCommand(questionEntity);
     }
 
+    public QuestionCommand updateQuestion(Integer questionId,
+	    QuestionCommand inputQuestion) {
+	return null;
+    }
+
 }
