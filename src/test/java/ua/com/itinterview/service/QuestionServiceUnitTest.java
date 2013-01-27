@@ -73,6 +73,22 @@ public class QuestionServiceUnitTest {
     }
 
     @Test
+    public void getQuestionById() {
+	Integer questionId = 10;
+	QuestionEntity questionEntity = new QuestionEntity();
+	QuestionCommand questioncom = new QuestionCommand();
+	EasyMock.expect(questionDao.getOneResultByParameter("id", questionId))
+		.andReturn(questionEntity);
+	replayAllMocks();
+	assertEquals(questionService.getQuestionById(questionId),
+		new QuestionCommand(questionEntity));
+    }
+
+    public void getQuestionByIdWhenNotQuestion() {
+
+    }
+
+    @Test
     public void testConvertFromEntityToCommand() {
 	replayAllMocks();
 	QuestionCommand expected = createTestQuestionCommand();
