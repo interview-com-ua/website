@@ -1,13 +1,12 @@
 package ua.com.itinterview.dao;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import ua.com.itinterview.entity.EntityWithId;
@@ -26,16 +25,21 @@ public abstract class BaseEntityWithIdDaoIntegrationTest<T extends EntityWithId>
     @Test
     public void testGetAllWithLimit() {
 	cleanUpBeforeTest();
-	T entity1 = createEntity();
-	T entity2 = createEntity();
-	getEntityWithIdDao().save(entity1);
-	getEntityWithIdDao().save(entity2);
+	
+	List<T> entityList = createEntityList();
+	if (entityList.size() < 2) {
+	    fail("Entity list should contain two or more elements");
+	}
+	
+	for (T entity : entityList) {
+	    getEntityWithIdDao().save(entity);
+	}
 	
 	List<T> entityGetWithoutLimit = getEntityWithIdDao().getAll();
-	assertEquals(2, entityGetWithoutLimit.size());
+	assertEquals(entityList.size(), entityGetWithoutLimit.size());
 	
-	List<T> entityGetWithLimit = getEntityWithIdDao().getAll(1);
-	assertEquals(1, entityGetWithLimit.size());
+	List<T> entityGetWithLimit = getEntityWithIdDao().getAll(entityList.size() - 1);
+	assertEquals(entityList.size() - 1, entityGetWithLimit.size());
     }
     
     @Test
@@ -57,11 +61,18 @@ public abstract class BaseEntityWithIdDaoIntegrationTest<T extends EntityWithId>
 	    ParameterizedType paramType = (ParameterizedType) t;
 	    clazz = (Class<?>) paramType.getActualTypeArguments()[0];
 	} else {
-	    Assert.fail("Can't get generic type.");
+	    fail("Can't get generic type.");
 	    return;
 	}
 	
 	cleanUpEntity(clazz);
+    }
+    
+    protected List<T> createEntityList() {
+	List<T> entityList = new ArrayList<T>();	
+	entityList.add(createEntity());
+	entityList.add(createEntity());	
+	return entityList;
     }
 
     protected abstract T createEntity();
