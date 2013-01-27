@@ -159,6 +159,22 @@ public class QuestionServiceUnitTest {
 	questionService.addQuestionToInterview(42, null);
     }
 
+    @Test
+    public void testUpdateQuestion() {
+	QuestionEntity questionEntity = createTestQuestionEntity();
+	questionEntity.setId(15);
+	EasyMock.expect(
+		questionDao.getOneResultByParameter("id",
+			questionEntity.getId())).andReturn(questionEntity);
+	EasyMock.expect(questionDao.save(questionEntity)).andReturn(
+		questionEntity);
+	replayAllMocks();
+	assertEquals(new QuestionCommand(questionEntity),
+		questionService.updateQuestion(questionEntity.getId(),
+			createTestQuestionCommand()));
+
+    }
+
     @After
     public void verifyAllMocks() {
 	EasyMock.verify(interviewDao, questionDao);
