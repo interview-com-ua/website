@@ -164,7 +164,7 @@ public class QuestionServiceUnitTest {
     }
 
     @Test
-    public void testUpdateQuestion() {
+    public void testUpdateQuestionWhenQuestionExist() {
 	QuestionEntity questionEntity = createTestQuestionEntity();
 	questionEntity.setId(15);
 	EasyMock.expect(
@@ -176,7 +176,17 @@ public class QuestionServiceUnitTest {
 	assertEquals(new QuestionCommand(questionEntity),
 		questionService.updateQuestion(questionEntity.getId(),
 			createTestQuestionCommand()));
+    }
 
+    @Test(expected = EntityNotFoundException.class)
+    public void testUpdateQuestionWhenuestionDoesNotExist() {
+
+	EasyMock.expect(questionDao.getOneResultByParameter("id", 15))
+		.andThrow(new EntityNotFoundException());
+
+	replayAllMocks();
+
+	questionService.updateQuestion(15, null);
     }
 
     @After
