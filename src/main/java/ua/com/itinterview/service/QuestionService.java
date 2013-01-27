@@ -58,7 +58,12 @@ public class QuestionService {
 
     public QuestionCommand updateQuestion(Integer questionId,
 	    QuestionCommand inputQuestion) {
-	return null;
+	QuestionEntity questionEntity = questionDao.getOneResultByParameter(
+		"id", questionId);
+	questionEntity = new QuestionEntity(inputQuestion);
+	questionEntity = questionDao.save(questionEntity);
+
+	return new QuestionCommand(questionEntity);
     }
 
 }
