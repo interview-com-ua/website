@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import ua.com.itinterview.web.command.FeedbackCommand;
+
 @Entity
 @Table(name = "feedbacks")
 @SequenceGenerator(name = "sequence", sequenceName = "feedbacks_id", allocationSize = 1)
@@ -14,6 +16,12 @@ public class FeedbackEntity extends EntityWithId {
     private String feedbackText;
     private Date createTime;
     private boolean checked;
+
+    public FeedbackEntity(FeedbackCommand commandMock) {
+	feedbackText = commandMock.getFeedbackText();
+	createTime = commandMock.getCreateTime();
+	checked = commandMock.isChecked();
+    }
 
     public Date getCreateTime() {
 	return createTime;
