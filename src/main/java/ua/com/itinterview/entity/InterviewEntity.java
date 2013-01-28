@@ -2,18 +2,21 @@ package ua.com.itinterview.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import ua.com.itinterview.web.command.InterviewCommand;
+
 @Entity
 @Table(name = "interview")
 @SequenceGenerator(name = "sequence", sequenceName = "interview_id", allocationSize = 1)
 public class InterviewEntity extends EntityWithId {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")
     private UserEntity user;
     private String feedback;
@@ -21,6 +24,12 @@ public class InterviewEntity extends EntityWithId {
 
     public InterviewEntity() {
 
+    }
+
+    public InterviewEntity(InterviewCommand interviewCommand) {
+	user = interviewCommand.getUser();
+	feedback = interviewCommand.getFeedback();
+	created = interviewCommand.getCreated();
     }
 
     public UserEntity getUser() {
