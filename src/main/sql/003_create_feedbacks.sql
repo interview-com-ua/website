@@ -12,4 +12,4 @@ CREATE SEQUENCE feedbacks_id START WITH 1;
 ALTER TABLE feedbacks
 ADD CONSTRAINT feedbacks_interview_fk 
 FOREIGN KEY (interviewId)
-REFERENCES interview (id);
+REFERENCES interview (id) ON DELETE CASCADE;

@@ -22,6 +22,9 @@ public class FeedbackDaoIntegrationTest extends
     @Autowired
     private FeedbackDao feedbackDao;
 
+    @Autowired
+    InterviewEntityDao interviewEntityDao;
+
     @Override
     protected FeedbackEntity createEntity() {
 	FeedbackEntity feedback = new FeedbackEntity();
@@ -34,7 +37,7 @@ public class FeedbackDaoIntegrationTest extends
 	InterviewEntity interview = new InterviewEntity();
 	interview.setUser(testUser);
 	interview.setFeedback("ololo");
-	return interview;
+	return interviewEntityDao.save(interview);
     }
 
     @Override
@@ -57,6 +60,7 @@ public class FeedbackDaoIntegrationTest extends
 	    boolean checked, String feedbackText, String createTimeString)
 	    throws ParseException {
 	FeedbackEntity entity = new FeedbackEntity();
+    entity.setInterview(createInterview());
 	entity.setChecked(checked);
 	entity.setFeedbackText(feedbackText);
 	Date createTime = null;
