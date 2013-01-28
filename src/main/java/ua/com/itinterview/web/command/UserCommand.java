@@ -64,6 +64,7 @@ public class UserCommand {
 	result = prime * result
 		+ ((confirmPassword == null) ? 0 : confirmPassword.hashCode());
 	result = prime * result + ((email == null) ? 0 : email.hashCode());
+	result = prime * result + id;
 	result = prime * result + ((name == null) ? 0 : name.hashCode());
 	result = prime * result
 		+ ((password == null) ? 0 : password.hashCode());
@@ -91,6 +92,8 @@ public class UserCommand {
 		return false;
 	} else if (!email.equals(other.email))
 	    return false;
+	if (id != other.id)
+	    return false;
 	if (name == null) {
 	    if (other.name != null)
 		return false;
@@ -111,9 +114,8 @@ public class UserCommand {
 
     @Override
     public String toString() {
-	return "UserCommand [userName=" + userName + ", email=" + email
-		+ ", name=" + name + ", password=" + password
+	return "UserCommand [id=" + id + ", userName=" + userName + ", email="
+		+ email + ", name=" + name + ", password=" + password
 		+ ", confirmPassword=" + confirmPassword + "]";
     }
-
 }
