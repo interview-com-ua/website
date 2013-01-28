@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "/feedback")
 public class FeedbackResource {
+
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView getAddFeedbackPage() {
 	ModelAndView view = new ModelAndView("add_feedback");

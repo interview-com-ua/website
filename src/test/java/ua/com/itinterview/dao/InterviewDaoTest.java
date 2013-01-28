@@ -27,6 +27,7 @@ public class InterviewDaoTest extends
 	UserEntity user = new UserEntity();
 	user.setEmail("dsakdj");
 	user.setPassword("vcndt");
+	user.setUserName("name");
 	user = userDao.save(user);
 	interview.setUser(user);
 	return interview;
@@ -48,11 +49,31 @@ public class InterviewDaoTest extends
 	interDao.save(interview1);
 	interDao.save(interview2);
 	// When
-	List<InterviewEntity> list = interDao.getInterviewsByUser(interviewAuthor);
+	List<InterviewEntity> list = interDao
+		.getInterviewsByUser(interviewAuthor);
 	// Then
 	assertEquals(2, list.size());
 	assertEquals(interviewAuthor, list.get(0).getUser());
 	assertEquals(interviewAuthor, list.get(1).getUser());
+	System.out.println("ID NUMBER OF INTERVIEW : " + list.get(0).getId());
+	System.out.println("ID NUMBER OF INTERVIEW : " + list.get(1).getId());
+    }
+
+    @Test
+    public void testGetInterviewById() {
+	UserEntity interviewAuthor = new UserEntity();
+	interviewAuthor = userDao.save(interviewAuthor);
+	InterviewEntity interview1 = new InterviewEntity();
+	InterviewEntity interview2 = new InterviewEntity();
+	interview1.setUser(interviewAuthor);
+	interview2.setUser(interviewAuthor);
+	interDao.save(interview1);
+	interDao.save(interview2);
+	Integer id = interDao.getInterviewsByUser(interviewAuthor).get(0)
+		.getId();
+	System.out.println("ID NUMBER OF INTERVIEW : " + id);
+	InterviewEntity expected = interDao.getInterviewById(id);
+	assertEquals(interviewAuthor, expected.getUser());
     }
 
 }
