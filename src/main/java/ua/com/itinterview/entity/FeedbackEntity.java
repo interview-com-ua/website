@@ -20,7 +20,7 @@ public class FeedbackEntity extends EntityWithId {
     private boolean checked;
 
     @ManyToOne
-    @JoinColumn(name = "interview_id")
+    @JoinColumn(name = "interviewId")
     private InterviewEntity interview;
 
     public FeedbackEntity(FeedbackCommand commandMock) {
