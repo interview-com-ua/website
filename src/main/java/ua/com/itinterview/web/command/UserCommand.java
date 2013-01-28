@@ -2,12 +2,21 @@ package ua.com.itinterview.web.command;
 
 public class UserCommand {
 
+    private int    id;
     private String userName;
     private String email;
     private String name;
     private String password;
     private String confirmPassword;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getUserName() {
 	return userName;
     }
