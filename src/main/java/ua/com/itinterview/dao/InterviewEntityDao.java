@@ -22,4 +22,9 @@ public class InterviewEntityDao extends EntityWithIdDao<InterviewEntity> {
 	return criteria.list();
     }
 
+    @Transactional
+    public InterviewEntity getInterviewById(Integer interviewId) {
+	InterviewEntity result = getOneResultByParameter("id", interviewId);
+	return result;
+    }
 }
