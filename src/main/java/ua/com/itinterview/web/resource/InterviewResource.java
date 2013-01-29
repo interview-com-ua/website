@@ -24,10 +24,8 @@ public class InterviewResource {
     @RequestMapping(value = "/{interviewId}/question_list", method = RequestMethod.GET)
     public ModelAndView showQuestionListFoeInterview(
 	    @PathVariable Integer interviewId) {
-	List<QuestionCommand> questionList = questionService
-		.getQuestionListForInterview(interviewId);
-	ModelAndView view = new ModelAndView("show_question_list");
-	view.addObject("questionList", questionList);
+	ModelAndView view = new ModelAndView("add_question");
+	view.addObject(new QuestionCommand());
 	return view;
     }
 
@@ -46,7 +44,7 @@ public class InterviewResource {
 	    @PathVariable Integer interviewId,
 	    @ModelAttribute QuestionCommand questionCommand) {
 	System.out.println(questionCommand);
-	return new ModelAndView("/index");
+	return new ModelAndView("redirect:/{questionId}/comment_list");
     }
 
 }
