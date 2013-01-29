@@ -13,6 +13,12 @@ import ua.com.itinterview.web.command.UserCommand;
 
 public class UserServiceUnitTest {
 
+    private static final int USER_ID = 1;
+    private static final String USER_EMAIL = "user@email.com";
+    private static final String NAME = "name";
+    private static final String USER_NAME = "userName";
+    private static final String PASSWORD = "password";
+
     private UserDao userDaoMock;
     private UserService userService;
 
@@ -24,14 +30,19 @@ public class UserServiceUnitTest {
     }
 
     @Test
-    public void testConvertUserEntityFromUserCommand() {
-	UserCommand command = createUserCommand();
-	UserEntity expectedUser = new UserEntity();
-	expectedUser.setEmail("user@email.com");
-	expectedUser.setUserName("userName");
-	expectedUser.setPassword("password");
-	UserEntity actualUser = new UserEntity(command);
-	assertEquals(expectedUser, actualUser);
+    public void testConvertUserCommandToUserEntity() {
+	UserCommand userCommand = createUserCommand();
+	UserEntity expectedUserEntity = createUserEntity();
+	UserEntity actualUserEntity = new UserEntity(userCommand);
+	assertEquals(expectedUserEntity, actualUserEntity);
+    }
+
+    @Test
+    public void testConvertUserEntityToUserCommand() {
+	UserEntity userEntity = createUserEntity();
+	UserCommand expectedUserCommand = createUserCommand();
+	UserCommand actualUserCommand = new UserCommand(userEntity);
+	assertEquals(expectedUserCommand, actualUserCommand);
     }
 
     @Test
@@ -59,7 +70,6 @@ public class UserServiceUnitTest {
 	    userService.createUser(userCommand);
 	    fail("Expected RuntimeException");
 	} catch (RuntimeException e) {
-	    // expected exception
 	} finally {
 	    EasyMock.verify(userDaoMock);
 	}
@@ -67,12 +77,22 @@ public class UserServiceUnitTest {
 
     private UserCommand createUserCommand() {
 	UserCommand command = new UserCommand();
-	command.setConfirmPassword("confirmPassword");
-	command.setPassword("password");
-	command.setEmail("user@email.com");
-	command.setName("Name");
-	command.setUserName("userName");
+	command.setId(USER_ID);
+	command.setConfirmPassword(PASSWORD);
+	command.setPassword(PASSWORD);
+	command.setEmail(USER_EMAIL);
+	command.setName(NAME);
+	command.setUserName(USER_NAME);
 	return command;
     }
 
+    private UserEntity createUserEntity() {
+	UserEntity userEntity = new UserEntity();
+	userEntity.setId(USER_ID);
+	userEntity.setPassword(PASSWORD);
+	userEntity.setEmail(USER_EMAIL);
+	userEntity.setName(NAME);
+	userEntity.setUserName(USER_NAME);
+	return userEntity;
+    }
 }

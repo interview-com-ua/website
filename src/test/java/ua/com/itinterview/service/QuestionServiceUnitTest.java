@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
@@ -165,17 +166,23 @@ public class QuestionServiceUnitTest {
 
     @Test
     public void testUpdateQuestionWhenQuestionExist() {
+	Integer questionId = 15;
 	QuestionEntity questionEntity = createTestQuestionEntity();
-	questionEntity.setId(15);
+	questionEntity.setId(questionId);
+	QuestionCommand questionCommand = new QuestionCommand();
+	questionCommand.setQuestion("New Question");
+
 	EasyMock.expect(
 		questionDao.getOneResultByParameter("id",
 			questionEntity.getId())).andReturn(questionEntity);
-	EasyMock.expect(questionDao.save(questionEntity)).andReturn(
-		questionEntity);
+	Capture<QuestionEntity> questionCapture = new Capture<QuestionEntity>();
+	EasyMock.expect(questionDao.save(EasyMock.capture(questionCapture)))
+		.andReturn(questionEntity);
 	replayAllMocks();
-	assertEquals(new QuestionCommand(questionEntity),
-		questionService.updateQuestion(questionEntity.getId(),
-			createTestQuestionCommand()));
+
+	assertEquals(questionCommand,
+		questionService.updateQuestion(questionId, questionCommand));
+	assertEquals("New Question", questionCapture.getValue().getQuestion());
     }
 
     @Test(expected = EntityNotFoundException.class)
