@@ -73,6 +73,26 @@ public class QuestionServiceUnitTest {
     }
 
     @Test
+    public void testGetQuestionById() {
+	Integer questionId = 10;
+	QuestionEntity questionEntity = new QuestionEntity();
+	QuestionCommand questioncom = new QuestionCommand();
+	EasyMock.expect(questionDao.getOneResultByParameter("id", questionId))
+		.andReturn(questionEntity);
+	replayAllMocks();
+	assertEquals(questionService.getQuestionById(questionId),
+		new QuestionCommand(questionEntity));
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void testGetQuestionByIdWhenQuestionDoesNotExist() {
+	EasyMock.expect(questionDao.getOneResultByParameter("id", 10))
+		.andThrow(new EntityNotFoundException());
+	replayAllMocks();
+	questionService.getQuestionById(10);
+    }
+
+    @Test
     public void testConvertFromEntityToCommand() {
 	replayAllMocks();
 	QuestionCommand expected = createTestQuestionCommand();
@@ -111,8 +131,68 @@ public class QuestionServiceUnitTest {
 	questionService.getQuestionListForInterview(Integer.valueOf(10));
     }
 
+    @Test
+    public void testAddQuestionToInterviewWhenInterviewExists() {
+
+	InterviewEntity interview = new InterviewEntity();
+	interview.setId(42);
+
+	QuestionEntity question = createTestQuestionEntity();
+	question.setInterview(interview);
+
+	EasyMock.expect(
+		interviewDao.getOneResultByParameter("id", interview.getId()))
+		.andReturn(interview);
+	EasyMock.expect(questionDao.save(question)).andReturn(question);
+
+	replayAllMocks();
+
+	assertEquals(new QuestionCommand(question),
+		questionService.addQuestionToInterview(interview.getId(),
+			createTestQuestionCommand()));
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void testAddQuestionToInterviewWhenInterviewDoesNotExist() {
+
+	EasyMock.expect(interviewDao.getOneResultByParameter("id", 42))
+		.andThrow(new EntityNotFoundException());
+
+	replayAllMocks();
+
+	questionService.addQuestionToInterview(42, null);
+    }
+
+    @Test
+    public void testUpdateQuestionWhenQuestionExist() {
+	QuestionEntity questionEntity = createTestQuestionEntity();
+	questionEntity.setId(15);
+	EasyMock.expect(
+		questionDao.getOneResultByParameter("id",
+			questionEntity.getId())).andReturn(questionEntity);
+	EasyMock.expect(questionDao.save(questionEntity)).andReturn(
+		questionEntity);
+	replayAllMocks();
+	assertEquals(new QuestionCommand(questionEntity),
+		questionService.updateQuestion(questionEntity.getId(),
+			createTestQuestionCommand()));
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void testUpdateQuestionWhenuestionDoesNotExist() {
+
+	EasyMock.expect(questionDao.getOneResultByParameter("id", 15))
+		.andThrow(new EntityNotFoundException());
+
+	replayAllMocks();
+
+	questionService.updateQuestion(15, null);
+    }
+
     @After
     public void verifyAllMocks() {
 	EasyMock.verify(interviewDao, questionDao);
+
     }
+
 }

@@ -18,6 +18,13 @@ public class QuestionService {
     @Autowired
     QuestionDao questionDao;
 
+    public QuestionCommand getQuestionById(Integer questionId) {
+	QuestionEntity oneQuestionbyId = questionDao.getOneResultByParameter(
+		"id", questionId);
+	return new QuestionCommand(oneQuestionbyId);
+
+    }
+
     public List<QuestionCommand> getQuestionListForInterview(Integer interviewId) {
 	InterviewEntity interview = interviewDao.getOneResultByParameter("id",
 		interviewId);
@@ -33,6 +40,30 @@ public class QuestionService {
 	    result.add(new QuestionCommand(questionEntity));
 	}
 	return result;
+    }
+
+    public QuestionCommand addQuestionToInterview(Integer interviewId,
+	    QuestionCommand question) {
+
+	InterviewEntity interview = interviewDao.getOneResultByParameter("id",
+		interviewId);
+
+	QuestionEntity questionEntity = new QuestionEntity(question);
+	questionEntity.setInterview(interview);
+
+	questionEntity = questionDao.save(questionEntity);
+
+	return new QuestionCommand(questionEntity);
+    }
+
+    public QuestionCommand updateQuestion(Integer questionId,
+	    QuestionCommand inputQuestion) {
+	QuestionEntity questionEntity = questionDao.getOneResultByParameter(
+		"id", questionId);
+	questionEntity = new QuestionEntity(inputQuestion);
+	questionEntity = questionDao.save(questionEntity);
+
+	return new QuestionCommand(questionEntity);
     }
 
 }

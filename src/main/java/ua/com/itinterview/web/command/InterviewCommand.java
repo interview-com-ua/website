@@ -1,35 +1,24 @@
-package ua.com.itinterview.entity;
+package ua.com.itinterview.web.command;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import ua.com.itinterview.entity.InterviewEntity;
+import ua.com.itinterview.entity.UserEntity;
 
-import ua.com.itinterview.web.command.InterviewCommand;
+public class InterviewCommand {
 
-@Entity
-@Table(name = "interview")
-@SequenceGenerator(name = "sequence", sequenceName = "interview_id", allocationSize = 1)
-public class InterviewEntity extends EntityWithId {
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId")
     private UserEntity user;
     private String feedback;
     private Date created;
 
-    public InterviewEntity() {
+    public InterviewCommand() {
 
     }
 
-    public InterviewEntity(InterviewCommand interviewCommand) {
-	user = interviewCommand.getUser();
-	feedback = interviewCommand.getFeedback();
-	created = interviewCommand.getCreated();
+    public InterviewCommand(InterviewEntity interviewEntity) {
+	user = interviewEntity.getUser();
+	feedback = interviewEntity.getFeedback();
+	created = interviewEntity.getCreated();
     }
 
     public UserEntity getUser() {
@@ -59,7 +48,7 @@ public class InterviewEntity extends EntityWithId {
     @Override
     public int hashCode() {
 	final int prime = 31;
-	int result = super.hashCode();
+	int result = 1;
 	result = prime * result + ((created == null) ? 0 : created.hashCode());
 	result = prime * result
 		+ ((feedback == null) ? 0 : feedback.hashCode());
@@ -71,11 +60,11 @@ public class InterviewEntity extends EntityWithId {
     public boolean equals(Object obj) {
 	if (this == obj)
 	    return true;
-	if (!super.equals(obj))
+	if (obj == null)
 	    return false;
 	if (getClass() != obj.getClass())
 	    return false;
-	InterviewEntity other = (InterviewEntity) obj;
+	InterviewCommand other = (InterviewCommand) obj;
 	if (created == null) {
 	    if (other.created != null)
 		return false;
@@ -96,7 +85,7 @@ public class InterviewEntity extends EntityWithId {
 
     @Override
     public String toString() {
-	return "InterviewEntity [user=" + user + ", feedback=" + feedback
+	return "InterviewCommand [user=" + user + ", feedback=" + feedback
 		+ ", created=" + created + "]";
     }
 

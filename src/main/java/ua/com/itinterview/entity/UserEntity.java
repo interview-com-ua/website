@@ -14,6 +14,7 @@ public class UserEntity extends EntityWithId {
     private String userName;
     private String password;
     private String email;
+    private String name;
 
     public UserEntity() {
 
@@ -23,6 +24,7 @@ public class UserEntity extends EntityWithId {
 	userName = userCommand.getUserName();
 	password = userCommand.getPassword();
 	email = userCommand.getEmail();
+	name = userCommand.getName();
     }
 
     public String getUserName() {
@@ -49,11 +51,20 @@ public class UserEntity extends EntityWithId {
 	this.email = email;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public int hashCode() {
 	final int prime = 31;
 	int result = super.hashCode();
 	result = prime * result + ((email == null) ? 0 : email.hashCode());
+	result = prime * result + ((name == null) ? 0 : name.hashCode());
 	result = prime * result
 		+ ((password == null) ? 0 : password.hashCode());
 	result = prime * result
@@ -75,6 +86,11 @@ public class UserEntity extends EntityWithId {
 		return false;
 	} else if (!email.equals(other.email))
 	    return false;
+	if (name == null) {
+	    if (other.name != null)
+		return false;
+	} else if (!name.equals(other.name))
+	    return false;
 	if (password == null) {
 	    if (other.password != null)
 		return false;
@@ -91,7 +107,6 @@ public class UserEntity extends EntityWithId {
     @Override
     public String toString() {
 	return "UserEntity [userName=" + userName + ", password=" + password
-		+ ", email=" + email + "]";
+		+ ", email=" + email + ", name=" + name + "]";
     }
-
 }
