@@ -1,7 +1,6 @@
 package ua.com.itinterview.web.resource;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,11 +47,8 @@ public class InterviewResource {
     @RequestMapping(value = "/{interviewId}/add_question", method = RequestMethod.GET)
     public ModelAndView getAddQuestionToInterviewPage(
 	    @PathVariable Integer interviewId) {
-	// List<QuestionCommand> addQuestionList = new
-	// ArrayList<QuestionCommand>();
 	ModelAndView view = new ModelAndView("add_question");
 	view.addObject(new QuestionCommand());
-	// view.addObject(addQuestionList);
 	return view;
     }
 
@@ -60,8 +56,10 @@ public class InterviewResource {
     public ModelAndView addQuestionForInterview(
 	    @PathVariable Integer interviewId,
 	    @ModelAttribute QuestionCommand questionCommand) {
+	QuestionCommand questionCmnd = new QuestionCommand();
 	System.out.println(questionCommand);
-	return new ModelAndView("redirect:/{questionId}/comment_list");
+	return new ModelAndView("redirect:/question/" + questionCmnd.getId()
+		+ "/view");
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
