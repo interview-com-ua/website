@@ -1,5 +1,7 @@
 package ua.com.itinterview.web.command;
 
+import ua.com.itinterview.entity.UserEntity;
+
 public class UserCommand {
 
     private int    id;
@@ -8,6 +10,18 @@ public class UserCommand {
     private String name;
     private String password;
     private String confirmPassword;
+    
+    public UserCommand() {
+    }
+    
+    public UserCommand(UserEntity userEntity) {
+	id = userEntity.getId();
+	userName = userEntity.getUserName();
+	email = userEntity.getEmail();
+	name = userEntity.getName();
+	password = userEntity.getPassword();
+	confirmPassword = userEntity.getPassword();
+    }
 
     public int getId() {
         return id;
