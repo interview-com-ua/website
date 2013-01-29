@@ -53,6 +53,14 @@ public class FeedbackServiceUnitTest {
     @Test
     public void testAddFeedback() {
 
+	FeedbackCommand feedbackCommand = new FeedbackCommand();
+	FeedbackEntity feedbackEntity = new FeedbackEntity(feedbackCommand);
+	EasyMock.expect(feedbackDaoMock.save(feedbackEntity)).andReturn(
+		feedbackEntity);
+	EasyMock.replay(feedbackDaoMock);
+	feedbackService.addFeedback(feedbackCommand);
+	EasyMock.verify(feedbackDaoMock);
+
     }
 
     public FeedbackCommand addInformationToFeedBack(FeedbackCommand command) {
@@ -67,6 +75,15 @@ public class FeedbackServiceUnitTest {
 	entity.setCreateTime(new Date());
 	entity.setChecked(true);
 	return entity;
+    }
+
+    public FeedbackEntity CreateFeedbackEntityForTest() {
+	FeedbackEntity feedbackEntity = new FeedbackEntity();
+	feedbackEntity.setFeedbackText("test");
+	feedbackEntity.setCreateTime(new Date());
+	feedbackEntity.setChecked(true);
+	return feedbackEntity;
+
     }
 
 }
