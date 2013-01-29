@@ -1,7 +1,10 @@
 package ua.com.itinterview.web.resource;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +45,12 @@ public class UserResource {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView createUser(@ModelAttribute UserCommand userCommand) {
+    public ModelAndView createUser(
+	    @ModelAttribute @Valid UserCommand userCommand,
+	    BindingResult bindResult) {
+	if (bindResult.hasErrors()) {
+	    return goToSignupPageWithCommand(userCommand, ViewMode.MODE_CREATE);
+	}
 	userService.createUser(userCommand);
 	return goToSignupPageWithCommand(userCommand, ViewMode.MODE_CREATE);
     }

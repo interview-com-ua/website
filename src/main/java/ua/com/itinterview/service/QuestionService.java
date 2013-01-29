@@ -60,7 +60,8 @@ public class QuestionService {
 	    QuestionCommand inputQuestion) {
 	QuestionEntity questionEntity = questionDao.getOneResultByParameter(
 		"id", questionId);
-	questionEntity = new QuestionEntity(inputQuestion);
+	// questionEntity = new QuestionEntity(inputQuestion);
+	questionEntity.setQuestion(inputQuestion.getQuestion());
 	questionEntity = questionDao.save(questionEntity);
 
 	return new QuestionCommand(questionEntity);
