@@ -12,18 +12,32 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ua.com.itinterview.entity.FeedbackEntity;
+import ua.com.itinterview.entity.InterviewEntity;
 
 public class FeedbackDaoIntegrationTest extends
 	BaseEntityWithIdDaoIntegrationTest<FeedbackEntity> {
 
     private static final String DEFAULT_DATE_FORMATTER = "yyyy-MM-dd";
+
     @Autowired
     private FeedbackDao feedbackDao;
 
+    @Autowired
+    InterviewEntityDao interviewEntityDao;
+
     @Override
     protected FeedbackEntity createEntity() {
-	FeedbackEntity entity = new FeedbackEntity();
-	return entity;
+	FeedbackEntity feedback = new FeedbackEntity();
+	InterviewEntity interview = createInterview();
+	feedback.setInterview(interview);
+	return feedback;
+    }
+
+    private InterviewEntity createInterview() {
+	InterviewEntity interview = new InterviewEntity();
+	interview.setUser(testUser);
+	interview.setFeedback("ololo");
+	return interviewEntityDao.save(interview);
     }
 
     @Override
@@ -46,6 +60,7 @@ public class FeedbackDaoIntegrationTest extends
 	    boolean checked, String feedbackText, String createTimeString)
 	    throws ParseException {
 	FeedbackEntity entity = new FeedbackEntity();
+    entity.setInterview(createInterview());
 	entity.setChecked(checked);
 	entity.setFeedbackText(feedbackText);
 	Date createTime = null;
@@ -58,18 +73,25 @@ public class FeedbackDaoIntegrationTest extends
 
     @Test
     public void testGetAllUncheckedFeedbacks() throws ParseException {
-	createFeedbackWithCheckedAndFeedbackText(true, "entity");
-	FeedbackEntity entity1 = createFeedbackWithCheckedAndFeedbackText(
-		false, "entity1");
-	createFeedbackWithCheckedAndFeedbackText(true, "entity2");
-	FeedbackEntity entity3 = createFeedbackWithCheckedAndFeedbackText(
+	createFeedbackWithCheckedAndFeedbackText(true, "entity1");
+	FeedbackEntity entity2 = createFeedbackWithCheckedAndFeedbackText(
 		false, "entity2");
+	createFeedbackWithCheckedAndFeedbackText(true, "entity3");
+	FeedbackEntity entity4 = createFeedbackWithCheckedAndFeedbackText(
+		false, "entity4");
 
 	List<FeedbackEntity> list = feedbackDao.getAllUncheckedFeedbacks();
 	assertEquals(2, list.size());
 
-	assertEquals(entity1, list.get(0));
-	assertEquals(entity3, list.get(1));
+	assertEquals(entity2, list.get(0));
+	assertEquals(entity4, list.get(1));
+
+	// <FeedbackEntity [feedbackText=null, createTime=null, checked=false,
+	// interview=InterviewEntity [user=UserEntity [userName=vkuchyn,
+	// password=password, email=kuchin.victor@gmail.com], feedback=ololo,
+	// created=null]]>
+	// <FeedbackEntity [feedbackText=null, createTime=null, checked=false,
+	// interview=InterviewEntity [user=null, feedback=null, created=null]]>
     }
 
     @Test
