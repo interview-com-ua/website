@@ -20,5 +20,8 @@ public class UserService {
 	    userDao.save(user);
 	}
     }
-
+    
+    public UserCommand updateUser(UserCommand userCommand) {
+	return null;
+    }
 }

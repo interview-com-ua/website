@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.com.itinterview.entity.TechnologyEntity;
 
 public class TechnologyDao extends EntityWithIdDao<TechnologyEntity> {
+    @SuppressWarnings("unchecked")
     @Transactional
     public List<TechnologyEntity> getAllTechnologies() {
 	Session session = sessionFactory.getCurrentSession();
