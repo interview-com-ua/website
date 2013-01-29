@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -66,5 +67,20 @@ public class QuestionResource {
 	ModelAndView view = new ModelAndView("show_comment_list");
 	view.addObject("commentsToPrint", commentsToPrint);
 	return view;
+    }
+
+    @RequestMapping(value = "/{questionId}/edit", method = RequestMethod.GET)
+    public ModelAndView getEditQuestionPage(@PathVariable Integer questionId) {
+	ModelAndView view = new ModelAndView("edit_question");
+	view.addObject(new QuestionCommand());
+
+	return view;
+    }
+
+    @RequestMapping(value = "/{questionId}/edit", method = RequestMethod.POST)
+    public ModelAndView editQuestion(@PathVariable Integer questionId,
+	    @ModelAttribute QuestionCommand questionCommand) {
+	System.out.println(questionCommand);
+	return new ModelAndView("/index");
     }
 }
