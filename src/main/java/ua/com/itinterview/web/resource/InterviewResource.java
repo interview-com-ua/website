@@ -3,8 +3,10 @@ package ua.com.itinterview.web.resource;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +29,7 @@ import javax.validation.Valid;
 @RequestMapping(value = "/interview")
 public class InterviewResource {
 
-    private final static Logger LOGGER = Logger
-	    .getLogger(InterviewResource.class);
+    private final static Logger LOGGER = Logger.getLogger(InterviewResource.class);
 
     @Autowired
     private QuestionService questionService;
@@ -70,22 +71,26 @@ public class InterviewResource {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ModelAndView addInterview(
-	    @ModelAttribute InterviewCommand interviewCommand) {
-	Date date = new Date();
-	UserEntity user = new UserEntity();
-	user.setEmail("email@com");
-	user.setPassword("password");
-	user.setUserName("name4");
-	user = userDao.save(user);
-	interviewCommand.setCreated(date);
-	interviewCommand.setUser(user);
-	interviewService.addInterview(interviewCommand);
-	Integer id = interviewEntityDao.getInterviewsByUser(user).get(0)
-		.getId();
-	interviewCommand.setFeedback("Id interview " + id);
-	ModelAndView view = new ModelAndView("add_interview");
-	view.addObject(interviewCommand);
-	return view;
+            @Valid @ModelAttribute InterviewCommand interviewCommand, BindingResult bindResult) {
+        if (bindResult.hasErrors()) {
+            ModelAndView view = new ModelAndView("add_interview");
+            view.addObject(interviewCommand);
+            view.addObject("SUCCESS_MESSAGE", "You have errors");
+            return view;
+        }
+	    UserEntity user = new UserEntity();
+	    user.setEmail("email@com");
+	    user.setPassword("password");
+	    user.setUserName("name4");
+	    user = userDao.save(user);
+        interviewCommand.setCreated(new Date());
+	    interviewCommand.setUser(user);
+        InterviewEntity interview = interviewService.addInterview(interviewCommand);
+        Integer id = interview.getId();
+    	ModelAndView view = new ModelAndView("add_interview");
+	    view.addObject(interviewCommand);
+        view.addObject("SUCCESS_MESSAGE", "Interview saved successfully with id=" + id);
+	    return view;
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
