@@ -23,8 +23,6 @@ import ua.com.itinterview.service.QuestionService;
 import ua.com.itinterview.web.command.InterviewCommand;
 import ua.com.itinterview.web.command.QuestionCommand;
 
-import javax.validation.Valid;
-
 @Controller
 @RequestMapping(value = "/interview")
 public class InterviewResource {
