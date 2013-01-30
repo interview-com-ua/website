@@ -76,9 +76,9 @@ public class InterviewResource {
 	interviewCommand.setUser(user);
     InterviewEntity interview =  interviewService.addInterview(interviewCommand);
 	Integer id = interview.getId();
-	interviewCommand.setFeedback("Id interview " + id);
 	ModelAndView view = new ModelAndView("add_interview");
 	view.addObject(interviewCommand);
+	view.addObject("SUCCESS_MESSAGE", "Interview saved successfully with id=" + id);
 	return view;
     }
 

@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -6,6 +7,9 @@
 </head>
 <body>
 <h3>Добавить интервью</h3>
+<c:if test="${SUCCESS_MESSAGE != null}">
+    <div id="status_message">${SUCCESS_MESSAGE}</div>
+</c:if>
 <form:form action="../interview/add" method="post" commandName="interviewCommand">
     <fieldset>
         <legend>Добавить интервью</legend>
