@@ -1,5 +1,7 @@
 package ua.com.itinterview.web.resource;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,20 @@ public class FeedbackResource {
     
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView showFeedbackList() {
-	List<FeedbackCommand> feedbackList = feedbackService.getFeedbackList();
+//	List<FeedbackCommand> feedbackList = feedbackService.getFeedbackList();
+	
+	FeedbackCommand feedback1 = new FeedbackCommand();
+	feedback1.setFeedbackText("My feedback text");
+	feedback1.setCreateTime(new Date());
+	feedback1.setChecked(true);
+	FeedbackCommand feedback2 = new FeedbackCommand();
+	feedback2.setFeedbackText("My feedback2 text");
+	feedback2.setCreateTime(new Date());
+	feedback2.setChecked(false);
+	List<FeedbackCommand> feedbackList = new ArrayList<FeedbackCommand>();
+	feedbackList.add(feedback1);
+	feedbackList.add(feedback2);
+	
 	ModelAndView view = new ModelAndView("show_feedback_list");
 	view.addObject("feedbackList", feedbackList);
 	return view;
