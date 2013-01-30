@@ -3,6 +3,7 @@ package ua.com.itinterview.web.resource;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,6 +25,9 @@ import ua.com.itinterview.web.command.QuestionCommand;
 @Controller
 @RequestMapping(value = "/interview")
 public class InterviewResource {
+
+    private final static Logger LOGGER = Logger
+	    .getLogger(InterviewResource.class);
 
     @Autowired
     private QuestionService questionService;
@@ -58,7 +62,7 @@ public class InterviewResource {
 	    @PathVariable Integer interviewId,
 	    @ModelAttribute QuestionCommand questionCommand) {
 	QuestionCommand questionCmnd = new QuestionCommand();
-	System.out.println(questionCommand);
+	LOGGER.info(questionCommand);
 	return new ModelAndView("redirect:/question/" + questionCmnd.getId()
 		+ "/view");
     }
@@ -75,6 +79,13 @@ public class InterviewResource {
 	interviewCommand.setCreated(date);
 	interviewCommand.setUser(user);
 	interviewService.addInterview(interviewCommand);
+	LOGGER.info(interviewCommand.getFeedback());
+	LOGGER.info(interviewCommand.getCreated());
+	LOGGER.info(interviewCommand.getUser());
+	LOGGER.info(interviewEntityDao.getInterviewsByUser(user).get(0).getId());
+	// ModelAndView view = new ModelAndView("add_interview");
+	// view.addObject(interviewCommand);
+
 	Integer id = interviewEntityDao.getInterviewsByUser(user).get(0)
 		.getId();
 	interviewCommand.setFeedback("Id interview " + id);
@@ -100,6 +111,9 @@ public class InterviewResource {
 	InterviewCommand interviewCommand = new InterviewCommand(
 		interviewEntity);
 	ModelAndView view = new ModelAndView("edit_interview");
+	LOGGER.info(interviewCommand.getFeedback());
+	LOGGER.info(interviewCommand.getCreated());
+	LOGGER.info(interviewCommand.getUser());
 	view.addObject(interviewCommand);
 	view.addObject("userName", userName);
 	return view;
@@ -109,6 +123,13 @@ public class InterviewResource {
     public ModelAndView editInterview(
 	    @ModelAttribute InterviewCommand interviewCommand,
 	    @RequestParam("name") String name) {
+	UserEntity user = userDao.getUserByUserName(name);
+	interviewCommand.setCreated(new Date());
+	interviewCommand.setUser(user);
+	interviewService.addInterview(interviewCommand);
+	LOGGER.info(interviewCommand.getFeedback());
+	LOGGER.info(interviewCommand.getCreated());
+	LOGGER.info(interviewCommand.getUser());
 	UserEntity userEntity = userDao.getUserByUserName(name);
 	InterviewEntity interviewEntity = new InterviewEntity();
 	interviewEntity.setCreated(new Date());
