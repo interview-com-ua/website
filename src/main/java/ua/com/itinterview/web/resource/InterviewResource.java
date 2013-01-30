@@ -83,8 +83,8 @@ public class InterviewResource {
 	    user.setPassword("password");
 	    user.setUserName("name4");
 	    user = userDao.save(user);
+        interviewCommand.setUser(user);
         interviewCommand.setCreated(new Date());
-	    interviewCommand.setUser(user);
         InterviewEntity interview = interviewService.addInterview(interviewCommand);
         Integer id = interview.getId();
     	ModelAndView view = new ModelAndView("add_interview");
