@@ -30,6 +30,7 @@ public class InterviewServiceUnitTest {
 	interviewService.interviewEntityDao = interviewDaoMock;
 	user = new UserEntity();
 	userDao = EasyMock.createMock(UserDao.class);
+	interviewService.userDao = userDao;
     }
 
     @Test
@@ -103,4 +104,5 @@ public class InterviewServiceUnitTest {
 	interviewService.getInterviewList();
 	EasyMock.verify(interviewDaoMock);
     }
+
 }
