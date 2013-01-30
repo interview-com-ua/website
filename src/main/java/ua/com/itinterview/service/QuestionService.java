@@ -10,6 +10,7 @@ import ua.com.itinterview.dao.QuestionDao;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.QuestionEntity;
 import ua.com.itinterview.web.command.QuestionCommand;
+import ua.com.itinterview.web.configuration.ItemsPerPageConstantConfiguration;
 
 public class QuestionService {
 
@@ -19,15 +20,13 @@ public class QuestionService {
     QuestionDao questionDao;
 
     public QuestionCommand getQuestionById(Integer questionId) {
-	QuestionEntity oneQuestionbyId = questionDao.getOneResultByParameter(
-		"id", questionId);
+	QuestionEntity oneQuestionbyId = questionDao.getEntityById(questionId);
 	return new QuestionCommand(oneQuestionbyId);
 
     }
 
     public List<QuestionCommand> getQuestionListForInterview(Integer interviewId) {
-	InterviewEntity interview = interviewDao.getOneResultByParameter("id",
-		interviewId);
+	InterviewEntity interview = interviewDao.getEntityById(interviewId);
 	List<QuestionEntity> questionsForInterview = questionDao
 		.getQuestionsForInterview(interview);
 	return convertToQuestionCommandList(questionsForInterview);
@@ -45,8 +44,7 @@ public class QuestionService {
     public QuestionCommand addQuestionToInterview(Integer interviewId,
 	    QuestionCommand question) {
 
-	InterviewEntity interview = interviewDao.getOneResultByParameter("id",
-		interviewId);
+	InterviewEntity interview = interviewDao.getEntityById(interviewId);
 
 	QuestionEntity questionEntity = new QuestionEntity(question);
 	questionEntity.setInterview(interview);
@@ -58,13 +56,22 @@ public class QuestionService {
 
     public QuestionCommand updateQuestion(Integer questionId,
 	    QuestionCommand inputQuestion) {
-	QuestionEntity questionEntity = questionDao.getOneResultByParameter(
-		"id", questionId);
+	QuestionEntity questionEntity = questionDao.getEntityById(questionId);
 	// questionEntity = new QuestionEntity(inputQuestion);
 	questionEntity.setQuestion(inputQuestion.getQuestion());
 	questionEntity = questionDao.save(questionEntity);
 
 	return new QuestionCommand(questionEntity);
+    }
+
+    public List<QuestionCommand> getRecentQuestionList() {
+
+	List<QuestionEntity> questions = questionDao
+		.getAllOrderedBy(
+			"created",
+			"desc",
+			ItemsPerPageConstantConfiguration.ITEMS_PER_SEARCH_QUESTIONS_PAGE);
+	return convertToQuestionCommandList(questions);
     }
 
 }

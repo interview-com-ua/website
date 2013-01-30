@@ -51,31 +51,29 @@ public class UserResource {
 	if (bindResult.hasErrors()) {
 	    return goToSignupPageWithCommand(userCommand, ViewMode.MODE_CREATE);
 	}
-	userService.createUser(userCommand);
-	return goToSignupPageWithCommand(userCommand, ViewMode.MODE_CREATE);
+	UserCommand newUserCommand = userService.createUser(userCommand);
+	return new ModelAndView("redirect:/user/" + newUserCommand.getId()
+		+ "/view");
     }
 
     @RequestMapping(value = "/{id}/view", method = RequestMethod.GET)
     public ModelAndView getViewUser(@PathVariable("id") int userId) {
-	UserCommand userCommand = new UserCommand();
-	userCommand.setEmail("a@gmail.com");
-	userCommand.setUserName("Tom");
-	userCommand.setName("Tommy");
+	UserCommand userCommand = userService.getUserById(userId);
 	return goToSignupPageWithCommand(userCommand, ViewMode.MODE_VIEW);
     }
 
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
     public ModelAndView getEditUser(@PathVariable("id") int userId) {
-	UserCommand userCommand = new UserCommand();
-	userCommand.setEmail("a@gmail.com");
-	userCommand.setUserName("Tom");
-	userCommand.setName("Tommy");
+	UserCommand userCommand = userService.getUserById(userId);
 	return goToSignupPageWithCommand(userCommand, ViewMode.MODE_EDIT);
     }
 
     @RequestMapping(value = "/{id}/save", method = RequestMethod.POST)
     public ModelAndView saveUser(@PathVariable("id") int userId,
-	    @ModelAttribute UserCommand userCommand) {
+	    @ModelAttribute UserCommand userCommand, BindingResult bindResult) {
+	if (bindResult.hasErrors()) {
+	    return goToSignupPageWithCommand(userCommand, ViewMode.MODE_EDIT);
+	}
 	return new ModelAndView("redirect:/user/" + userId + "/view");
     }
 

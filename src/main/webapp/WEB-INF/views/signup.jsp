@@ -47,7 +47,7 @@
 					<tr>
 						<td><strong>Электронная почта</strong></td>
 						<td><c:choose>
-								<c:when test="${mode == Modes.MODE_CREATE}">
+								<c:when test="${mode != Modes.MODE_VIEW}">
 									<form:input type="text" path="email" />
 									<td><form:errors path="email" cssStyle="color: #ff0000" /></td>	
 								</c:when>
@@ -68,7 +68,7 @@
 								</c:otherwise>
 							</c:choose></td>
 					</tr>
-					<c:if test="${mode != Modes.MODE_VIEW}">
+					<c:if test="${mode == Modes.MODE_CREATE}">
 						<tr>
 							<td><strong>Пароль</strong></td>
 							<td><form:password path="password" /></td>

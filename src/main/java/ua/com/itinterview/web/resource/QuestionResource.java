@@ -13,9 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import ua.com.itinterview.service.CommentService;
+import ua.com.itinterview.service.CompanyService;
+import ua.com.itinterview.service.PositionService;
 import ua.com.itinterview.service.QuestionService;
+import ua.com.itinterview.service.TechnologyService;
 import ua.com.itinterview.web.command.CommentCommand;
+import ua.com.itinterview.web.command.CompanyCommand;
+import ua.com.itinterview.web.command.PositionCommand;
 import ua.com.itinterview.web.command.QuestionCommand;
+import ua.com.itinterview.web.command.TechnologyCommand;
 
 @Controller
 @RequestMapping(value = "/question")
@@ -28,6 +34,12 @@ public class QuestionResource {
     private CommentService commentService;
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private CompanyService companyService;
+    @Autowired
+    private PositionService positionService;
+    @Autowired
+    private TechnologyService technologyService;
 
     @RequestMapping(value = "/{questionId}/view", method = RequestMethod.GET)
     public ModelAndView viewQuestion(@PathVariable("questionId") int questionId) {
@@ -75,9 +87,9 @@ public class QuestionResource {
 
     @RequestMapping(value = "/{questionId}/edit", method = RequestMethod.GET)
     public ModelAndView getEditQuestionPage(@PathVariable Integer questionId) {
-	ModelAndView view = new ModelAndView("edit_question");
+	ModelAndView view = new ModelAndView("add_question");
 	view.addObject(new QuestionCommand());
-
+	view.addObject("edit", true);
 	return view;
     }
 
@@ -87,4 +99,24 @@ public class QuestionResource {
 	LOGGER.info(questionCommand);
 	return new ModelAndView("/index");
     }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ModelAndView showQuestionSearchPage() {
+
+	List<CompanyCommand> companies = companyService.getCompanyList();
+	List<PositionCommand> positions = positionService.getPositionList();
+	List<TechnologyCommand> technologies = technologyService
+		.getTechnologyList();
+	List<QuestionCommand> questions = questionService
+		.getRecentQuestionList();
+
+	ModelAndView view = new ModelAndView("search_questions");
+	view.addObject("companies", companies);
+	view.addObject("positions", positions);
+	view.addObject("technologies", technologies);
+	view.addObject("questions", questions);
+
+	return view;
+    }
+
 }

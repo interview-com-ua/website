@@ -24,7 +24,7 @@ public class InterviewEntityDao extends EntityWithIdDao<InterviewEntity> {
 
     @Transactional
     public InterviewEntity getInterviewById(Integer interviewId) {
-	InterviewEntity result = getOneResultByParameter("id", interviewId);
+	InterviewEntity result = getEntityById(interviewId);
 	return result;
     }
 }
