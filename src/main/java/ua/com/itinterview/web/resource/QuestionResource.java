@@ -3,6 +3,7 @@ package ua.com.itinterview.web.resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,6 +26,9 @@ import ua.com.itinterview.web.command.TechnologyCommand;
 @Controller
 @RequestMapping(value = "/question")
 public class QuestionResource {
+
+    private final static Logger LOGGER = Logger
+	    .getLogger(InterviewResource.class);
 
     @Autowired
     private CommentService commentService;
@@ -92,7 +96,7 @@ public class QuestionResource {
     @RequestMapping(value = "/{questionId}/edit", method = RequestMethod.POST)
     public ModelAndView editQuestion(@PathVariable Integer questionId,
 	    @ModelAttribute QuestionCommand questionCommand) {
-	System.out.println(questionCommand);
+	LOGGER.info(questionCommand);
 	return new ModelAndView("/index");
     }
 
