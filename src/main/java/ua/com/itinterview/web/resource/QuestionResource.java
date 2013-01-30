@@ -83,7 +83,7 @@ public class QuestionResource {
 
     @RequestMapping(value = "/{questionId}/edit", method = RequestMethod.GET)
     public ModelAndView getEditQuestionPage(@PathVariable Integer questionId) {
-	ModelAndView view = new ModelAndView("edit_question");
+	ModelAndView view = new ModelAndView("add_question");
 	view.addObject(new QuestionCommand());
 	view.addObject("edit", true);
 	return view;
