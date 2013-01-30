@@ -13,6 +13,9 @@
 	<import resource="service-context.xml" />    
 	
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+	<bean id="bootstrap" class="ua.com.itinterview.web.configuration.BootStrap" init-method="init" destroy-method="destroy">
+		<property name="environment" value="DEVELOPMENT" />
+	</bean>
 	<mvc:annotation-driven />
 
 </beans>
