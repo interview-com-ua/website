@@ -21,7 +21,11 @@ public class UserService {
 	}
     }
     
-    public UserCommand updateUser(UserCommand userCommand) {
-	return null;
+    public UserCommand updateUser(Integer userId, UserCommand userCommand) {
+	UserEntity userEntity = userDao.getEntityById(userId);
+	userEntity.setEmail(userCommand.getEmail());
+	userEntity.setName(userCommand.getName());
+	UserEntity savedEntity = userDao.save(userEntity);
+	return new UserCommand(savedEntity);
     }
 }
