@@ -53,6 +53,11 @@ public class EntityWithIdDao<T extends EntityWithId> {
 	return result;
     }
 
+    @Transactional
+    public T getEntityById(Integer id) {
+	return getOneResultByParameter("id", id);
+    }
+
     @SuppressWarnings("unchecked")
     protected List<T> getResultWithPaginator(Criteria criteria,
 	    PagingFilter pagingFilter) {
@@ -61,17 +66,16 @@ public class EntityWithIdDao<T extends EntityWithId> {
 	return criteria.setFirstResult(firstPosition)
 		.setMaxResults(pagingFilter.getItemsPerPage()).list();
     }
-    
+
     @Transactional
     public List<T> getAll() {
 	return getAll(0);
     }
-    
+
     @SuppressWarnings("unchecked")
     public List<T> getAll(int limit) {
 	Session session = sessionFactory.getCurrentSession();
-	Criteria criteria = session.createCriteria(clazz)
-		.setMaxResults(limit);
+	Criteria criteria = session.createCriteria(clazz).setMaxResults(limit);
 	return criteria.list();
     }
 
