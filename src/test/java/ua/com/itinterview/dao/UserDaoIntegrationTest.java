@@ -19,8 +19,8 @@ public class UserDaoIntegrationTest extends
 
     @Test
     public void testGetUserByUserName() {
-	UserEntity actual = userDao.getUserByUserName(TEST_USER_NAME);
-	assertEquals(TEST_USER_NAME, actual.getUserName());
+	UserEntity actual = userDao.getUserByUserName(DEFAULT_TEST_USER_NAME);
+	assertEquals(DEFAULT_TEST_USER_NAME, actual.getUserName());
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -31,7 +31,7 @@ public class UserDaoIntegrationTest extends
     @Test
     public void testDoesUserWithUserNameExists() {
 	assertFalse(userDao.doesUserExistsWithUserName("userName"));
-	assertTrue(userDao.doesUserExistsWithUserName(TEST_USER_NAME));
+	assertTrue(userDao.doesUserExistsWithUserName(DEFAULT_TEST_USER_NAME));
     }
 
     @Override
