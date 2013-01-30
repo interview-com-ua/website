@@ -79,7 +79,7 @@ public class QuestionResource {
     public ModelAndView getShowCommentList(
 	    @PathVariable("questionId") int questionId) {
 	List<CommentCommand> commentsToPrint = commentService
-		.getCommentListForQuestion(questionId);
+		.getCommentListForQuestion(questionId, 0);
 	ModelAndView view = new ModelAndView("show_comment_list");
 	view.addObject("commentsToPrint", commentsToPrint);
 	return view;
