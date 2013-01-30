@@ -6,7 +6,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.entity.UserEntity.Sex;
+import ua.com.itinterview.validation.FieldsEquals;
 
+@FieldsEquals(firstField = "password", secondField = "confirmPassword", errorKey = "password", message = "confirm.password")
 public class UserCommand {
 
     private int id;

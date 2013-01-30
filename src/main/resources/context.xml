@@ -14,5 +14,10 @@
 	
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 	<mvc:annotation-driven />
+	
+    <!-- bind your messages.properties -->
+	<bean class="org.springframework.context.support.ResourceBundleMessageSource" id="messageSource">
+		<property name="basename" value="messages" />
+	</bean>
 
 </beans>
