@@ -73,7 +73,11 @@ public class UserServiceUnitTest {
 			.getUserName())).andReturn(false);
 	expect(userDaoMock.save(userEntity)).andReturn(userEntity);
 	replayAllMocks();
-	userService.createUser(userCommand);
+	
+	UserCommand actualUserCommand = userService.createUser(userCommand);
+	UserCommand expectedUserCommand = createUserCommand();
+	expectedUserCommand.setId(actualUserCommand.getId());
+	assertEquals(expectedUserCommand, actualUserCommand);
     }
 
     @Test(expected = RuntimeException.class)
