@@ -14,6 +14,7 @@
     <fieldset>
         <legend>Добавить интервью</legend>
         <form:textarea cols="40" rows="15" path="feedback"/>
+        <form:errors path="feedback" cssClass="error" />
         <div>
             <input type="submit" value="Добавить"/>
         </div>
