@@ -2,6 +2,7 @@ package ua.com.itinterview.web.resource;
 
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,6 +24,9 @@ import ua.com.itinterview.web.command.QuestionCommand;
 @Controller
 @RequestMapping(value = "/interview")
 public class InterviewResource {
+
+    private final static Logger LOGGER = Logger
+	    .getLogger(InterviewResource.class);
 
     @Autowired
     private QuestionService questionService;
@@ -57,7 +61,7 @@ public class InterviewResource {
 	    @PathVariable Integer interviewId,
 	    @ModelAttribute QuestionCommand questionCommand) {
 	QuestionCommand questionCmnd = new QuestionCommand();
-	System.out.println(questionCommand);
+	LOGGER.info(questionCommand);
 	return new ModelAndView("redirect:/question/" + questionCmnd.getId()
 		+ "/view");
     }
@@ -73,11 +77,10 @@ public class InterviewResource {
 	interviewCommand.setCreated(date);
 	interviewCommand.setUser(user);
 	interviewService.addInterview(interviewCommand);
-	System.out.println(interviewCommand.getFeedback());
-	System.out.println(interviewCommand.getCreated());
-	System.out.println(interviewCommand.getUser());
-	System.out.println(interviewEntityDao.getInterviewsByUser(user).get(0)
-		.getId());
+	LOGGER.info(interviewCommand.getFeedback());
+	LOGGER.info(interviewCommand.getCreated());
+	LOGGER.info(interviewCommand.getUser());
+	LOGGER.info(interviewEntityDao.getInterviewsByUser(user).get(0).getId());
 	// ModelAndView view = new ModelAndView("add_interview");
 	// view.addObject(interviewCommand);
 
@@ -100,9 +103,9 @@ public class InterviewResource {
 	InterviewCommand interviewCommand = new InterviewCommand(
 		interviewEntity);
 	ModelAndView view = new ModelAndView("edit_interview");
-	// System.out.println(interviewCommand.getFeedback());
-	// System.out.println(interviewCommand.getCreated());
-	// System.out.println(interviewCommand.getUser());
+	LOGGER.info(interviewCommand.getFeedback());
+	LOGGER.info(interviewCommand.getCreated());
+	LOGGER.info(interviewCommand.getUser());
 	view.addObject(interviewCommand);
 	view.addObject("userName", userName);
 	return view;
@@ -117,9 +120,9 @@ public class InterviewResource {
 	interviewCommand.setCreated(new Date());
 	interviewCommand.setUser(user);
 	interviewService.addInterview(interviewCommand);
-	System.out.println(interviewCommand.getFeedback());
-	System.out.println(interviewCommand.getCreated());
-	System.out.println(interviewCommand.getUser());
+	LOGGER.info(interviewCommand.getFeedback());
+	LOGGER.info(interviewCommand.getCreated());
+	LOGGER.info(interviewCommand.getUser());
     }
 
 }
