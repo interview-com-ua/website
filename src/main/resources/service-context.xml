@@ -10,5 +10,7 @@
     <bean id="commentService" class="ua.com.itinterview.service.CommentService"/>
     <bean id="questionService" class="ua.com.itinterview.service.QuestionService"/>
     <bean id="feedbackService" class="ua.com.itinterview.service.FeedbackService"/>
-        
+    <bean id="companyService" class="ua.com.itinterview.service.CompanyService"/>
+    <bean id="positionService" class="ua.com.itinterview.service.PositionService"/>
+    <bean id="technologyService" class="ua.com.itinterview.service.TechnologyService"/>
 </beans>

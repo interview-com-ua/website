@@ -76,10 +76,24 @@ public class EntityWithIdDao<T extends EntityWithId> {
     }
 
     @SuppressWarnings("unchecked")
+    @Transactional
     public List<T> getAllOrderedBy(String orderBy, int limit) {
 	Session session = sessionFactory.getCurrentSession();
 	Criteria criteria = session.createCriteria(clazz)
 		.addOrder(Order.asc(orderBy)).setMaxResults(limit);
 	return criteria.list();
     }
+
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<T> getAllOrderedBy(String orderBy, String order, int limit) {
+	Session session = sessionFactory.getCurrentSession();
+	Criteria criteria = session
+		.createCriteria(clazz)
+		.addOrder(
+			order.equals("asc") ? Order.asc(orderBy) : Order
+				.desc(orderBy)).setMaxResults(limit);
+	return criteria.list();
+    }
+
 }
