@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,6 +23,11 @@ public class FeedbackResource {
     public ModelAndView getAddFeedbackPage() {
 	ModelAndView view = new ModelAndView("add_feedback");
 	return view;
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public void addFeedback(@ModelAttribute FeedbackCommand feedbackCommand) {
+	System.out.println(feedbackCommand);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)

@@ -14,7 +14,7 @@
 			<tr><td><strong>Электронная почта*</strong></td><td><input type="text" name="email"></td></tr>
 			<tr><td><strong>Тема сообщения*</strong></td><td><input type="text" name="title"></td></tr>
 			<tr><td><strong>Текст сообщения</strong></td><td><input type="text" style="width:200px ; height:100px" name="message"></td></tr>
-			<input type="submit" value="Отправить" />
+			<tr><td><input type="submit" value="Отправить" /></td></tr>
 		 </tbody>
 		</table>
 </fieldset>
