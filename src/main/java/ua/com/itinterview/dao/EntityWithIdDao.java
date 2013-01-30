@@ -62,6 +62,7 @@ public class EntityWithIdDao<T extends EntityWithId> {
 		.setMaxResults(pagingFilter.getItemsPerPage()).list();
     }
     
+    @Transactional
     public List<T> getAll() {
 	return getAll(0);
     }
