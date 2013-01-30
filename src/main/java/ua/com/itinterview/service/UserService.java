@@ -28,4 +28,9 @@ public class UserService {
 	UserEntity savedEntity = userDao.save(userEntity);
 	return new UserCommand(savedEntity);
     }
+    
+    public UserCommand getUserById(Integer userId) {
+	UserEntity userEntity = userDao.getEntityById(userId);
+	return new UserCommand(userEntity);
+    }
 }

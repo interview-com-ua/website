@@ -1,10 +1,13 @@
 package ua.com.itinterview.service;
 
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
 import javax.persistence.EntityNotFoundException;
-
-import static org.easymock.EasyMock.*;
 
 import org.easymock.Capture;
 import org.junit.After;
@@ -94,12 +97,12 @@ public class UserServiceUnitTest {
 	expect(userDaoMock.save(capture(userToSaveCapture))).andReturn(
 		oldUserInDb);
 	replayAllMocks();
-	
+
 	UserCommand expectedCommand = createCustomUserCommand(USER_ID,
 		PASSWORD, NEW_EMAIL, NEW_NAME, USER_NAME);
 	assertEquals(expectedCommand,
 		userService.updateUser(USER_ID, userToUpdate));
-	
+
 	UserEntity actualSavedEntity = userToSaveCapture.getValue();
 	assertEquals(NEW_EMAIL, actualSavedEntity.getEmail());
 	assertEquals(NEW_NAME, actualSavedEntity.getName());
@@ -107,12 +110,33 @@ public class UserServiceUnitTest {
 	assertEquals(USER_ID, actualSavedEntity.getId());
 	assertEquals(PASSWORD, actualSavedEntity.getPassword());
     }
-	
-    @Test(expected=EntityNotFoundException.class)
+
+    @Test(expected = EntityNotFoundException.class)
     public void testUserUpdateWhenUserDoesNotExist() {
-	expect(userDaoMock.getEntityById(NEW_USER_ID)).andThrow(new EntityNotFoundException());
+	expect(userDaoMock.getEntityById(NEW_USER_ID)).andThrow(
+		new EntityNotFoundException());
 	replayAllMocks();
 	userService.updateUser(NEW_USER_ID, createUserCommand());
+    }
+
+    @Test
+    public void testGetUserById() {
+	UserEntity userEntity = createUserEntity();
+	expect(userDaoMock.getEntityById(USER_ID)).andReturn(userEntity);
+	replayAllMocks();
+
+	UserCommand actualUserCommand = userService.getUserById(USER_ID);
+	UserCommand expectedUserCommand = createUserCommand();
+	assertEquals(expectedUserCommand, actualUserCommand);
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void testGetUserByIdWhenUserDoesNotExist() {
+	expect(userDaoMock.getEntityById(NEW_USER_ID)).andThrow(
+		new EntityNotFoundException());
+	replayAllMocks();
+
+	userService.getUserById(NEW_USER_ID);
     }
 
     @After
