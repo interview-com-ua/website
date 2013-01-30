@@ -24,9 +24,10 @@ public class InterviewService {
     @Autowired
     protected SessionFactory sessionFactory;
 
-    public void addInterview(InterviewCommand inputInterview) {
-	InterviewEntity interviewEntity = new InterviewEntity(inputInterview);
-	interviewEntityDao.save(interviewEntity);
+    public InterviewEntity addInterview(InterviewCommand inputInterview) {
+	    InterviewEntity interviewEntity = new InterviewEntity(inputInterview);
+        InterviewEntity interview = interviewEntityDao.save(interviewEntity);
+        return interview;
     }
 
     @Transactional

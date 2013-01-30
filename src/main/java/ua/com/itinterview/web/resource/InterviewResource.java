@@ -74,9 +74,8 @@ public class InterviewResource {
 	user = userDao.save(user);
 	interviewCommand.setCreated(date);
 	interviewCommand.setUser(user);
-	interviewService.addInterview(interviewCommand);
-	Integer id = interviewEntityDao.getInterviewsByUser(user).get(0)
-		.getId();
+    InterviewEntity interview =  interviewService.addInterview(interviewCommand);
+	Integer id = interview.getId();
 	interviewCommand.setFeedback("Id interview " + id);
 	ModelAndView view = new ModelAndView("add_interview");
 	view.addObject(interviewCommand);
