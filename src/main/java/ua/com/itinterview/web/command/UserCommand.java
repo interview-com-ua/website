@@ -1,22 +1,43 @@
 package ua.com.itinterview.web.command;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import ua.com.itinterview.entity.UserEntity;
+
 public class UserCommand {
 
-    private int    id;
+    private int id;
+    @NotEmpty(message = "User Name cannot be empty. Please, enter some user name")
     private String userName;
+    @Email
+    @NotEmpty
     private String email;
+    @NotEmpty
     private String name;
     private String password;
     private String confirmPassword;
 
+    public UserCommand() {
+    }
+
+    public UserCommand(UserEntity userEntity) {
+	id = userEntity.getId();
+	userName = userEntity.getUserName();
+	email = userEntity.getEmail();
+	name = userEntity.getName();
+	password = userEntity.getPassword();
+	confirmPassword = userEntity.getPassword();
+    }
+
     public int getId() {
-        return id;
+	return id;
     }
 
     public void setId(int id) {
-        this.id = id;
+	this.id = id;
     }
-    
+
     public String getUserName() {
 	return userName;
     }
@@ -64,6 +85,7 @@ public class UserCommand {
 	result = prime * result
 		+ ((confirmPassword == null) ? 0 : confirmPassword.hashCode());
 	result = prime * result + ((email == null) ? 0 : email.hashCode());
+	result = prime * result + id;
 	result = prime * result + ((name == null) ? 0 : name.hashCode());
 	result = prime * result
 		+ ((password == null) ? 0 : password.hashCode());
@@ -91,6 +113,8 @@ public class UserCommand {
 		return false;
 	} else if (!email.equals(other.email))
 	    return false;
+	if (id != other.id)
+	    return false;
 	if (name == null) {
 	    if (other.name != null)
 		return false;
@@ -111,9 +135,8 @@ public class UserCommand {
 
     @Override
     public String toString() {
-	return "UserCommand [userName=" + userName + ", email=" + email
-		+ ", name=" + name + ", password=" + password
+	return "UserCommand [id=" + id + ", userName=" + userName + ", email="
+		+ email + ", name=" + name + ", password=" + password
 		+ ", confirmPassword=" + confirmPassword + "]";
     }
-
 }

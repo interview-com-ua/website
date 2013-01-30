@@ -21,8 +21,7 @@ public class CommentService {
     public CommentCommand addCommentForQuestion(Integer questionId,
 	    CommentCommand comment) {
 
-	QuestionEntity question = questionDao.getOneResultByParameter("id",
-		questionId);
+	QuestionEntity question = questionDao.getEntityById(questionId);
 
 	CommentEntity commentEntity = new CommentEntity(comment);
 	commentEntity.setQuestionEntity(question);

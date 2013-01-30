@@ -5,6 +5,15 @@ import ua.com.itinterview.entity.QuestionEntity;
 public class QuestionCommand {
 
     private String question;
+    private int id;
+
+    public int getId() {
+	return id;
+    }
+
+    public void setId(int id) {
+	this.id = id;
+    }
 
     public QuestionCommand() {
     }
