@@ -5,13 +5,14 @@
     <title>Добавление интервью</title>
 </head>
 <body>
-<legend><h3>Добавить интервью</h3></legend>
-<form:form action="../interview/add" method="post"
-           commandName="interviewCommand">
+<h3>Добавить интервью</h3>
+<form:form action="../interview/add" method="post" commandName="interviewCommand">
     <fieldset>
         <legend>Добавить интервью</legend>
         <form:textarea cols="40" rows="15" path="feedback"/>
-        <input type="submit" value="Добавить"/>
+        <div>
+            <input type="submit" value="Добавить"/>
+        </div>
     </fieldset>
 </form:form>
 </body>
