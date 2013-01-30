@@ -10,7 +10,7 @@
 <table>
   <c:forEach var="feedback" items="${feedbackList}">
 	  <tr>
-	     <td>${feedback.feedback}</td>  
+	     <td>${feedback}</td>  
 	  </tr>
   </c:forEach>
 </table>
