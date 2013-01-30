@@ -1,6 +1,7 @@
 package ua.com.itinterview.web.resource;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,24 +64,23 @@ public class InterviewResource {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public void addInterview(@ModelAttribute InterviewCommand interviewCommand) {
+    public ModelAndView addInterview(
+	    @ModelAttribute InterviewCommand interviewCommand) {
 	Date date = new Date();
 	UserEntity user = new UserEntity();
 	user.setEmail("email@com");
 	user.setPassword("password");
-	user.setUserName("name");
+	user.setUserName("name4");
 	user = userDao.save(user);
 	interviewCommand.setCreated(date);
 	interviewCommand.setUser(user);
 	interviewService.addInterview(interviewCommand);
-	System.out.println(interviewCommand.getFeedback());
-	System.out.println(interviewCommand.getCreated());
-	System.out.println(interviewCommand.getUser());
-	System.out.println(interviewEntityDao.getInterviewsByUser(user).get(0)
-		.getId());
-	// ModelAndView view = new ModelAndView("add_interview");
-	// view.addObject(interviewCommand);
-
+	Integer id = interviewEntityDao.getInterviewsByUser(user).get(0)
+		.getId();
+	interviewCommand.setFeedback("Id interview " + id);
+	ModelAndView view = new ModelAndView("add_interview");
+	view.addObject(interviewCommand);
+	return view;
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -100,26 +100,36 @@ public class InterviewResource {
 	InterviewCommand interviewCommand = new InterviewCommand(
 		interviewEntity);
 	ModelAndView view = new ModelAndView("edit_interview");
-	// System.out.println(interviewCommand.getFeedback());
-	// System.out.println(interviewCommand.getCreated());
-	// System.out.println(interviewCommand.getUser());
 	view.addObject(interviewCommand);
 	view.addObject("userName", userName);
 	return view;
-
     }
 
     @RequestMapping(value = "/{interviewId}/edit", method = RequestMethod.POST)
-    public void editInterview(
+    public ModelAndView editInterview(
 	    @ModelAttribute InterviewCommand interviewCommand,
 	    @RequestParam("name") String name) {
-	UserEntity user = userDao.getUserByUserName(name);
-	interviewCommand.setCreated(new Date());
-	interviewCommand.setUser(user);
-	interviewService.addInterview(interviewCommand);
-	System.out.println(interviewCommand.getFeedback());
-	System.out.println(interviewCommand.getCreated());
-	System.out.println(interviewCommand.getUser());
+	UserEntity userEntity = userDao.getUserByUserName(name);
+	InterviewEntity interviewEntity = new InterviewEntity();
+	interviewEntity.setCreated(new Date());
+	interviewEntity.setUser(userEntity);
+	String feedBack = interviewCommand.getFeedback();
+	interviewEntity.setFeedback(feedBack);
+	interviewEntity = interviewEntityDao.save(interviewEntity);
+	InterviewCommand interviewCommand2 = new InterviewCommand(
+		interviewEntity);
+	interviewCommand2.setFeedback("tralala " + feedBack);
+	ModelAndView view = new ModelAndView("edit_interview");
+	view.addObject(interviewCommand2);
+	return view;
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public ModelAndView showInterviewList() {
+	ModelAndView view = new ModelAndView("show_interview_list");
+	List<InterviewCommand> list = interviewService.getInterviewList();
+	view.addObject("list", list);
+	return view;
     }
 
 }
