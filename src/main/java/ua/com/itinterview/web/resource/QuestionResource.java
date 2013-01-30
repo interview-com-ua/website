@@ -30,7 +30,7 @@ public class QuestionResource {
     private CommentService commentService;
     @Autowired
     private QuestionService questionService;
-    @Autowired    
+    @Autowired
     private CompanyService companyService;
     @Autowired
     private PositionService positionService;
@@ -85,7 +85,7 @@ public class QuestionResource {
     public ModelAndView getEditQuestionPage(@PathVariable Integer questionId) {
 	ModelAndView view = new ModelAndView("edit_question");
 	view.addObject(new QuestionCommand());
-
+	view.addObject("edit", true);
 	return view;
     }
 
@@ -95,14 +95,16 @@ public class QuestionResource {
 	System.out.println(questionCommand);
 	return new ModelAndView("/index");
     }
-    
+
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ModelAndView showQuestionSearchPage() {
 
 	List<CompanyCommand> companies = companyService.getCompanyList();
 	List<PositionCommand> positions = positionService.getPositionList();
-	List<TechnologyCommand> technologies = technologyService.getTechnologyList();
-	List<QuestionCommand> questions = questionService.getRecentQuestionList();
+	List<TechnologyCommand> technologies = technologyService
+		.getTechnologyList();
+	List<QuestionCommand> questions = questionService
+		.getRecentQuestionList();
 
 	ModelAndView view = new ModelAndView("search_questions");
 	view.addObject("companies", companies);
