@@ -62,9 +62,8 @@ public class CommentServiceUnitTest {
 
 	CommentEntity expectCommentEntity = new CommentEntity(command);
 	expectCommentEntity.setQuestionEntity(questionEntity);
-	EasyMock.expect(
-		questionDaoMock.getOneResultByParameter("id", questionId))
-		.andReturn(questionEntity);
+	EasyMock.expect(questionDaoMock.getEntityById(questionId)).andReturn(
+		questionEntity);
 
 	EasyMock.expect(commentDaoMock.save(expectCommentEntity)).andReturn(
 		expectCommentEntity);

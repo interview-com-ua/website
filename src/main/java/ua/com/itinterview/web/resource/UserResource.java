@@ -52,7 +52,7 @@ public class UserResource {
 	    return goToSignupPageWithCommand(userCommand, ViewMode.MODE_CREATE);
 	}
 	userService.createUser(userCommand);
-	return goToSignupPageWithCommand(userCommand, ViewMode.MODE_CREATE);
+	return goToSignupPageWithCommand(userCommand, ViewMode.MODE_VIEW);
     }
 
     @RequestMapping(value = "/{id}/view", method = RequestMethod.GET)
