@@ -7,10 +7,17 @@
 </head>
 <body>
 <p>Hello, I`m FEEDBACK</p>
-<table>
+<table border="1">
+<tr>
+	<td>Время</td>
+	<td>Проверка</td>
+	<td>Отзыв</td>
+</tr>
   <c:forEach var="feedback" items="${feedbackList}">
 	  <tr>
-	     <td>${feedback}</td>  
+	     <td>${feedback.getCreateTime()}</td>
+	     <td>${feedback.isChecked()}</td>
+	     <td>${feedback.getFeedbackText()}</td>  
 	  </tr>
   </c:forEach>
 </table>
