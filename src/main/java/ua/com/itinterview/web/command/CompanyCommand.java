@@ -4,6 +4,7 @@ import ua.com.itinterview.entity.CompanyEntity;
 
 public class CompanyCommand {
 
+    private Integer id;
     private String name;
     private String phone;
     private String logoURL;
@@ -14,12 +15,13 @@ public class CompanyCommand {
 
     }
 
-    public CompanyCommand(CompanyEntity entity) {	
+    public CompanyCommand(CompanyEntity entity) {
 	name = entity.getCompanyName();
 	phone = entity.getCompanyPhone();
 	logoURL = entity.getCompanyLogoUrl();
 	address = entity.getCompanyAddress();
 	webPage = entity.getCompanyWebPage();
+	id = entity.getId();
     }
 
     public String getName() {
@@ -62,11 +64,20 @@ public class CompanyCommand {
 	this.webPage = webPage;
     }
 
+    public Integer getId() {
+	return id;
+    }
+
+    public void setId(Integer id) {
+	this.id = id;
+    }
+
     @Override
     public int hashCode() {
 	final int prime = 31;
 	int result = 1;
 	result = prime * result + ((address == null) ? 0 : address.hashCode());
+	result = prime * result + ((id == null) ? 0 : id.hashCode());
 	result = prime * result + ((logoURL == null) ? 0 : logoURL.hashCode());
 	result = prime * result + ((name == null) ? 0 : name.hashCode());
 	result = prime * result + ((phone == null) ? 0 : phone.hashCode());
@@ -87,6 +98,11 @@ public class CompanyCommand {
 	    if (other.address != null)
 		return false;
 	} else if (!address.equals(other.address))
+	    return false;
+	if (id == null) {
+	    if (other.id != null)
+		return false;
+	} else if (!id.equals(other.id))
 	    return false;
 	if (logoURL == null) {
 	    if (other.logoURL != null)
@@ -113,8 +129,8 @@ public class CompanyCommand {
 
     @Override
     public String toString() {
-	return "CompanyCommand [name=" + name + ", phone=" + phone
-		+ ", logoURL=" + logoURL + ", address=" + address
+	return "CompanyCommand [id=" + id + ", name=" + name + ", phone="
+		+ phone + ", logoURL=" + logoURL + ", address=" + address
 		+ ", webPage=" + webPage + "]";
     }
 

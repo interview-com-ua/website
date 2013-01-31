@@ -77,7 +77,6 @@ public class QuestionServiceUnitTest {
     public void testGetQuestionById() {
 	Integer questionId = 10;
 	QuestionEntity questionEntity = new QuestionEntity();
-	QuestionCommand questioncom = new QuestionCommand();
 	EasyMock.expect(questionDao.getEntityById(questionId)).andReturn(
 		questionEntity);
 	replayAllMocks();
@@ -191,6 +190,17 @@ public class QuestionServiceUnitTest {
 	replayAllMocks();
 
 	questionService.updateQuestion(15, null);
+    }
+
+    @Test
+    public void testGetRecentQuestionList() {
+
+	List<QuestionEntity> questionList = getQuestionListForInterviewMockResult();
+	EasyMock.expect(questionDao.getRecentQuestionList()).andReturn(
+		questionList);
+	replayAllMocks();
+	assertEquals(convertEntityListToCommandList(questionList),
+		questionService.getRecentQuestionList());
     }
 
     @After

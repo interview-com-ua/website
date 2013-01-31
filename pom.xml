@@ -16,84 +16,84 @@
         <developerConnection>https://github.com/interview-com-ua/website.git</developerConnection>
         <url>https://github.com/interview-com-ua/website</url>
     </scm>
-      <developers>
+    <developers>
         <developer>
             <name>Чирков Владимир Валериевич</name>
-			<email>voch83@mail.ru</email>
-		</developer>
+            <email>voch83@mail.ru</email>
+        </developer>
         <developer>
             <name>Прутян Владимир Владимирович</name>
-			<email>vladprut@bigmir.net</email>
-		</developer>
-		<developer>
+            <email>vladprut@bigmir.net</email>
+        </developer>
+        <developer>
             <name>Новокшонов Евгений Анатольевич</name>
-			<email>dzmk@i.ua</email>
-		</developer>
-		<developer>
+            <email>dzmk@i.ua</email>
+        </developer>
+        <developer>
             <name>Novokshonov Oleksii</name>
-			<email>oleksii.novokshonov@gmail.com</email>
-		</developer>
-		<developer>
+            <email>oleksii.novokshonov@gmail.com</email>
+        </developer>
+        <developer>
             <name>Мосолов Артем Юрійович</name>
-			<email>kle0n@mail.ru</email>
-		</developer>
-		<developer>
+            <email>kle0n@mail.ru</email>
+        </developer>
+        <developer>
             <name>Педич Максим Михайлович</name>
-			<email>maximpedich@gmail.com</email>
-		</developer>
-		<developer>
+            <email>maximpedich@gmail.com</email>
+        </developer>
+        <developer>
             <name>Романiв Андрій Володимирович</name>
-			<email>twentyyears@i.ua</email>
-		</developer>
-		<developer>
+            <email>twentyyears@i.ua</email>
+        </developer>
+        <developer>
             <name>Вольский Дмитрий Дмитриевич</name>
-			<email>skiman@i.ua</email>
-		</developer>
-		<developer>
+            <email>skiman@i.ua</email>
+        </developer>
+        <developer>
             <name>Бутолин Дмитрий Геннадьевич</name>
-			<email>djemen@gmail.com</email>
-		</developer>
-		<developer>
+            <email>djemen@gmail.com</email>
+        </developer>
+        <developer>
             <name>Andrey Stasyuk</name>
-			<email>shmishleniy@gmail.com</email>
-		</developer>
-		<developer>
+            <email>shmishleniy@gmail.com</email>
+        </developer>
+        <developer>
             <name>Морозов Пётр Владимирович</name>
-			<email>petia.morozov@gmail.com</email>
-		</developer>
-		<developer>
+            <email>petia.morozov@gmail.com</email>
+        </developer>
+        <developer>
             <name>Тимофей</name>
-			<email>timofiy.bilyi@gmail.com</email>
-		</developer>
-		<developer>
+            <email>timofiy.bilyi@gmail.com</email>
+        </developer>
+        <developer>
             <name>Гавриленко Олександр</name>
-			<email>gavrylenko.aleksandr@gmail.com</email>
-		</developer>
-		<developer>
+            <email>gavrylenko.aleksandr@gmail.com</email>
+        </developer>
+        <developer>
             <name>Целуйко Игорь Валентинович</name>
-			<email>igor7311@gmail.com</email>
-		</developer>
-		<developer>
+            <email>igor7311@gmail.com</email>
+        </developer>
+        <developer>
             <name>Євген Лазарев</name>
-			<email>lazarev4@ukr.net</email>
-		</developer>
-		<developer>
+            <email>lazarev4@ukr.net</email>
+        </developer>
+        <developer>
             <name>Ольга Коструб</name>
-			<email>lolga_luga@mail.ru</email>
-		</developer>
-		<developer>
+            <email>lolga_luga@mail.ru</email>
+        </developer>
+        <developer>
             <name>Лесничий Сергей Владимирович</name>
-			<email>ljore@ukr.net</email>
-		</developer>
-	</developers>
+            <email>ljore@ukr.net</email>
+        </developer>
+    </developers>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk>1.6</jdk>
         <db.dir>${project.build.directory}/db</db.dir>
         <sonar.language>java</sonar.language>
         <sonar.host.url>http://home.stokito.name:9000/</sonar.host.url>
-	    <jetty.version>9.0.0.M4</jetty.version>
- 	    <spring.version>3.1.2.RELEASE</spring.version>        
+        <jetty.version>9.0.0.M4</jetty.version>
+        <spring.version>3.1.2.RELEASE</spring.version>
     </properties>
 
     <dependencies>
@@ -108,22 +108,22 @@
             <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
-	    <dependency>
-	      <groupId>org.easymock</groupId>
-	      <artifactId>easymock</artifactId>
-	      <version>3.0</version>
-	      <scope>test</scope>
-	    </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>3.0</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>4.1.7.Final</version>
         </dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>4.2.0.Final</version>
-		</dependency>        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.2.0.Final</version>
+        </dependency>
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
@@ -138,7 +138,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -162,18 +162,12 @@
             <artifactId>cglib</artifactId>
             <version>2.2.2</version>
         </dependency>
-        <!-- 
-        <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-            <version>2.1</version>
-        </dependency> -->       
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
             <version>${jetty.version}</version>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
@@ -185,12 +179,18 @@
             <artifactId>jetty-jsp</artifactId>
             <version>${jetty.version}</version>
             <scope>test</scope>
-        </dependency>          
+        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>3.0-alpha-1</version>
-        </dependency>        
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
         <dependency>
             <groupId>com.github.stokito</groupId>
             <artifactId>gag-annotations</artifactId>

@@ -3,8 +3,6 @@ package ua.com.itinterview.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,18 +22,18 @@ public class InterviewService {
     @Autowired
     protected SessionFactory sessionFactory;
 
-    public void addInterview(InterviewCommand inputInterview) {
-	InterviewEntity interviewEntity = new InterviewEntity(inputInterview);
-	interviewEntityDao.save(interviewEntity);
+    public InterviewEntity addInterview(InterviewCommand inputInterview) {
+	    InterviewEntity interviewEntity = new InterviewEntity(inputInterview);
+        InterviewEntity interview = interviewEntityDao.save(interviewEntity);
+        return interview;
     }
 
     @Transactional
     public List<InterviewCommand> getInterviewList() {
-	Session session = sessionFactory.getCurrentSession();
-	Criteria criteria = session.createCriteria(InterviewEntity.class);
-	@SuppressWarnings("unchecked")
-	List<InterviewEntity> list = criteria.list();
-	return convertToInterviewCommandList(list);
+	List<InterviewCommand> interviewList = convertToInterviewCommandList(interviewEntityDao
+		.getAll());
+	return interviewList;
+
     }
 
     private List<InterviewCommand> convertToInterviewCommandList(

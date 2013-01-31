@@ -10,7 +10,6 @@ import ua.com.itinterview.dao.QuestionDao;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.QuestionEntity;
 import ua.com.itinterview.web.command.QuestionCommand;
-import ua.com.itinterview.web.configuration.ItemsPerPageConstantConfiguration;
 
 public class QuestionService {
 
@@ -67,10 +66,7 @@ public class QuestionService {
     public List<QuestionCommand> getRecentQuestionList() {
 
 	List<QuestionEntity> questions = questionDao
-		.getAllOrderedBy(
-			"created",
-			"desc",
-			ItemsPerPageConstantConfiguration.ITEMS_PER_SEARCH_QUESTIONS_PAGE);
+		.getRecentQuestionList();
 	return convertToQuestionCommandList(questions);
     }
 

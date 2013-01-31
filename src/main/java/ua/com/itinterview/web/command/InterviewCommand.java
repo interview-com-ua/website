@@ -2,13 +2,19 @@ package ua.com.itinterview.web.command;
 
 import java.util.Date;
 
+import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.UserEntity;
 
 public class InterviewCommand {
 
     private UserEntity user;
+
+    @NotNull
+    @NotBlank
     private String feedback;
+
     private Date created;
 
     public InterviewCommand() {

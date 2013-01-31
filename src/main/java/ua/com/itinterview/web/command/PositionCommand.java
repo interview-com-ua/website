@@ -4,6 +4,7 @@ import ua.com.itinterview.entity.PositionEntity;
 
 public class PositionCommand {
 
+    private Integer id;
     private String group;
     private String name;
 
@@ -14,6 +15,7 @@ public class PositionCommand {
     public PositionCommand(PositionEntity entity) {
 	group = entity.getPositionGroup();
 	name = entity.getPositionName();
+	id = entity.getId();
     }
 
     public String getGroup() {
@@ -32,11 +34,20 @@ public class PositionCommand {
 	this.name = name;
     }
 
+    public Integer getId() {
+	return id;
+    }
+
+    public void setId(Integer id) {
+	this.id = id;
+    }
+
     @Override
     public int hashCode() {
 	final int prime = 31;
 	int result = 1;
 	result = prime * result + ((group == null) ? 0 : group.hashCode());
+	result = prime * result + ((id == null) ? 0 : id.hashCode());
 	result = prime * result + ((name == null) ? 0 : name.hashCode());
 	return result;
     }
@@ -55,6 +66,11 @@ public class PositionCommand {
 		return false;
 	} else if (!group.equals(other.group))
 	    return false;
+	if (id == null) {
+	    if (other.id != null)
+		return false;
+	} else if (!id.equals(other.id))
+	    return false;
 	if (name == null) {
 	    if (other.name != null)
 		return false;
@@ -65,7 +81,8 @@ public class PositionCommand {
 
     @Override
     public String toString() {
-	return "PositionCommand [group=" + group + ", name=" + name + "]";
+	return "PositionCommand [id=" + id + ", group=" + group + ", name="
+		+ name + "]";
     }
 
 }
