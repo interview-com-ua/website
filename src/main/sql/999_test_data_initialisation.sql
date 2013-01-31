@@ -8,3 +8,4 @@ insert into interview_question (id, interviewid, title, question, answer, create
 alter sequence interview_question_id start with 2;
 insert into comments (id, question_id, rate, authorName, email, commentText, userpicUrl) values 
 	(1, 1, 3, 'Viktor Kuchyn', 'kuchin.victor@gmail.com', 'This was realy easy question', 'http://www.gravatar.com/avatar/7d82916977c1b182a232d9c25f833bb4.png');
+alter sequence comments_id start with 2;

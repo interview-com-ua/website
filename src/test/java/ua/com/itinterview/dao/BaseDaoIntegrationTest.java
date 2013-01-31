@@ -29,6 +29,7 @@ import ua.com.itinterview.entity.PositionEntity;
 import ua.com.itinterview.entity.QuestionEntity;
 import ua.com.itinterview.entity.TechnologyEntity;
 import ua.com.itinterview.entity.UserEntity;
+import ua.com.itinterview.entity.UserEntity.Sex;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:context.xml" })
@@ -76,6 +77,7 @@ public abstract class BaseDaoIntegrationTest extends
 	user.setEmail(TEST_USER_EMAIL);
 	user.setUserName(DEFAULT_TEST_USER_NAME);
 	user.setPassword("password");
+	user.setSex(Sex.FEMALE);
 	return userDao.save(user);
     }
 
