@@ -18,6 +18,7 @@ import ua.com.itinterview.dao.QuestionDao;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.QuestionEntity;
 import ua.com.itinterview.web.command.QuestionCommand;
+import ua.com.itinterview.web.configuration.ItemsPerPageConstantConfiguration;
 
 public class QuestionServiceUnitTest {
 
@@ -191,6 +192,22 @@ public class QuestionServiceUnitTest {
 	replayAllMocks();
 
 	questionService.updateQuestion(15, null);
+    }
+
+    @Test
+    public void testGetRecentQuestionList() {
+
+	List<QuestionEntity> questionList = getQuestionListForInterviewMockResult();
+	EasyMock.expect(
+		questionDao
+			.getAllOrderedBy(
+				"created",
+				"desc",
+				ItemsPerPageConstantConfiguration.ITEMS_PER_SEARCH_QUESTIONS_PAGE))
+		.andReturn(questionList);
+	replayAllMocks();
+	assertEquals(convertEntityListToCommandList(questionList),
+		questionService.getRecentQuestionList());
     }
 
     @After
