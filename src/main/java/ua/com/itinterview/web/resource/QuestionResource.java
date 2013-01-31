@@ -1,6 +1,5 @@
 package ua.com.itinterview.web.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -48,29 +47,10 @@ public class QuestionResource {
     @RequestMapping(value = "/{questionId}/view", method = RequestMethod.GET)
     public ModelAndView viewQuestion(@PathVariable("questionId") int questionId) {
 
-	// QuestionCommand oneQuestionCommand = questionService
-	// .getQuestionById(questionId);
-	// List<CommentCommand> commentsForQuestion = commentService
-	// .getCommentListForQuestion(questionId);
-
-	List<CommentCommand> commentsForQuestion = new ArrayList<CommentCommand>();
-	CommentCommand commandTest1 = new CommentCommand();
-	commandTest1.setAuthorName("Вася");
-	commandTest1.setCommentText("Некоторорый коментарий");
-
-	CommentCommand commandTest2 = new CommentCommand();
-	commandTest2.setAuthorName("Никодим");
-	commandTest2.setCommentText("Плохой коментарий");
-
-	commentsForQuestion.add(commandTest1);
-	commentsForQuestion.add(commandTest2);
-	commentsForQuestion.add(commandTest1);
-	commentsForQuestion.add(commandTest2);
-	commentsForQuestion.add(commandTest1);
-	commentsForQuestion.add(commandTest2);
-
-	QuestionCommand oneQuestionCommand = new QuestionCommand();
-	oneQuestionCommand.setQuestion("Вопрос номер один");
+	QuestionCommand oneQuestionCommand = questionService
+		.getQuestionById(questionId);
+	List<CommentCommand> commentsForQuestion = commentService
+		.getCommentListForQuestion(questionId);
 
 	ModelAndView viewQuestion = new ModelAndView("add_question");
 
