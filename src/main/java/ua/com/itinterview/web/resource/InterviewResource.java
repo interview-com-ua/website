@@ -3,6 +3,7 @@ package ua.com.itinterview.web.resource;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,8 +21,6 @@ import ua.com.itinterview.service.InterviewService;
 import ua.com.itinterview.service.QuestionService;
 import ua.com.itinterview.web.command.InterviewCommand;
 import ua.com.itinterview.web.command.QuestionCommand;
-
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/interview")
