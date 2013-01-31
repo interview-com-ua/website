@@ -11,25 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.UserEntity;
 
-public class InterviewDaoTest extends
+public class InterviewDaoIntegrationTest extends
 	BaseEntityWithIdDaoIntegrationTest<InterviewEntity> {
 
     @Autowired
     private UserDao userDao;
     @Autowired
-    private InterviewEntityDao interDao;
+    private InterviewDao interDao;
 
     @Override
     protected InterviewEntity createEntity() {
 	InterviewEntity interview = new InterviewEntity();
 	interview.setFeedback("jkjh");
 	interview.setCreated(new Date());
-	UserEntity user = new UserEntity();
-	user.setEmail("dsakdj");
-	user.setPassword("vcndt");
-	user.setUserName("name");
-	user = userDao.save(user);
-	interview.setUser(user);
+	interview.setUser(testUser);
 	return interview;
     }
 

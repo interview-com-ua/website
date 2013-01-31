@@ -44,9 +44,9 @@ public abstract class BaseDaoIntegrationTest extends
     @Autowired
     private UserDao userDao;
 
-    public final static String DEFAULT_TEST_USER_NAME = "vkuchyn";
+    public final static String DEFAULT_TEST_USER_NAME = "test_user";
 
-    public final static String TEST_USER_EMAIL = "kuchin.victor@gmail.com";
+    public final static String TEST_USER_EMAIL = "test.user@gmail.com";
 
     protected UserEntity testUser;
 

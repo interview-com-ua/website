@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import ua.com.itinterview.dao.InterviewEntityDao;
+import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.UserEntity;
@@ -43,7 +43,7 @@ public class InterviewResource {
     private UserDao userDao;
 
     @Autowired
-    private InterviewEntityDao interviewEntityDao;
+    private InterviewDao interviewEntityDao;
 
     ModeView modeView;
 

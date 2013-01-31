@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ua.com.itinterview.dao.InterviewEntityDao;
+import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.QuestionDao;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.QuestionEntity;
@@ -14,7 +14,7 @@ import ua.com.itinterview.web.command.QuestionCommand;
 public class QuestionService {
 
     @Autowired
-    InterviewEntityDao interviewDao;
+    InterviewDao interviewDao;
     @Autowired
     QuestionDao questionDao;
 

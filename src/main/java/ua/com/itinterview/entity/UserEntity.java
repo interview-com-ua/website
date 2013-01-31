@@ -1,5 +1,6 @@
 package ua.com.itinterview.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -11,8 +12,10 @@ import ua.com.itinterview.web.command.UserCommand;
 @SequenceGenerator(name = "sequence", sequenceName = "users_id", allocationSize = 1)
 public class UserEntity extends EntityWithId {
 
+    @Column(unique = true)
     private String userName;
     private String password;
+    @Column(unique = true)
     private String email;
     private String name;
     private String sex;

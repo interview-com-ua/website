@@ -10,7 +10,7 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
-import ua.com.itinterview.dao.InterviewEntityDao;
+import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.UserEntity;
@@ -20,12 +20,12 @@ public class InterviewServiceUnitTest {
 
     private UserEntity user;
     private InterviewService interviewService;
-    private InterviewEntityDao interviewDaoMock;
+    private InterviewDao interviewDaoMock;
     private UserDao userDao;
 
     @Before
     public void createMocks() {
-	interviewDaoMock = EasyMock.createMock(InterviewEntityDao.class);
+	interviewDaoMock = EasyMock.createMock(InterviewDao.class);
 	interviewService = new InterviewService();
 	interviewService.interviewEntityDao = interviewDaoMock;
 	user = new UserEntity();

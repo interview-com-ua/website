@@ -7,14 +7,14 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import ua.com.itinterview.dao.InterviewEntityDao;
+import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.web.command.InterviewCommand;
 
 public class InterviewService {
     @Autowired
-    InterviewEntityDao interviewEntityDao;
+    InterviewDao interviewEntityDao;
 
     @Autowired
     UserDao userDao;

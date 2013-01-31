@@ -25,7 +25,7 @@ INSERT INTO positions (id, positionGroup, positionName) VALUES (19, 'Other', 'С
 INSERT INTO positions (id, positionGroup, positionName) VALUES (20, 'Other', 'Технический писатель');
 INSERT INTO positions (id, positionGroup, positionName) VALUES (21, 'Other', 'Support');
 INSERT INTO positions (id, positionGroup, positionName) VALUES (22, 'Other', 'HR');
-ALTER SEQUENCE positions_id START WITH 22;
+ALTER SEQUENCE positions_id START WITH 23;
 
 INSERT INTO technologies (id, technologyName) VALUES (1, 'APL');
 INSERT INTO technologies (id, technologyName) VALUES (2, 'C');
@@ -42,4 +42,4 @@ INSERT INTO technologies (id, technologyName) VALUES (12, 'Python');
 INSERT INTO technologies (id, technologyName) VALUES (13, 'Ruby/Rails');
 INSERT INTO technologies (id, technologyName) VALUES (14, 'Scala');
 INSERT INTO technologies (id, technologyName) VALUES (15, 'SQL');
-ALTER SEQUENCE technologies_id START WITH 15;
+ALTER SEQUENCE technologies_id START WITH 16;

@@ -13,7 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ua.com.itinterview.dao.InterviewEntityDao;
+import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.QuestionDao;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.QuestionEntity;
@@ -31,7 +31,7 @@ public class QuestionServiceUnitTest {
     private static final String UPDATED_QUESTION = "updated question";
     private static final String UPDATED_ANSWER = "updated answer";
 
-    private InterviewEntityDao interviewDao;
+    private InterviewDao interviewDao;
     private QuestionDao questionDao;
     private QuestionService questionService;
 
@@ -39,7 +39,7 @@ public class QuestionServiceUnitTest {
     public void setUpMocks() {
 	questionService = new QuestionService();
 
-	interviewDao = EasyMock.createMock(InterviewEntityDao.class);
+	interviewDao = EasyMock.createMock(InterviewDao.class);
 	questionService.interviewDao = interviewDao;
 
 	questionDao = EasyMock.createMock(QuestionDao.class);
