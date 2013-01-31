@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
+import ua.com.itinterview.entity.UserEntity.Sex;
 import ua.com.itinterview.web.command.UserCommand;
 
 public class UserServiceUnitTest {
@@ -25,13 +26,13 @@ public class UserServiceUnitTest {
     private static final String NAME = "name";
     private static final String USER_NAME = "userName";
     private static final String PASSWORD = "password";
-    private static final String SEX = "Male";
+    private static final Sex SEX = Sex.MALE;
 
     private static final String FAKE_USER_NAME = "Fake User Name";
     private static final String NEW_NAME = "new name";
     private static final String NEW_EMAIL = "new email";
     private static final int NEW_USER_ID = USER_ID + 1;
-    private static final String NEW_SEX = "Male";
+    private static final Sex NEW_SEX = Sex.MALE;
 
     private UserDao userDaoMock;
     private UserService userService;
@@ -152,7 +153,7 @@ public class UserServiceUnitTest {
     }
 
     private UserCommand createCustomUserCommand(int id, String password,
-	    String email, String name, String userName, String sex) {
+	    String email, String name, String userName, Sex sex) {
 	UserCommand command = new UserCommand();
 	command.setId(id);
 	command.setConfirmPassword(password);

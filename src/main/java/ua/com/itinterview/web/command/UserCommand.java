@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import ua.com.itinterview.entity.UserEntity;
+import ua.com.itinterview.entity.UserEntity.Sex;
 
 public class UserCommand {
 
@@ -16,7 +17,7 @@ public class UserCommand {
     @NotEmpty
     private String name;
     @NotEmpty
-    private String sex;
+    private Sex sex;
     private String password;
     private String confirmPassword;
 
@@ -65,11 +66,11 @@ public class UserCommand {
 	this.name = name;
     }
 
-    public String getSex() {
+    public Sex getSex() {
 	return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Sex sex) {
 	this.sex = sex;
     }
 

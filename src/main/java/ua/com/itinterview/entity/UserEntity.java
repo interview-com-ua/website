@@ -2,6 +2,8 @@ package ua.com.itinterview.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -12,13 +14,18 @@ import ua.com.itinterview.web.command.UserCommand;
 @SequenceGenerator(name = "sequence", sequenceName = "users_id", allocationSize = 1)
 public class UserEntity extends EntityWithId {
 
+    public enum Sex {
+	MALE, FEMALE
+    }
+
     @Column(unique = true)
     private String userName;
     private String password;
     @Column(unique = true)
     private String email;
     private String name;
-    private String sex;
+    @Enumerated(EnumType.STRING)
+    private Sex sex;
 
     public UserEntity() {
 
@@ -40,11 +47,11 @@ public class UserEntity extends EntityWithId {
 	this.userName = userName;
     }
 
-    public String getSex() {
+    public Sex getSex() {
 	return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Sex sex) {
 	this.sex = sex;
     }
 
