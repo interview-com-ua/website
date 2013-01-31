@@ -1,5 +1,5 @@
 insert into users (id, userName, name, password, email, sex) 
-	values (1, 'vkuchyn', 'Viktor Kuchyn', 'password', 'kuchin.victor@gmail.com', 'male');
+	values (1, 'vkuchyn', 'Viktor Kuchyn', 'password', 'kuchin.victor@gmail.com', 'MALE');
 alter sequence users_id start with 2; 
 insert into interview (id, userId, feedback, created) values (1, 1, 'Cool interview', now());
 alter sequence interview_id start with 2;
