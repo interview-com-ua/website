@@ -52,4 +52,9 @@ public class CommentService {
 	}
 	return commentCommandsForQuestion;
     }
+
+    public List<CommentCommand> getCommentListForQuestion(int questionId) {
+
+	return null;
+    }
 }
