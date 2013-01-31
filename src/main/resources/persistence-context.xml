@@ -49,5 +49,6 @@
 	<bean id="positionDao" class="ua.com.itinterview.dao.PositionDao" />
 	<bean id="feedbackDao" class="ua.com.itinterview.dao.FeedbackDao" />
 	<bean id="technologyDao" class="ua.com.itinterview.dao.TechnologyDao"/>
+	<bean id="cityDao" class="ua.com.itinterview.dao.CityDao"/>
 </beans>
 
