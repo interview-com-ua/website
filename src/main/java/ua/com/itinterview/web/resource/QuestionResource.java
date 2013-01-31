@@ -133,4 +133,26 @@ public class QuestionResource {
 	return showQuestionSearchPage();
     }
 
+    @RequestMapping(value = "/{questionId}/add_comment", method = RequestMethod.GET)
+    public ModelAndView getAddCommentPage(
+	    @PathVariable("questionId") Integer questionId) {
+	ModelAndView view = new ModelAndView("add_comment");
+	CommentCommand commentToAdd = new CommentCommand();
+	commentToAdd.setRate(0);
+	view.addObject(commentToAdd);
+	return view;
+    }
+
+    @RequestMapping(value = "/{questionId}/add_comment", method = RequestMethod.POST)
+    public ModelAndView addCommentToQuestion(
+	    @PathVariable("questionId") Integer questionId,
+	    @ModelAttribute CommentCommand commentCommand) {
+	System.out.println(commentCommand);
+	/*
+	 * return new ModelAndView("redirect:/question/" + questionId +
+	 * "/comment_list");
+	 */// this will work for the release, when the database is set
+	return new ModelAndView("redirect:/question/" + questionId + "/view");
+
+    }
 }
