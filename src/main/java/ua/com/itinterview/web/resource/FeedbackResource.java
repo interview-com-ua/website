@@ -1,11 +1,10 @@
 package ua.com.itinterview.web.resource;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,7 +15,7 @@ import ua.com.itinterview.web.command.FeedbackCommand;
 @Controller
 @RequestMapping(value = "/feedback")
 public class FeedbackResource {
-    
+
     @Autowired
     private FeedbackService feedbackService;
 
@@ -25,7 +24,12 @@ public class FeedbackResource {
 	ModelAndView view = new ModelAndView("add_feedback");
 	return view;
     }
-    
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public void addFeedback(@ModelAttribute FeedbackCommand feedbackCommand) {
+	System.out.println(feedbackCommand);
+    }
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView showFeedbackList() {
 	List<FeedbackCommand> feedbackList = feedbackService.getFeedbackList();

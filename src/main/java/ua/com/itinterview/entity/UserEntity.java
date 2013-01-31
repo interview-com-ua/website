@@ -15,6 +15,7 @@ public class UserEntity extends EntityWithId {
     private String password;
     private String email;
     private String name;
+    private String sex;
 
     public UserEntity() {
 
@@ -25,6 +26,7 @@ public class UserEntity extends EntityWithId {
 	password = userCommand.getPassword();
 	email = userCommand.getEmail();
 	name = userCommand.getName();
+	sex = userCommand.getSex();
     }
 
     public String getUserName() {
@@ -33,6 +35,14 @@ public class UserEntity extends EntityWithId {
 
     public void setUserName(String userName) {
 	this.userName = userName;
+    }
+
+    public String getSex() {
+	return sex;
+    }
+
+    public void setSex(String sex) {
+	this.sex = sex;
     }
 
     public String getPassword() {
@@ -52,11 +62,11 @@ public class UserEntity extends EntityWithId {
     }
 
     public String getName() {
-        return name;
+	return name;
     }
 
     public void setName(String name) {
-        this.name = name;
+	this.name = name;
     }
 
     @Override
@@ -67,6 +77,7 @@ public class UserEntity extends EntityWithId {
 	result = prime * result + ((name == null) ? 0 : name.hashCode());
 	result = prime * result
 		+ ((password == null) ? 0 : password.hashCode());
+	result = prime * result + ((sex == null) ? 0 : sex.hashCode());
 	result = prime * result
 		+ ((userName == null) ? 0 : userName.hashCode());
 	return result;
@@ -96,6 +107,11 @@ public class UserEntity extends EntityWithId {
 		return false;
 	} else if (!password.equals(other.password))
 	    return false;
+	if (sex == null) {
+	    if (other.sex != null)
+		return false;
+	} else if (!sex.equals(other.sex))
+	    return false;
 	if (userName == null) {
 	    if (other.userName != null)
 		return false;
@@ -107,6 +123,7 @@ public class UserEntity extends EntityWithId {
     @Override
     public String toString() {
 	return "UserEntity [userName=" + userName + ", password=" + password
-		+ ", email=" + email + ", name=" + name + "]";
+		+ ", email=" + email + ", name=" + name + ", sex=" + sex + "]";
     }
+
 }
