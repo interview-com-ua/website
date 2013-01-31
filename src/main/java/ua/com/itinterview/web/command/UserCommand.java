@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import ua.com.itinterview.entity.UserEntity;
+import ua.com.itinterview.entity.UserEntity.Sex;
 
 public class UserCommand {
 
@@ -15,6 +16,8 @@ public class UserCommand {
     private String email;
     @NotEmpty
     private String name;
+    @NotEmpty
+    private Sex sex;
     private String password;
     private String confirmPassword;
 
@@ -28,6 +31,7 @@ public class UserCommand {
 	name = userEntity.getName();
 	password = userEntity.getPassword();
 	confirmPassword = userEntity.getPassword();
+	sex = userEntity.getSex();
     }
 
     public int getId() {
@@ -62,6 +66,14 @@ public class UserCommand {
 	this.name = name;
     }
 
+    public Sex getSex() {
+	return sex;
+    }
+
+    public void setSex(Sex sex) {
+	this.sex = sex;
+    }
+
     public String getPassword() {
 	return password;
     }
@@ -89,6 +101,7 @@ public class UserCommand {
 	result = prime * result + ((name == null) ? 0 : name.hashCode());
 	result = prime * result
 		+ ((password == null) ? 0 : password.hashCode());
+	result = prime * result + ((sex == null) ? 0 : sex.hashCode());
 	result = prime * result
 		+ ((userName == null) ? 0 : userName.hashCode());
 	return result;
@@ -125,6 +138,11 @@ public class UserCommand {
 		return false;
 	} else if (!password.equals(other.password))
 	    return false;
+	if (sex == null) {
+	    if (other.sex != null)
+		return false;
+	} else if (!sex.equals(other.sex))
+	    return false;
 	if (userName == null) {
 	    if (other.userName != null)
 		return false;
@@ -136,7 +154,8 @@ public class UserCommand {
     @Override
     public String toString() {
 	return "UserCommand [id=" + id + ", userName=" + userName + ", email="
-		+ email + ", name=" + name + ", password=" + password
-		+ ", confirmPassword=" + confirmPassword + "]";
+		+ email + ", name=" + name + ", sex=" + sex + ", password="
+		+ password + ", confirmPassword=" + confirmPassword + "]";
     }
+
 }

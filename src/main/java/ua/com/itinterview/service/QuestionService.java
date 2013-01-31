@@ -5,17 +5,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ua.com.itinterview.dao.InterviewEntityDao;
+import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.QuestionDao;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.QuestionEntity;
 import ua.com.itinterview.web.command.QuestionCommand;
-import ua.com.itinterview.web.configuration.ItemsPerPageConstantConfiguration;
 
 public class QuestionService {
 
     @Autowired
-    InterviewEntityDao interviewDao;
+    InterviewDao interviewDao;
     @Autowired
     QuestionDao questionDao;
 
@@ -57,8 +56,9 @@ public class QuestionService {
     public QuestionCommand updateQuestion(Integer questionId,
 	    QuestionCommand inputQuestion) {
 	QuestionEntity questionEntity = questionDao.getEntityById(questionId);
-	// questionEntity = new QuestionEntity(inputQuestion);
 	questionEntity.setQuestion(inputQuestion.getQuestion());
+	questionEntity.setAnswer(inputQuestion.getAnswer());
+	questionEntity.setTitle(inputQuestion.getTitle());
 	questionEntity = questionDao.save(questionEntity);
 
 	return new QuestionCommand(questionEntity);
@@ -67,10 +67,7 @@ public class QuestionService {
     public List<QuestionCommand> getRecentQuestionList() {
 
 	List<QuestionEntity> questions = questionDao
-		.getAllOrderedBy(
-			"created",
-			"desc",
-			ItemsPerPageConstantConfiguration.ITEMS_PER_SEARCH_QUESTIONS_PAGE);
+		.getRecentQuestionList();
 	return convertToQuestionCommandList(questions);
     }
 

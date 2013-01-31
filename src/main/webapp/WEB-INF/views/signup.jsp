@@ -7,13 +7,13 @@
 </head>
 <body>
 	<c:choose>
-		<c:when test="${mode == Modes.MODE_CREATE}">
+		<c:when test='${mode == "CREATE"}'>
 			<c:set var="actionValue"
 				value="${pageContext.request.contextPath}/user/create" />
 			<c:set var="formMethod" value="post" />
 			<c:set var="submitValue" value="Зарегистрировать" />
 		</c:when>
-		<c:when test="${mode == Modes.MODE_EDIT}">
+		<c:when test='${mode == "EDIT"}'>
 			<c:set var="actionValue"
 				value="${pageContext.request.contextPath}/user/${userCommand.id}/save" />
 			<c:set var="formMethod" value="post" />
@@ -35,7 +35,7 @@
 					<tr>
 						<td width="150px"><strong>Имя пользователя</strong></td>
 						<td><c:choose>
-								<c:when test="${mode == Modes.MODE_CREATE}">
+								<c:when test='${mode == "CREATE"}'>
 									<form:input type="text" path="userName" />
 								</c:when>
 								<c:otherwise>
@@ -47,7 +47,7 @@
 					<tr>
 						<td><strong>Электронная почта</strong></td>
 						<td><c:choose>
-								<c:when test="${mode != Modes.MODE_VIEW}">
+								<c:when test='${mode != "VIEW"}'>
 									<form:input type="text" path="email" />
 									<td><form:errors path="email" cssStyle="color: #ff0000" /></td>	
 								</c:when>
@@ -59,7 +59,7 @@
 					<tr>
 						<td><strong>Имя</strong></td>
 						<td><c:choose>
-								<c:when test="${mode != Modes.MODE_VIEW}">
+								<c:when test='${mode != "VIEW"}'>
 									<form:input type="text" path="name" />
 									<td><form:errors path="name" cssStyle="color: #ff0000" /></td>	
 								</c:when>
@@ -68,10 +68,11 @@
 								</c:otherwise>
 							</c:choose></td>
 					</tr>
-					<c:if test="${mode == Modes.MODE_CREATE}">
+					<c:if test='${mode == "CREATE"}'>
 						<tr>
 							<td><strong>Пароль</strong></td>
 							<td><form:password path="password" /></td>
+							<td><form:errors path="password"/></td>
 						</tr>
 						<tr>
 							<td><strong>Подтвердить пароль</strong></td>

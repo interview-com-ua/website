@@ -22,7 +22,7 @@ public class FeedbackDaoIntegrationTest extends
     private FeedbackDao feedbackDao;
 
     @Autowired
-    InterviewEntityDao interviewEntityDao;
+    InterviewDao interviewEntityDao;
 
     @Override
     protected FeedbackEntity createEntity() {

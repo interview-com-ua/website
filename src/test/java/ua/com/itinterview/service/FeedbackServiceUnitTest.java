@@ -93,14 +93,14 @@ public class FeedbackServiceUnitTest {
 
     public FeedbackCommand addInformationToFeedBack(FeedbackCommand command) {
 	command.setFeedbackText("some text");
-	command.setCreateTime(new Date());
+	command.setCreateTime(new Date(10000));
 	command.setChecked(true);
 	return command;
     }
 
     public FeedbackEntity addInformationToFeedbackEntity(FeedbackEntity entity) {
 	entity.setFeedbackText("some text");
-	entity.setCreateTime(new Date());
+	entity.setCreateTime(new Date(10000));
 	entity.setChecked(true);
 	return entity;
     }

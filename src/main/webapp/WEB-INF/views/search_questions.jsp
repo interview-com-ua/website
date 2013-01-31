@@ -6,24 +6,26 @@
 		<title>Поиск вопросов</title>
 	</head>
 	<body>
- 
-		<form:select path="companies">
-    		<form:options items="${companies}" itemLabel="name" itemValue="name" />
-		</form:select> 
-
-		<form:select path="positions">
-    		<form:options items="${positions}" itemLabel="name" itemValue="name"/>
-		</form:select> 
-
-		<form:select path="technologies">
-    		<form:options items="${technologies}" itemLabel="name" itemValue="name"/>
-		</form:select> 
-
-		<c:forEach var="question" items="${questions}">
-			<div>
-				${question.question}
-	      	</div>
-		</c:forEach>
+ 		<form:form action="../question/search" method="post" commandName="questionSearchCommand">
+			<form:select path="companyId">
+	    		<form:options items="${companies}" itemLabel="name" itemValue="id" />
+			</form:select> 
+	
+			<form:select path="positionId">
+	    		<form:options items="${positions}" itemLabel="name" itemValue="id" />
+			</form:select> 
+	
+			<form:select path="technologyId">
+	    		<form:options items="${technologies}" itemLabel="name" itemValue="id"/>
+			</form:select> 
+	
+			<c:forEach var="question" items="${questions}">
+				<div>
+					${question.question}
+		      	</div>		
+		    </c:forEach>
+		    <input type="submit" value="submit" />
+		</form:form>
 
 	</body>
 </html>

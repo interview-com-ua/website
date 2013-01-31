@@ -22,7 +22,6 @@ public class CompanyEntity extends EntityWithId {
     private String companyWebPage;
     private CompanyType companyType;
 
-
     public String getCompanyName() {
 	return companyName;
     }
@@ -62,14 +61,14 @@ public class CompanyEntity extends EntityWithId {
     public void setCompanyWebPage(String companyWebPage) {
 	this.companyWebPage = companyWebPage;
     }
-    
-    @Enumerated(EnumType.STRING) 
+
+    @Enumerated(EnumType.STRING)
     public CompanyType getType() {
-       return companyType;
+	return companyType;
     }
-    
+
     public void setType(CompanyType type) {
-       this.companyType = type;
+	this.companyType = type;
     }
 
     @Override
@@ -129,6 +128,5 @@ public class CompanyEntity extends EntityWithId {
 	    return false;
 	return true;
     }
-    
-    
+
 }

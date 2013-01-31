@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
+import ua.com.itinterview.entity.UserEntity.Sex;
 import ua.com.itinterview.web.command.UserCommand;
 
 public class UserServiceUnitTest {
@@ -25,11 +26,13 @@ public class UserServiceUnitTest {
     private static final String NAME = "name";
     private static final String USER_NAME = "userName";
     private static final String PASSWORD = "password";
+    private static final Sex SEX = Sex.MALE;
 
     private static final String FAKE_USER_NAME = "Fake User Name";
     private static final String NEW_NAME = "new name";
     private static final String NEW_EMAIL = "new email";
     private static final int NEW_USER_ID = USER_ID + 1;
+    private static final Sex NEW_SEX = Sex.MALE;
 
     private UserDao userDaoMock;
     private UserService userService;
@@ -73,7 +76,7 @@ public class UserServiceUnitTest {
 			.getUserName())).andReturn(false);
 	expect(userDaoMock.save(userEntity)).andReturn(userEntity);
 	replayAllMocks();
-	
+
 	UserCommand actualUserCommand = userService.createUser(userCommand);
 	UserCommand expectedUserCommand = createUserCommand();
 	expectedUserCommand.setId(actualUserCommand.getId());
@@ -94,7 +97,7 @@ public class UserServiceUnitTest {
     public void testUpdateUser() {
 	UserEntity oldUserInDb = createUserEntity();
 	UserCommand userToUpdate = createCustomUserCommand(NEW_USER_ID,
-		PASSWORD, NEW_EMAIL, NEW_NAME, FAKE_USER_NAME);
+		PASSWORD, NEW_EMAIL, NEW_NAME, FAKE_USER_NAME, NEW_SEX);
 
 	expect(userDaoMock.getEntityById(USER_ID)).andReturn(oldUserInDb);
 	Capture<UserEntity> userToSaveCapture = new Capture<UserEntity>();
@@ -103,7 +106,7 @@ public class UserServiceUnitTest {
 	replayAllMocks();
 
 	UserCommand expectedCommand = createCustomUserCommand(USER_ID,
-		PASSWORD, NEW_EMAIL, NEW_NAME, USER_NAME);
+		PASSWORD, NEW_EMAIL, NEW_NAME, USER_NAME, NEW_SEX);
 	assertEquals(expectedCommand,
 		userService.updateUser(USER_ID, userToUpdate));
 
@@ -113,6 +116,7 @@ public class UserServiceUnitTest {
 	assertEquals(USER_NAME, actualSavedEntity.getUserName());
 	assertEquals(USER_ID, actualSavedEntity.getId());
 	assertEquals(PASSWORD, actualSavedEntity.getPassword());
+	assertEquals(SEX, actualSavedEntity.getSex());
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -149,7 +153,7 @@ public class UserServiceUnitTest {
     }
 
     private UserCommand createCustomUserCommand(int id, String password,
-	    String email, String name, String userName) {
+	    String email, String name, String userName, Sex sex) {
 	UserCommand command = new UserCommand();
 	command.setId(id);
 	command.setConfirmPassword(password);
@@ -157,6 +161,7 @@ public class UserServiceUnitTest {
 	command.setEmail(email);
 	command.setName(name);
 	command.setUserName(userName);
+	command.setSex(sex);
 	return command;
     }
 
@@ -168,6 +173,7 @@ public class UserServiceUnitTest {
 	command.setEmail(EMAIL);
 	command.setName(NAME);
 	command.setUserName(USER_NAME);
+	command.setSex(SEX);
 	return command;
     }
 
@@ -178,6 +184,7 @@ public class UserServiceUnitTest {
 	userEntity.setEmail(EMAIL);
 	userEntity.setName(NAME);
 	userEntity.setUserName(USER_NAME);
+	userEntity.setSex(SEX);
 	return userEntity;
     }
 }

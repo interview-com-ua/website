@@ -15,7 +15,7 @@ public class QuestionDaoIntegrationTest extends
 	BaseEntityWithIdDaoIntegrationTest<QuestionEntity> {
 
     @Autowired
-    private InterviewEntityDao interDao;
+    private InterviewDao interDao;
 
     @Autowired
     private QuestionDao questionDao;

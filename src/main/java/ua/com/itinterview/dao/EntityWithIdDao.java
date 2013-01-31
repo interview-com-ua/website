@@ -59,6 +59,7 @@ public class EntityWithIdDao<T extends EntityWithId> {
     }
 
     @SuppressWarnings("unchecked")
+    @Transactional
     protected List<T> getResultWithPaginator(Criteria criteria,
 	    PagingFilter pagingFilter) {
 	int firstPosition = pagingFilter.getItemsPerPage()
@@ -73,6 +74,7 @@ public class EntityWithIdDao<T extends EntityWithId> {
     }
 
     @SuppressWarnings("unchecked")
+    @Transactional
     public List<T> getAll(int limit) {
 	Session session = sessionFactory.getCurrentSession();
 	Criteria criteria = session.createCriteria(clazz).setMaxResults(limit);

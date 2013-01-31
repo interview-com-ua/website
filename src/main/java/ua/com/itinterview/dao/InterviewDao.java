@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.UserEntity;
 
-public class InterviewEntityDao extends EntityWithIdDao<InterviewEntity> {
+public class InterviewDao extends EntityWithIdDao<InterviewEntity> {
 
     @SuppressWarnings("unchecked")
     @Transactional

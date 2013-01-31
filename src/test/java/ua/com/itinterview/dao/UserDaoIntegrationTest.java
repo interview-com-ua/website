@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.junit.Test;
@@ -48,4 +51,13 @@ public class UserDaoIntegrationTest extends
 	return userDao;
     }
 
+    @Override
+    protected List<UserEntity> createEntityList() {
+	UserEntity user1 = createEntity();
+	UserEntity user2 = createEntity();
+	user2.setUserName(user2.getUserName() + "2");
+	user2.setEmail(user2.getEmail() + "2");
+
+	return Arrays.asList(user1, user2);
+    }
 }

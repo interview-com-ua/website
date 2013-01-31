@@ -1,6 +1,5 @@
 package ua.com.itinterview.web.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -21,7 +20,9 @@ import ua.com.itinterview.web.command.CommentCommand;
 import ua.com.itinterview.web.command.CompanyCommand;
 import ua.com.itinterview.web.command.PositionCommand;
 import ua.com.itinterview.web.command.QuestionCommand;
+import ua.com.itinterview.web.command.QuestionSearchCommand;
 import ua.com.itinterview.web.command.TechnologyCommand;
+import ua.com.itinterview.web.resource.viewpages.ModeView;
 
 @Controller
 @RequestMapping(value = "/question")
@@ -41,37 +42,22 @@ public class QuestionResource {
     @Autowired
     private TechnologyService technologyService;
 
+    ModeView modeView;
+
     @RequestMapping(value = "/{questionId}/view", method = RequestMethod.GET)
     public ModelAndView viewQuestion(@PathVariable("questionId") int questionId) {
 
-	// QuestionCommand oneQuestionCommand = questionService
-	// .getQuestionById(questionId);
-	// List<CommentCommand> commentsForQuestion = commentService
-	// .getCommentListForQuestion(questionId);
+	QuestionCommand oneQuestionCommand = questionService
+		.getQuestionById(questionId);
+	List<CommentCommand> commentsForQuestion = commentService
+		.getCommentListForQuestion(questionId);
 
-	List<CommentCommand> commentsForQuestion = new ArrayList<CommentCommand>();
-	CommentCommand commandTest1 = new CommentCommand();
-	commandTest1.setAuthorName("Вася");
-	commandTest1.setCommentText("Некоторорый коментарий");
-
-	CommentCommand commandTest2 = new CommentCommand();
-	commandTest2.setAuthorName("Никодим");
-	commandTest2.setCommentText("Плохой коментарий");
-
-	commentsForQuestion.add(commandTest1);
-	commentsForQuestion.add(commandTest2);
-	commentsForQuestion.add(commandTest1);
-	commentsForQuestion.add(commandTest2);
-	commentsForQuestion.add(commandTest1);
-	commentsForQuestion.add(commandTest2);
-
-	QuestionCommand oneQuestionCommand = new QuestionCommand();
-	oneQuestionCommand.setQuestion("Вопрос номер один");
-
-	ModelAndView viewQuestion = new ModelAndView("view_question");
+	ModelAndView viewQuestion = new ModelAndView("add_question");
 
 	viewQuestion.addObject("oneQuestionCommand", oneQuestionCommand);
 	viewQuestion.addObject("commentsForQuestion", commentsForQuestion);
+	modeView = ModeView.VIEW;
+	viewQuestion.addObject("mode", modeView);
 	return viewQuestion;
     }
 
@@ -89,7 +75,8 @@ public class QuestionResource {
     public ModelAndView getEditQuestionPage(@PathVariable Integer questionId) {
 	ModelAndView view = new ModelAndView("add_question");
 	view.addObject(new QuestionCommand());
-	view.addObject("edit", true);
+	modeView = ModeView.EDIT;
+	view.addObject("mode", modeView);
 	return view;
     }
 
@@ -115,8 +102,37 @@ public class QuestionResource {
 	view.addObject("positions", positions);
 	view.addObject("technologies", technologies);
 	view.addObject("questions", questions);
+	view.addObject("questionSearchCommand", new QuestionSearchCommand());
 
 	return view;
     }
 
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public ModelAndView getQuestionSearchResult() {
+
+	return showQuestionSearchPage();
+    }
+
+    @RequestMapping(value = "/{questionId}/add_comment", method = RequestMethod.GET)
+    public ModelAndView getAddCommentPage(
+	    @PathVariable("questionId") Integer questionId) {
+	ModelAndView view = new ModelAndView("add_comment");
+	CommentCommand commentToAdd = new CommentCommand();
+	commentToAdd.setRate(0);
+	view.addObject(commentToAdd);
+	return view;
+    }
+
+    @RequestMapping(value = "/{questionId}/add_comment", method = RequestMethod.POST)
+    public ModelAndView addCommentToQuestion(
+	    @PathVariable("questionId") Integer questionId,
+	    @ModelAttribute CommentCommand commentCommand) {
+	System.out.println(commentCommand);
+	/*
+	 * return new ModelAndView("redirect:/question/" + questionId +
+	 * "/comment_list");
+	 */// this will work for the release, when the database is set
+	return new ModelAndView("redirect:/question/" + questionId + "/view");
+
+    }
 }

@@ -13,7 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ua.com.itinterview.dao.InterviewEntityDao;
+import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.QuestionDao;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.QuestionEntity;
@@ -21,8 +21,17 @@ import ua.com.itinterview.web.command.QuestionCommand;
 
 public class QuestionServiceUnitTest {
 
+    private static final int QUESTION_ID = 15;
+    private static final String TITLE = "title";
     private static final String QUESTION = "question";
-    private InterviewEntityDao interviewDao;
+    private static final String ANSWER = "answer";
+
+    private static final int INVALID_QUESTON_ID = QUESTION_ID+1;
+    private static final String UPDATED_TITLE = "updated title";
+    private static final String UPDATED_QUESTION = "updated question";
+    private static final String UPDATED_ANSWER = "updated answer";
+
+    private InterviewDao interviewDao;
     private QuestionDao questionDao;
     private QuestionService questionService;
 
@@ -30,7 +39,7 @@ public class QuestionServiceUnitTest {
     public void setUpMocks() {
 	questionService = new QuestionService();
 
-	interviewDao = EasyMock.createMock(InterviewEntityDao.class);
+	interviewDao = EasyMock.createMock(InterviewDao.class);
 	questionService.interviewDao = interviewDao;
 
 	questionDao = EasyMock.createMock(QuestionDao.class);
@@ -62,22 +71,27 @@ public class QuestionServiceUnitTest {
     }
 
     private QuestionCommand createTestQuestionCommand() {
-	QuestionCommand result = new QuestionCommand();
-	result.setQuestion(QUESTION);
-	return result;
+	QuestionCommand questionCommand = new QuestionCommand();
+	questionCommand.setId(QUESTION_ID);
+	questionCommand.setQuestion(QUESTION);
+	questionCommand.setTitle(TITLE);
+	questionCommand.setAnswer(ANSWER);
+	return questionCommand;
     }
 
     private QuestionEntity createTestQuestionEntity() {
-	QuestionEntity result = new QuestionEntity();
-	result.setQuestion(QUESTION);
-	return result;
+	QuestionEntity questionEntity = new QuestionEntity();
+	questionEntity.setId(QUESTION_ID);
+	questionEntity.setQuestion(QUESTION);
+	questionEntity.setTitle(TITLE);
+	questionEntity.setAnswer(ANSWER);
+	return questionEntity;
     }
 
     @Test
     public void testGetQuestionById() {
 	Integer questionId = 10;
 	QuestionEntity questionEntity = new QuestionEntity();
-	QuestionCommand questioncom = new QuestionCommand();
 	EasyMock.expect(questionDao.getEntityById(questionId)).andReturn(
 		questionEntity);
 	replayAllMocks();
@@ -164,22 +178,31 @@ public class QuestionServiceUnitTest {
 
     @Test
     public void testUpdateQuestionWhenQuestionExist() {
-	Integer questionId = 15;
-	QuestionEntity questionEntity = createTestQuestionEntity();
-	questionEntity.setId(questionId);
-	QuestionCommand questionCommand = new QuestionCommand();
-	questionCommand.setQuestion("New Question");
+	QuestionEntity questionInDb = createTestQuestionEntity();
+	QuestionCommand questionToUpdate = createTestQuestionCommand();
+	questionToUpdate.setId(INVALID_QUESTON_ID);
+	questionToUpdate.setQuestion(UPDATED_QUESTION);
+	questionToUpdate.setAnswer(UPDATED_ANSWER);
+	questionToUpdate.setTitle(UPDATED_TITLE);
 
-	EasyMock.expect(questionDao.getEntityById(questionEntity.getId()))
-		.andReturn(questionEntity);
+	EasyMock.expect(questionDao.getEntityById(QUESTION_ID)).andReturn(
+		questionInDb);
 	Capture<QuestionEntity> questionCapture = new Capture<QuestionEntity>();
 	EasyMock.expect(questionDao.save(EasyMock.capture(questionCapture)))
-		.andReturn(questionEntity);
+		.andReturn(questionInDb);
 	replayAllMocks();
 
-	assertEquals(questionCommand,
-		questionService.updateQuestion(questionId, questionCommand));
-	assertEquals("New Question", questionCapture.getValue().getQuestion());
+	QuestionCommand expectedQuestionCommand = createTestQuestionCommand();
+	expectedQuestionCommand.setQuestion(UPDATED_QUESTION);
+	expectedQuestionCommand.setAnswer(UPDATED_ANSWER);
+	expectedQuestionCommand.setTitle(UPDATED_TITLE);
+	assertEquals(expectedQuestionCommand,
+		questionService.updateQuestion(QUESTION_ID, questionToUpdate));
+	
+	assertEquals(QUESTION_ID, questionCapture.getValue().getId());
+	assertEquals(UPDATED_QUESTION, questionCapture.getValue().getQuestion());
+	assertEquals(UPDATED_ANSWER, questionCapture.getValue().getAnswer());
+	assertEquals(UPDATED_TITLE, questionCapture.getValue().getTitle());
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -193,10 +216,20 @@ public class QuestionServiceUnitTest {
 	questionService.updateQuestion(15, null);
     }
 
+    @Test
+    public void testGetRecentQuestionList() {
+
+	List<QuestionEntity> questionList = getQuestionListForInterviewMockResult();
+	EasyMock.expect(questionDao.getRecentQuestionList()).andReturn(
+		questionList);
+	replayAllMocks();
+	assertEquals(convertEntityListToCommandList(questionList),
+		questionService.getRecentQuestionList());
+    }
+
     @After
     public void verifyAllMocks() {
 	EasyMock.verify(interviewDao, questionDao);
-
     }
 
 }
