@@ -56,8 +56,9 @@ public class QuestionService {
     public QuestionCommand updateQuestion(Integer questionId,
 	    QuestionCommand inputQuestion) {
 	QuestionEntity questionEntity = questionDao.getEntityById(questionId);
-	// questionEntity = new QuestionEntity(inputQuestion);
 	questionEntity.setQuestion(inputQuestion.getQuestion());
+	questionEntity.setAnswer(inputQuestion.getAnswer());
+	questionEntity.setTitle(inputQuestion.getTitle());
 	questionEntity = questionDao.save(questionEntity);
 
 	return new QuestionCommand(questionEntity);
