@@ -23,6 +23,7 @@ import ua.com.itinterview.web.command.PositionCommand;
 import ua.com.itinterview.web.command.QuestionCommand;
 import ua.com.itinterview.web.command.QuestionSearchCommand;
 import ua.com.itinterview.web.command.TechnologyCommand;
+import ua.com.itinterview.web.resource.viewpages.ModeView;
 
 @Controller
 @RequestMapping(value = "/question")
@@ -41,6 +42,8 @@ public class QuestionResource {
     private PositionService positionService;
     @Autowired
     private TechnologyService technologyService;
+
+    ModeView modeView;
 
     @RequestMapping(value = "/{questionId}/view", method = RequestMethod.GET)
     public ModelAndView viewQuestion(@PathVariable("questionId") int questionId) {
@@ -69,10 +72,12 @@ public class QuestionResource {
 	QuestionCommand oneQuestionCommand = new QuestionCommand();
 	oneQuestionCommand.setQuestion("Вопрос номер один");
 
-	ModelAndView viewQuestion = new ModelAndView("view_question");
+	ModelAndView viewQuestion = new ModelAndView("add_question");
 
 	viewQuestion.addObject("oneQuestionCommand", oneQuestionCommand);
 	viewQuestion.addObject("commentsForQuestion", commentsForQuestion);
+	modeView = ModeView.VIEW;
+	viewQuestion.addObject("mode", modeView);
 	return viewQuestion;
     }
 
@@ -90,7 +95,8 @@ public class QuestionResource {
     public ModelAndView getEditQuestionPage(@PathVariable Integer questionId) {
 	ModelAndView view = new ModelAndView("add_question");
 	view.addObject(new QuestionCommand());
-	view.addObject("edit", true);
+	modeView = ModeView.EDIT;
+	view.addObject("mode", modeView);
 	return view;
     }
 
@@ -117,13 +123,13 @@ public class QuestionResource {
 	view.addObject("technologies", technologies);
 	view.addObject("questions", questions);
 	view.addObject("questionSearchCommand", new QuestionSearchCommand());
-	
+
 	return view;
     }
-    
+
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public ModelAndView getQuestionSearchResult() {
-	
+
 	return showQuestionSearchPage();
     }
 

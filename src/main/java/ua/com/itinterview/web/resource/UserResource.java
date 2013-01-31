@@ -18,16 +18,6 @@ import ua.com.itinterview.web.resource.viewpages.ModeView;
 @Controller
 @RequestMapping(value = "/user")
 public class UserResource {
-    /*
-     * public class ViewMode { public static final int MODE_CREATE = 0; public
-     * static final int MODE_VIEW = 1; public static final int MODE_EDIT = 2;
-     * 
-     * public int getMODE_CREATE() { return MODE_CREATE; }
-     * 
-     * public int getMODE_VIEW() { return MODE_VIEW; }
-     * 
-     * public int getMODE_EDIT() { return MODE_EDIT; } }
-     */
 
     ModeView modeView;
     @Autowired
@@ -75,7 +65,6 @@ public class UserResource {
 	    ModeView modeView) {
 	ModelAndView view = new ModelAndView("signup");
 	view.addObject(userCommand);
-	// view.addObject("Modes", new ViewMode());
 	view.addObject("mode", modeView);
 	return view;
     }
