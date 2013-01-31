@@ -8,14 +8,14 @@ import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.entity.UserEntity.Sex;
 import ua.com.itinterview.validation.FieldsEquals;
 
-@FieldsEquals(firstField = "password", secondField = "confirmPassword", errorKey = "password", message = "confirm.password")
+@FieldsEquals(firstField = "password", secondField = "confirmPassword", errorKey = "password", message = "{confirm.password}")
 public class UserCommand {
 
     private int id;
     @NotEmpty(message = "User Name cannot be empty. Please, enter some user name")
     @Length(max = 255, message = "Too long user name")
     private String userName;
-    @Email
+    @Email(message = "{email.invalid}")
     @NotEmpty
     @Length(max = 255)
     private String email;
