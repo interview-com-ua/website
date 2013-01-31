@@ -32,7 +32,7 @@ public class UserServiceUnitTest {
     private static final String NEW_NAME = "new name";
     private static final String NEW_EMAIL = "new email";
     private static final int NEW_USER_ID = USER_ID + 1;
-    private static final Sex NEW_SEX = Sex.MALE;
+    private static final Sex NEW_SEX = Sex.FEMALE;
 
     private UserDao userDaoMock;
     private UserService userService;
@@ -116,7 +116,7 @@ public class UserServiceUnitTest {
 	assertEquals(USER_NAME, actualSavedEntity.getUserName());
 	assertEquals(USER_ID, actualSavedEntity.getId());
 	assertEquals(PASSWORD, actualSavedEntity.getPassword());
-	assertEquals(SEX, actualSavedEntity.getSex());
+	assertEquals(NEW_SEX, actualSavedEntity.getSex());
     }
 
     @Test(expected = EntityNotFoundException.class)

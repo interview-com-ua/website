@@ -25,6 +25,7 @@ public class UserService {
 	UserEntity userEntity = userDao.getEntityById(userId);
 	userEntity.setEmail(userCommand.getEmail());
 	userEntity.setName(userCommand.getName());
+	userEntity.setSex(userCommand.getSex());
 	UserEntity savedEntity = userDao.save(userEntity);
 	return new UserCommand(savedEntity);
     }
