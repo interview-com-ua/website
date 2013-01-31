@@ -21,6 +21,7 @@ import ua.com.itinterview.web.command.CommentCommand;
 import ua.com.itinterview.web.command.CompanyCommand;
 import ua.com.itinterview.web.command.PositionCommand;
 import ua.com.itinterview.web.command.QuestionCommand;
+import ua.com.itinterview.web.command.QuestionSearchCommand;
 import ua.com.itinterview.web.command.TechnologyCommand;
 
 @Controller
@@ -115,8 +116,15 @@ public class QuestionResource {
 	view.addObject("positions", positions);
 	view.addObject("technologies", technologies);
 	view.addObject("questions", questions);
-
+	view.addObject("questionSearchCommand", new QuestionSearchCommand());
+	
 	return view;
+    }
+    
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public ModelAndView getQuestionSearchResult() {
+	
+	return showQuestionSearchPage();
     }
 
 }

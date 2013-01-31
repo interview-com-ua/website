@@ -16,11 +16,12 @@ import ua.com.itinterview.web.command.CompanyCommand;
 
 public class CompanyServiceUnitTest {
 
-    private static final String companyName = "company";
-    private static final String companyPhone = "company phone";
-    private static final String companyLogoUrl = "company logo url";
-    private static final String companyAddress = "company address";
-    private static final String companyWebPage = "company webpage";
+    private static final Integer ID = 14;
+    private static final String COMPANY_NAME = "company";
+    private static final String COMPANY_PHONE = "company phone";
+    private static final String COMPANY_LOGO_URL = "company logo url";
+    private static final String COMPANY_ADDRESS = "company address";
+    private static final String COMPANY_WEB_PAGE = "company webpage";
 
     private CompanyService companyService;
     private CompanyDao companyDao;
@@ -49,11 +50,11 @@ public class CompanyServiceUnitTest {
 	for (int i = 1; i <= 3; i++) {
 
 	    CompanyEntity company = new CompanyEntity();
-	    company.setCompanyName(companyName + i);
-	    company.setCompanyPhone(companyPhone + i);
-	    company.setCompanyLogoUrl(companyLogoUrl + i);
-	    company.setCompanyAddress(companyAddress + i);
-	    company.setCompanyWebPage(companyWebPage + i);
+	    company.setCompanyName(COMPANY_NAME + i);
+	    company.setCompanyPhone(COMPANY_PHONE + i);
+	    company.setCompanyLogoUrl(COMPANY_LOGO_URL + i);
+	    company.setCompanyAddress(COMPANY_ADDRESS + i);
+	    company.setCompanyWebPage(COMPANY_WEB_PAGE + i);
 
 	    companies.add(company);
 	}
@@ -76,24 +77,26 @@ public class CompanyServiceUnitTest {
     private CompanyCommand createTestCompanyCommand() {
 
 	CompanyCommand company = new CompanyCommand();
-	company.setName(companyName);
-	company.setPhone(companyPhone);
-	company.setLogoURL(companyLogoUrl);
-	company.setAddress(companyAddress);
-	company.setWebPage(companyWebPage);
-
+	company.setName(COMPANY_NAME);
+	company.setPhone(COMPANY_PHONE);
+	company.setLogoURL(COMPANY_LOGO_URL);
+	company.setAddress(COMPANY_ADDRESS);
+	company.setWebPage(COMPANY_WEB_PAGE);
+	company.setId(ID);
+	
 	return company;
     }
 
     private CompanyEntity createTestCompanyEntity() {
 
 	CompanyEntity company = new CompanyEntity();
-	company.setCompanyName(companyName);
-	company.setCompanyPhone(companyPhone);
-	company.setCompanyLogoUrl(companyLogoUrl);
-	company.setCompanyAddress(companyAddress);
-	company.setCompanyWebPage(companyWebPage);
-
+	company.setCompanyName(COMPANY_NAME);
+	company.setCompanyPhone(COMPANY_PHONE);
+	company.setCompanyLogoUrl(COMPANY_LOGO_URL);
+	company.setCompanyAddress(COMPANY_ADDRESS);
+	company.setCompanyWebPage(COMPANY_WEB_PAGE);
+	company.setId(ID);
+	
 	return company;
     }
 

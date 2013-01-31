@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.QuestionEntity;
 import ua.com.itinterview.entity.UserEntity;
+import ua.com.itinterview.web.configuration.ItemsPerPageConstantConfiguration;
 
 public class QuestionDao extends EntityWithIdDao<QuestionEntity> {
 
@@ -33,6 +34,14 @@ public class QuestionDao extends EntityWithIdDao<QuestionEntity> {
 	Criteria criteria = session.createCriteria(QuestionEntity.class);
 	criteria.add(eq("interview", interview));
 	return criteria.list();
+    }
+    
+    @Transactional
+    public List<QuestionEntity> getRecentQuestionList(){
+	return getAllOrderedBy(
+		"created",
+		"desc",
+		ItemsPerPageConstantConfiguration.ITEMS_PER_SEARCH_QUESTIONS_PAGE);
     }
 
 }

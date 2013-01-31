@@ -16,8 +16,9 @@ import ua.com.itinterview.web.command.PositionCommand;
 
 public class PositionServiceUnitTest {
 
-    private static final String positionName = "position";
-    private static final String positionGroup = "position group";
+    private static final Integer ID = 15;
+    private static final String POSITION_NAME = "position";
+    private static final String POSITION_GROUP = "position group";
 
     private PositionService positionService;
     private PositionDao positionDao;
@@ -45,8 +46,8 @@ public class PositionServiceUnitTest {
 
 	for (int i = 1; i <= 3; i++) {
 	    PositionEntity position = new PositionEntity();
-	    position.setPositionName(positionName + i);
-	    position.setPositionGroup(positionGroup + i);
+	    position.setPositionName(POSITION_NAME + i);
+	    position.setPositionGroup(POSITION_GROUP + i);
 	    positions.add(position);
 	}
 
@@ -68,8 +69,9 @@ public class PositionServiceUnitTest {
     private PositionCommand createTestPositionCommand() {
 
 	PositionCommand position = new PositionCommand();
-	position.setName(positionName);
-	position.setGroup(positionGroup);
+	position.setName(POSITION_NAME);
+	position.setGroup(POSITION_GROUP);
+	position.setId(ID);
 
 	return position;
     }
@@ -77,8 +79,9 @@ public class PositionServiceUnitTest {
     private PositionEntity createTestPositionEntity() {
 
 	PositionEntity position = new PositionEntity();
-	position.setPositionName(positionName);
-	position.setPositionGroup(positionGroup);
+	position.setPositionName(POSITION_NAME);
+	position.setPositionGroup(POSITION_GROUP);
+	position.setId(ID);
 
 	return position;
     }

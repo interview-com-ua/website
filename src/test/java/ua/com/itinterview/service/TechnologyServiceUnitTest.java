@@ -16,7 +16,8 @@ import ua.com.itinterview.web.command.TechnologyCommand;
 
 public class TechnologyServiceUnitTest {
 
-    private static final String technologyName = "technology";
+    private static final String TECHNOLOGY_NAME = "technology";
+    private static final Integer ID = 15;
     private TechnologyService technologyService;
     private TechnologyDao technologyDao;
 
@@ -43,7 +44,7 @@ public class TechnologyServiceUnitTest {
 
 	for (int i = 1; i <= 3; i++) {
 	    TechnologyEntity technology = new TechnologyEntity();
-	    technology.setTechnologyName(technologyName + i);
+	    technology.setTechnologyName(TECHNOLOGY_NAME + i);
 	    technologies.add(technology);
 	}
 
@@ -65,7 +66,8 @@ public class TechnologyServiceUnitTest {
     private TechnologyCommand createTestTechnologyCommand() {
 
 	TechnologyCommand technology = new TechnologyCommand();
-	technology.setName(technologyName);
+	technology.setName(TECHNOLOGY_NAME);
+	technology.setId(ID);
 
 	return technology;
     }
@@ -73,7 +75,8 @@ public class TechnologyServiceUnitTest {
     private TechnologyEntity createTestTechnologyEntity() {
 
 	TechnologyEntity technology = new TechnologyEntity();
-	technology.setTechnologyName(technologyName);
+	technology.setTechnologyName(TECHNOLOGY_NAME);
+	technology.setId(ID);
 
 	return technology;
     }
