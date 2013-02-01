@@ -61,19 +61,17 @@ public class InterviewServiceUnitTest {
 
     @Test
     public void testConvertEntityToCommand() {
-	InterviewEntity actual = new InterviewEntity();
-	actual.setCreated(new Date(10000));
-	actual.setFeedback("test");
-	actual.setUser(user);
-	InterviewCommand interviewCommand = new InterviewCommand(actual);
-	InterviewCommand interviewCommand1 = createInterviewCommand();
-	assertEquals(interviewCommand, interviewCommand1);
+	InterviewEntity interviewEntity = createInterviewEntity();
+	InterviewCommand expectedCommand = createInterviewCommand();
+	InterviewCommand actualCommand = new InterviewCommand(interviewEntity);	
+	assertEquals(expectedCommand, actualCommand);
     }
 
     private InterviewCommand createInterviewCommand() {
 	InterviewCommand interviewCommand = new InterviewCommand();
 	interviewCommand.setFeedback("test");
 	interviewCommand.setCreated(new Date(10000));
+	interviewCommand.setId(1);
 	user.setEmail("email");
 	user.setPassword("password");
 	user.setUserName("name");
@@ -85,6 +83,7 @@ public class InterviewServiceUnitTest {
 	InterviewEntity interviewEntity = new InterviewEntity();
 	interviewEntity.setFeedback("test");
 	interviewEntity.setCreated(new Date(10000));
+	interviewEntity.setId(1);
 	user.setEmail("email");
 	user.setPassword("password");
 	user.setUserName("name");
