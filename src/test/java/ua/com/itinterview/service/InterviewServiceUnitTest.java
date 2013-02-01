@@ -12,12 +12,20 @@ import org.junit.Test;
 
 import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.UserDao;
+import ua.com.itinterview.entity.CityEntity;
+import ua.com.itinterview.entity.CompanyEntity;
 import ua.com.itinterview.entity.InterviewEntity;
+import ua.com.itinterview.entity.PositionEntity;
+import ua.com.itinterview.entity.TechnologyEntity;
 import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.web.command.InterviewCommand;
 
 public class InterviewServiceUnitTest {
 
+    private static final int COMPANY_ID = 30;
+    private static final int POSITION_ID = 32;
+    private static final int TECHNOLOGY_ID = 11;
+    private static final int CITY_ID = 10;
     private UserEntity user;
     private InterviewService interviewService;
     private InterviewDao interviewDaoMock;
@@ -51,10 +59,7 @@ public class InterviewServiceUnitTest {
     @Test
     public void testConvertCommandToEntity() {
 	InterviewCommand command = createInterviewCommand();
-	InterviewEntity expected = new InterviewEntity();
-	expected.setCreated(new Date(10000));
-	expected.setFeedback("test");
-	expected.setUser(user);
+	InterviewEntity expected = createInterviewEntity();
 	InterviewEntity actual = new InterviewEntity(command);
 	assertEquals(expected, actual);
     }
@@ -63,7 +68,7 @@ public class InterviewServiceUnitTest {
     public void testConvertEntityToCommand() {
 	InterviewEntity interviewEntity = createInterviewEntity();
 	InterviewCommand expectedCommand = createInterviewCommand();
-	InterviewCommand actualCommand = new InterviewCommand(interviewEntity);	
+	InterviewCommand actualCommand = new InterviewCommand(interviewEntity);
 	assertEquals(expectedCommand, actualCommand);
     }
 
@@ -76,6 +81,10 @@ public class InterviewServiceUnitTest {
 	user.setPassword("password");
 	user.setUserName("name");
 	interviewCommand.setUser(user);
+	interviewCommand.setCityId(CITY_ID);
+	interviewCommand.setTechnologyId(TECHNOLOGY_ID);
+	interviewCommand.setPositionId(POSITION_ID);
+	interviewCommand.setCompanyId(COMPANY_ID);
 	return interviewCommand;
     }
 
@@ -89,6 +98,18 @@ public class InterviewServiceUnitTest {
 	user.setUserName("name");
 	userDao.save(user);
 	interviewEntity.setUser(user);
+	CityEntity city = new CityEntity();
+	city.setId(CITY_ID);
+	interviewEntity.setCity(city);
+	TechnologyEntity technology = new TechnologyEntity();
+	technology.setId(TECHNOLOGY_ID);
+	interviewEntity.setTechnology(technology);
+	PositionEntity position = new PositionEntity();
+	position.setId(POSITION_ID);
+	interviewEntity.setPosition(position);
+	CompanyEntity company = new CompanyEntity();
+	company.setId(COMPANY_ID);
+	interviewEntity.setCompany(company);
 	return interviewEntity;
     }
 

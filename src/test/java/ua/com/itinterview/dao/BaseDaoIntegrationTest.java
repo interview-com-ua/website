@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import ua.com.itinterview.entity.CityEntity;
 import ua.com.itinterview.entity.CommentEntity;
 import ua.com.itinterview.entity.FeedbackEntity;
 import ua.com.itinterview.entity.InterviewEntity;
@@ -57,13 +58,14 @@ public abstract class BaseDaoIntegrationTest extends
 
     public BaseDaoIntegrationTest() {
 	entities = new ArrayList<Class<?>>();
-	entities.add(UserEntity.class);
-	entities.add(CommentEntity.class);
 	entities.add(InterviewEntity.class);
+	entities.add(CommentEntity.class);
 	entities.add(QuestionEntity.class);
 	entities.add(PositionEntity.class);
 	entities.add(TechnologyEntity.class);
 	entities.add(FeedbackEntity.class);
+	entities.add(CityEntity.class);
+	entities.add(UserEntity.class);
     }
 
     @Before
