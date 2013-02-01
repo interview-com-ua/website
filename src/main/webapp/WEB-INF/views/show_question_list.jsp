@@ -3,15 +3,22 @@
 <%@page contentType="text/html;charset=UTF-8" %> 
 <html>
 <head>
-	<title>Список вопросов для собеседования</title>
+	<title>${oneQuestionCommand.title}</title>
 </head>
 <body>
 <table>
-  <c:forEach var="question" items="${questionList}">
-	  <tr>
-	     <td>${question.question}</td>  
-	  </tr>
-  </c:forEach>
+<h1>${oneQuestionCommand.question}</h1>
+  <c:forEach var="comments" items="${commentsForQuestion}">
+	<tr>
+		<td>Автор: "${comments.authorName}"</td>
+	</tr>
+	<tr>
+		<td>"${comments.commentText}"</td>
+	</tr>
+	<tr>
+		<td>Рейтинг:"${comments.rate}"</td>
+	</tr>
+ </c:forEach>
 </table>
 </body>
 </html>

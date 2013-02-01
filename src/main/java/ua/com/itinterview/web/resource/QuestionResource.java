@@ -50,7 +50,7 @@ public class QuestionResource {
 	QuestionCommand oneQuestionCommand = questionService
 		.getQuestionById(questionId);
 	List<CommentCommand> commentsForQuestion = commentService
-		.getCommentListForQuestion(questionId);
+		.getCommentListForQuestion(questionId, 0);
 
 	ModelAndView viewQuestion = new ModelAndView("add_question");
 
