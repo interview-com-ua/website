@@ -9,6 +9,7 @@ import ua.com.itinterview.entity.UserEntity;
 
 public class InterviewCommand {
 
+    private Integer 	id;
     private UserEntity user;
 
     @NotNull
@@ -22,9 +23,18 @@ public class InterviewCommand {
     }
 
     public InterviewCommand(InterviewEntity interviewEntity) {
+	id = interviewEntity.getId();
 	user = interviewEntity.getUser();
 	feedback = interviewEntity.getFeedback();
 	created = interviewEntity.getCreated();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public UserEntity getUser() {
@@ -58,6 +68,7 @@ public class InterviewCommand {
 	result = prime * result + ((created == null) ? 0 : created.hashCode());
 	result = prime * result
 		+ ((feedback == null) ? 0 : feedback.hashCode());
+	result = prime * result + ((id == null) ? 0 : id.hashCode());
 	result = prime * result + ((user == null) ? 0 : user.hashCode());
 	return result;
     }
@@ -81,6 +92,11 @@ public class InterviewCommand {
 		return false;
 	} else if (!feedback.equals(other.feedback))
 	    return false;
+	if (id == null) {
+	    if (other.id != null)
+		return false;
+	} else if (!id.equals(other.id))
+	    return false;
 	if (user == null) {
 	    if (other.user != null)
 		return false;
@@ -91,8 +107,7 @@ public class InterviewCommand {
 
     @Override
     public String toString() {
-	return "InterviewCommand [user=" + user + ", feedback=" + feedback
-		+ ", created=" + created + "]";
+	return "InterviewCommand [id=" + id + ", user=" + user + ", feedback="
+		+ feedback + ", created=" + created + "]";
     }
-
 }
