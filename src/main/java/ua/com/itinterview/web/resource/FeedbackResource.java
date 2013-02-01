@@ -2,8 +2,11 @@ package ua.com.itinterview.web.resource;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,7 +29,14 @@ public class FeedbackResource {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public void addFeedback(@ModelAttribute FeedbackCommand feedbackCommand) {
+    public void addFeedback(
+	    @Valid @ModelAttribute FeedbackCommand feedbackCommand,
+	    BindingResult bindResult) {
+	if (bindResult.hasErrors()) {
+	    ModelAndView view = new ModelAndView("add_feedback");
+	    view.addObject(feedbackCommand);
+	    view.addObject("SUCCESS_MESSAGE", "You have errors");
+	}
 	System.out.println(feedbackCommand);
     }
 
