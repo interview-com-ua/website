@@ -5,7 +5,6 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import ua.com.itinterview.entity.UserEntity;
-import ua.com.itinterview.entity.UserEntity.Sex;
 
 public class UserCommand {
 
@@ -20,7 +19,7 @@ public class UserCommand {
     @NotEmpty
     @Length(max = 255)
     private String name;
-    private Sex sex;
+    private String sex;
     private String password;
     private String confirmPassword;
 
@@ -69,11 +68,11 @@ public class UserCommand {
 	this.name = name;
     }
 
-    public Sex getSex() {
+    public String getSex() {
 	return sex;
     }
 
-    public void setSex(Sex sex) {
+    public void setSex(String sex) {
 	this.sex = sex;
     }
 
