@@ -18,6 +18,9 @@
 							</td>
 							<td>
 								<form:input type="text" size="30px" path="authorName"/>
+							</td>
+							<td>
+								<form:errors path="authorName" cssStyle="color: #ff0000"/>
 							</td>							
 						</tr>
 						<tr>
@@ -26,6 +29,9 @@
 							</td>
 							<td>
 								<form:input type="text" size="30px" path="email"/>
+							</td>
+							<td>
+								<form:errors path="email" cssStyle="color: #ff0000"/>
 							</td>							
 						</tr>
 						<tr>
@@ -42,6 +48,9 @@
 							</td>
 							<td>
 								<form:textarea rows="5" cols="30" path="commentText"/>
+							</td>
+							<td>
+								<form:errors path="commentText" cssStyle="color: #ff0000"/>
 							</td>							
 						</tr>
 					</tbody>

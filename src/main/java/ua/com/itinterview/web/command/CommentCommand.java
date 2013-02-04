@@ -1,12 +1,19 @@
 package ua.com.itinterview.web.command;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import ua.com.itinterview.entity.CommentEntity;
 
 public class CommentCommand {
 
     private int rate = 0;
+    @NotEmpty(message = "Author name cannot be empty.")
     private String authorName;
+    @NotEmpty(message = "Email cannot be empty.")
+    @Email(message = "Please enter valid email address.")
     private String email;
+    @NotEmpty(message = "Comment text cannot be empty.")
     private String commentText;
     private String userpicUrl;
 

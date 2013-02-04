@@ -2,9 +2,12 @@ package ua.com.itinterview.web.resource;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -126,13 +129,13 @@ public class QuestionResource {
     @RequestMapping(value = "/{questionId}/add_comment", method = RequestMethod.POST)
     public ModelAndView addCommentToQuestion(
 	    @PathVariable("questionId") Integer questionId,
-	    @ModelAttribute CommentCommand commentCommand) {
+	    @ModelAttribute @Valid CommentCommand commentCommand,
+	    BindingResult bindingResult) {
 	System.out.println(commentCommand);
-	/*
-	 * return new ModelAndView("redirect:/question/" + questionId +
-	 * "/comment_list");
-	 */// this will work for the release, when the database is set
-	return new ModelAndView("redirect:/question/" + questionId + "/view");
-
+	if (bindingResult.hasErrors()) {
+	    return new ModelAndView("add_comment");
+	}
+	return new ModelAndView("redirect:/question/" + questionId
+		+ "/comment_list");
     }
 }
