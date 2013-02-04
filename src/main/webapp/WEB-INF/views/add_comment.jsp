@@ -9,6 +9,7 @@
 		<form:form action="../${questionId}/add_comment" method="post"
 			commandName="commentCommand">
 			<fieldset>
+				<legend>Добавить комментарий</legend>
 				<table cellpadding="3">
 					<tbody>
 						<tr>
