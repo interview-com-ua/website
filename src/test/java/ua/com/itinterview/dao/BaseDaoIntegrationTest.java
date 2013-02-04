@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ua.com.itinterview.entity.CityEntity;
 import ua.com.itinterview.entity.CommentEntity;
+import ua.com.itinterview.entity.CompanyEntity;
 import ua.com.itinterview.entity.FeedbackEntity;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.PositionEntity;
@@ -59,6 +60,7 @@ public abstract class BaseDaoIntegrationTest extends
     public BaseDaoIntegrationTest() {
 	entities = new ArrayList<Class<?>>();
 	entities.add(InterviewEntity.class);
+	entities.add(CompanyEntity.class);
 	entities.add(CommentEntity.class);
 	entities.add(QuestionEntity.class);
 	entities.add(PositionEntity.class);
