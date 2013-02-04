@@ -19,6 +19,18 @@ public class InterviewEntity extends EntityWithId {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")
     private UserEntity user;
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private CompanyEntity company;
+    @ManyToOne
+    @JoinColumn(name = "technology_id")
+    private TechnologyEntity technology;
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    private PositionEntity position;
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    private CityEntity city;
     private String feedback;
     private Date created;
 
@@ -30,6 +42,46 @@ public class InterviewEntity extends EntityWithId {
 	user = interviewCommand.getUser();
 	feedback = interviewCommand.getFeedback();
 	created = interviewCommand.getCreated();
+	company = new CompanyEntity();
+	company.setId(interviewCommand.getCompanyId());
+	technology = new TechnologyEntity();
+	technology.setId(interviewCommand.getTechnologyId());
+	position = new PositionEntity();
+	position.setId(interviewCommand.getPositionId());
+	city = new CityEntity();
+	city.setId(interviewCommand.getCityId());
+    }
+
+    public CompanyEntity getCompany() {
+	return company;
+    }
+
+    public void setCompany(CompanyEntity company) {
+	this.company = company;
+    }
+
+    public TechnologyEntity getTechnology() {
+	return technology;
+    }
+
+    public void setTechnology(TechnologyEntity technology) {
+	this.technology = technology;
+    }
+
+    public PositionEntity getPosition() {
+	return position;
+    }
+
+    public void setPosition(PositionEntity position) {
+	this.position = position;
+    }
+
+    public CityEntity getCity() {
+	return city;
+    }
+
+    public void setCity(CityEntity city) {
+	this.city = city;
     }
 
     public UserEntity getUser() {
@@ -60,9 +112,15 @@ public class InterviewEntity extends EntityWithId {
     public int hashCode() {
 	final int prime = 31;
 	int result = super.hashCode();
+	result = prime * result + ((city == null) ? 0 : city.hashCode());
+	result = prime * result + ((company == null) ? 0 : company.hashCode());
 	result = prime * result + ((created == null) ? 0 : created.hashCode());
 	result = prime * result
 		+ ((feedback == null) ? 0 : feedback.hashCode());
+	result = prime * result
+		+ ((position == null) ? 0 : position.hashCode());
+	result = prime * result
+		+ ((technology == null) ? 0 : technology.hashCode());
 	result = prime * result + ((user == null) ? 0 : user.hashCode());
 	return result;
     }
@@ -76,6 +134,16 @@ public class InterviewEntity extends EntityWithId {
 	if (getClass() != obj.getClass())
 	    return false;
 	InterviewEntity other = (InterviewEntity) obj;
+	if (city == null) {
+	    if (other.city != null)
+		return false;
+	} else if (!city.equals(other.city))
+	    return false;
+	if (company == null) {
+	    if (other.company != null)
+		return false;
+	} else if (!company.equals(other.company))
+	    return false;
 	if (created == null) {
 	    if (other.created != null)
 		return false;
@@ -85,6 +153,16 @@ public class InterviewEntity extends EntityWithId {
 	    if (other.feedback != null)
 		return false;
 	} else if (!feedback.equals(other.feedback))
+	    return false;
+	if (position == null) {
+	    if (other.position != null)
+		return false;
+	} else if (!position.equals(other.position))
+	    return false;
+	if (technology == null) {
+	    if (other.technology != null)
+		return false;
+	} else if (!technology.equals(other.technology))
 	    return false;
 	if (user == null) {
 	    if (other.user != null)
@@ -96,8 +174,10 @@ public class InterviewEntity extends EntityWithId {
 
     @Override
     public String toString() {
-	return "InterviewEntity [user=" + user + ", feedback=" + feedback
-		+ ", created=" + created + "]";
+	return "InterviewEntity [user=" + user + ", company=" + company
+		+ ", technology=" + technology + ", position=" + position
+		+ ", city=" + city + ", feedback=" + feedback + ", created="
+		+ created + "]";
     }
 
 }

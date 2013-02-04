@@ -8,7 +8,11 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ua.com.itinterview.entity.CityEntity;
+import ua.com.itinterview.entity.CompanyEntity;
 import ua.com.itinterview.entity.InterviewEntity;
+import ua.com.itinterview.entity.PositionEntity;
+import ua.com.itinterview.entity.TechnologyEntity;
 import ua.com.itinterview.entity.UserEntity;
 
 public class InterviewDaoIntegrationTest extends
@@ -18,6 +22,14 @@ public class InterviewDaoIntegrationTest extends
     private UserDao userDao;
     @Autowired
     private InterviewDao interDao;
+    @Autowired
+    private CityDao cityDao;
+    @Autowired
+    private TechnologyDao technologyDao;
+    @Autowired
+    private PositionDao positionDao;
+    @Autowired
+    private CompanyDao companyDao;
 
     @Override
     protected InterviewEntity createEntity() {
@@ -69,6 +81,60 @@ public class InterviewDaoIntegrationTest extends
 	System.out.println("ID NUMBER OF INTERVIEW : " + id);
 	InterviewEntity expected = interDao.getInterviewById(id);
 	assertEquals(interviewAuthor, expected.getUser());
+    }
+
+    @Test
+    public void testSaveInterviewWithCityTechnologyPositionCompany() {
+	CityEntity city = cityDao.save(createCityByParams(0, "cityName"));
+	TechnologyEntity technology = technologyDao
+		.save(createTechnologyByParams(0, "technologyName"));
+	PositionEntity position = positionDao.save(createPositionByParams(0,
+		"positionName"));
+	CompanyEntity company = companyDao.save(createCompanyByParams(0,
+		"companyName"));
+
+	InterviewEntity interview = new InterviewEntity();
+	interview.setUser(testUser);
+	interview.setCompany(createCompanyByParams(company.getId(), null));
+	interview.setTechnology(createTechnologyByParams(technology.getId(),
+		null));
+	interview.setPosition(createPositionByParams(position.getId(), null));
+	interview.setCity(createCityByParams(city.getId(), null));
+
+	interview = interDao.save(interview);
+	assertEquals(city, interview.getCity());
+	assertEquals(technology, interview.getTechnology());
+	assertEquals(company, interview.getCompany());
+	assertEquals(position, interview.getPosition());
+    }
+
+    private CityEntity createCityByParams(int id, String cityName) {
+	CityEntity city = new CityEntity();
+	city.setId(id);
+	city.setCityName(cityName);
+	return city;
+    }
+
+    private PositionEntity createPositionByParams(int id, String positionName) {
+	PositionEntity position = new PositionEntity();
+	position.setId(id);
+	position.setPositionName(positionName);
+	return position;
+    }
+
+    private CompanyEntity createCompanyByParams(int id, String companyName) {
+	CompanyEntity company = new CompanyEntity();
+	company.setId(id);
+	company.setCompanyName(companyName);
+	return company;
+    }
+
+    private TechnologyEntity createTechnologyByParams(int id,
+	    String technologyName) {
+	TechnologyEntity technology = new TechnologyEntity();
+	technology.setId(id);
+	technology.setTechnologyName(technologyName);
+	return technology;
     }
 
 }

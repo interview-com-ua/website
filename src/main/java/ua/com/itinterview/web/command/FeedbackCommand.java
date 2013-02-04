@@ -2,14 +2,18 @@ package ua.com.itinterview.web.command;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import ua.com.itinterview.entity.FeedbackEntity;
 
 public class FeedbackCommand {
-
-    private String feedbackText;
+    @NotNull
+    @NotBlank
+    private String feedbackText, email;
     private Date createTime;
     private boolean checked;
-    private String email;
 
     public FeedbackCommand(FeedbackEntity entity) {
 	feedbackText = entity.getFeedbackText();

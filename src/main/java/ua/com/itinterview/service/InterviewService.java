@@ -3,10 +3,10 @@ package ua.com.itinterview.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import ua.com.itinterview.dao.CityDao;
 import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.InterviewEntity;
@@ -20,12 +20,12 @@ public class InterviewService {
     UserDao userDao;
 
     @Autowired
-    protected SessionFactory sessionFactory;
+    CityDao cityDao;
 
     public InterviewEntity addInterview(InterviewCommand inputInterview) {
-	    InterviewEntity interviewEntity = new InterviewEntity(inputInterview);
-        InterviewEntity interview = interviewEntityDao.save(interviewEntity);
-        return interview;
+	InterviewEntity interviewEntity = new InterviewEntity(inputInterview);
+	InterviewEntity interview = interviewEntityDao.save(interviewEntity);
+	return interview;
     }
 
     @Transactional

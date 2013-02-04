@@ -1,6 +1,7 @@
 package ua.com.itinterview.web.command;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import ua.com.itinterview.entity.UserEntity;
@@ -10,13 +11,15 @@ public class UserCommand {
 
     private int id;
     @NotEmpty(message = "User Name cannot be empty. Please, enter some user name")
+    @Length(max = 255, message = "Too long user name")
     private String userName;
     @Email
     @NotEmpty
+    @Length(max = 255)
     private String email;
     @NotEmpty
+    @Length(max = 255)
     private String name;
-    @NotEmpty
     private Sex sex;
     private String password;
     private String confirmPassword;

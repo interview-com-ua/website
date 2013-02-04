@@ -2,7 +2,9 @@ package ua.com.itinterview.web.resource;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -24,6 +26,7 @@ import ua.com.itinterview.service.InterviewService;
 import ua.com.itinterview.service.QuestionService;
 import ua.com.itinterview.web.command.InterviewCommand;
 import ua.com.itinterview.web.command.QuestionCommand;
+import ua.com.itinterview.web.command.UserCommand;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
 
 @Controller
@@ -103,54 +106,49 @@ public class InterviewResource {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public ModelAndView addInterview() {
-	ModelAndView view = new ModelAndView("add_interview");
-	view.addObject(new InterviewCommand());
-	return view;
+    public String getAddInterview(Map<String, Object> map,
+	    HttpServletRequest request) {
+	map.put("interviewCommand", new InterviewCommand());
+	map.put("mode", ModeView.CREATE);
+	return "interview";
     }
 
     @RequestMapping(value = "/{interviewId}/edit", method = RequestMethod.GET)
-    public ModelAndView getEditInterviewPage(
-	    @PathVariable("interviewId") Integer interviewId) {
-	InterviewEntity interviewEntity = interviewEntityDao
-		.getInterviewById(interviewId);
-	UserEntity userEntity = interviewEntity.getUser();
-	String userName = userEntity.getUserName();
-	InterviewCommand interviewCommand = new InterviewCommand(
-		interviewEntity);
-	ModelAndView view = new ModelAndView("edit_interview");
-	LOGGER.info(interviewCommand.getFeedback());
-	LOGGER.info(interviewCommand.getCreated());
-	LOGGER.info(interviewCommand.getUser());
-	view.addObject(interviewCommand);
-	view.addObject("userName", userName);
-	return view;
+    public String getEditInterview(
+	    @PathVariable("interviewId") Integer interviewId,
+	    Map<String, Object> map, HttpServletRequest request) {
+	map.put("interviewCommand", createInterviewCommand());
+	map.put("mode", ModeView.EDIT);
+	return "interview";
     }
 
     @RequestMapping(value = "/{interviewId}/edit", method = RequestMethod.POST)
-    public ModelAndView editInterview(
+    public String saveInterview(
+	    @PathVariable("interviewId") Integer interviewId,
 	    @ModelAttribute InterviewCommand interviewCommand,
-	    @RequestParam("name") String name) {
-	UserEntity user = userDao.getUserByUserName(name);
-	interviewCommand.setCreated(new Date());
-	interviewCommand.setUser(user);
-	interviewService.addInterview(interviewCommand);
-	LOGGER.info(interviewCommand.getFeedback());
-	LOGGER.info(interviewCommand.getCreated());
-	LOGGER.info(interviewCommand.getUser());
-	UserEntity userEntity = userDao.getUserByUserName(name);
-	InterviewEntity interviewEntity = new InterviewEntity();
-	interviewEntity.setCreated(new Date());
-	interviewEntity.setUser(userEntity);
-	String feedBack = interviewCommand.getFeedback();
-	interviewEntity.setFeedback(feedBack);
-	interviewEntity = interviewEntityDao.save(interviewEntity);
-	InterviewCommand interviewCommand2 = new InterviewCommand(
-		interviewEntity);
-	interviewCommand2.setFeedback("tralala " + feedBack);
-	ModelAndView view = new ModelAndView("edit_interview");
-	view.addObject(interviewCommand2);
-	return view;
+	    Map<String, Object> map, HttpServletRequest request,
+	    BindingResult bindResult) {
+	if (bindResult.hasErrors()) {
+	    map.put("interviewCommand", interviewCommand);
+	    map.put("mode", ModeView.EDIT);
+	    return "interview";
+	}
+	return "redirect:/interview/" + interviewId + "/view";
+    }
+
+    @RequestMapping(value = "/{interviewId}/view", method = RequestMethod.GET)
+    public String getViewInterview(@PathVariable int interviewId,
+	    Map<String, Object> map, HttpServletRequest request) {
+	map.put("interviewCommand", createInterviewCommand());
+	map.put("mode", ModeView.VIEW);
+	return "interview";
+    }
+
+    private InterviewCommand createInterviewCommand() {
+	InterviewCommand interviewCommand = new InterviewCommand();
+	interviewCommand.setId(1);
+	interviewCommand.setFeedback("some feedback");
+	return interviewCommand;
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
