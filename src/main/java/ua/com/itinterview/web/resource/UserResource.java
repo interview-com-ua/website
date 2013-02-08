@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,12 @@ public class UserResource {
 		    "Password didn't match confirm password");
 	}
 	if (bindResult.hasErrors()) {
+	    System.out.println("Errors have been detected");
+	    for (ObjectError error : bindResult.getAllErrors()) {
+		System.out.println(error.getCode() + " "
+			+ error.getDefaultMessage() + " "
+			+ error.getObjectName());
+	    }
 	    return goToSignupPageWithCommand(userCommand, ModeView.CREATE);
 	}
 	UserCommand newUserCommand = userService.createUser(userCommand);

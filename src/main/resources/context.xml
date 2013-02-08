@@ -13,7 +13,6 @@
 	<import resource="web-context.xml" />
 	<import resource="service-context.xml" />    
 	
-	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 	<mvc:annotation-driven />
 	
     <!-- bind your messages.properties -->
@@ -23,9 +22,17 @@
         p:useCodeAsDefaultMessage="false">
 		<property name="basenames">
 			<list>
-                <value>classpath:messages</value>
+				<value>classpath:messages</value>
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" >
+		<property name="messageInterpolator" ref="validatorCustomMessageInterpolator" />
+    	<property name="validationMessageSource" ref="messageSource" />
+	</bean>
+	
+	<bean id="validatorCustomMessageInterpolator" class="ua.com.itinterview.validation.CustomValidationMessageInterpolator"/> 
 
 </beans>

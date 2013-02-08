@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <html>
@@ -68,7 +69,8 @@
 								</c:otherwise>
 							</c:choose></td>
 					</tr>
-					<c:if test='${mode == "CREATE"}'>
+					<c:if test="${mode != Modes.MODE_VIEW}">
+						<spring:message code="test.message"/>
 						<tr>
 							<td><strong>Пароль</strong></td>
 							<td><form:password path="password" /></td>
@@ -77,6 +79,7 @@
 						<tr>
 							<td><strong>Подтвердить пароль</strong></td>
 							<td><form:password path="confirmPassword" /></td>
+							<td><form:errors path="confirmPassword" cssStyle="color: #ff0000" /></td>	
 						</tr>
 					</c:if>
 				</tbody>

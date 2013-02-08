@@ -15,7 +15,7 @@ public class UserCommand {
     @NotEmpty(message = "User Name cannot be empty. Please, enter some user name")
     @Length(max = 255, message = "Too long user name")
     private String userName;
-    @Email(message = "{email.invalid}")
+    @Email(message = "{invalid}")
     @NotEmpty
     @Length(max = 255)
     private String email;
