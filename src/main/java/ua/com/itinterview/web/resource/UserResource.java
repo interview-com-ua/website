@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -66,14 +67,16 @@ public class UserResource {
 
     }
 
+    @PreAuthorize("#userId == principal.id")
     @RequestMapping(value = "/{id}/view", method = RequestMethod.GET)
-    public ModelAndView getViewUser(@PathVariable("id") int userId) {
+    public ModelAndView getViewUser(@PathVariable("id") Integer userId) {
 	UserCommand userCommand = userService.getUserById(userId);
 	return goToSignupPageWithCommand(userCommand, ModeView.VIEW);
     }
 
+    @PreAuthorize("#userId == principal.id")
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
-    public ModelAndView getEditUser(@PathVariable("id") int userId) {
+    public ModelAndView getEditUser(@PathVariable("id") Integer userId) {
 	UserCommand userCommand = userService.getUserById(userId);
 	return goToSignupPageWithCommand(userCommand, ModeView.EDIT);
     }

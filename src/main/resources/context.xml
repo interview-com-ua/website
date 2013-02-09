@@ -11,7 +11,8 @@
 
 	<import resource="persistence-context.xml" />
 	<import resource="web-context.xml" />
-	<import resource="service-context.xml" />    
+	<import resource="service-context.xml" />
+	<import resource="security-context.xml" />        
 	
 	<mvc:annotation-driven validator="validator" />
 	
