@@ -1,11 +1,18 @@
 package ua.com.itinterview.web.resource;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +30,13 @@ public class UserResource {
     ModeView modeView;
     @Autowired
     private UserService userService;
+    @Autowired
+    private Validator validator;
+
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder) {
+	webDataBinder.setValidator(validator);
+    }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public ModelAndView getSignupUserPage() {
@@ -31,22 +45,20 @@ public class UserResource {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView createUser(
-	    @ModelAttribute @Valid UserCommand userCommand,
-	    BindingResult bindResult) {
-	if (userCommand.getPassword() != null
-		&& !userCommand.getPassword().equals(
-			userCommand.getConfirmPassword())) {
-	    bindResult.rejectValue("password", "NotBlank",
-		    "Password didn't match confirm password");
-	}
+	    @Valid @ModelAttribute UserCommand userCommand,
+	    BindingResult bindResult, HttpServletRequest request) {
 	if (bindResult.hasErrors()) {
 	    System.out.println("Errors have been detected");
+	    Map<String, String> validationErrors = new HashMap<String, String>();
+	    validationErrors.put("name", "Manual error");
+
 	    for (ObjectError error : bindResult.getAllErrors()) {
 		System.out.println(error.getCode() + " "
 			+ error.getDefaultMessage() + " "
 			+ error.getObjectName());
 	    }
-	    return goToSignupPageWithCommand(userCommand, ModeView.CREATE);
+	    return goToSignupPageWithCommand(userCommand, ModeView.CREATE,
+		    validationErrors);
 	}
 	UserCommand newUserCommand = userService.createUser(userCommand);
 	return new ModelAndView("redirect:/user/" + newUserCommand.getId()
@@ -80,6 +92,17 @@ public class UserResource {
 	ModelAndView view = new ModelAndView("signup");
 	view.addObject(userCommand);
 	view.addObject("mode", modeView);
+	return goToSignupPageWithCommand(userCommand, modeView, null);
+    }
+
+    private ModelAndView goToSignupPageWithCommand(UserCommand userCommand,
+	    ModeView modeView, Map<String, String> validationErrors) {
+	ModelAndView view = new ModelAndView("signup");
+	view.addObject(userCommand);
+	view.addObject("mode", modeView);
+	if (validationErrors != null) {
+	    view.addObject("validationErrors", validationErrors);
+	}
 	return view;
     }
 }

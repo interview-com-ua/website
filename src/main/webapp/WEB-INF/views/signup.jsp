@@ -78,7 +78,7 @@
 						</tr>
 						<tr>
 							<td><strong>Подтвердить пароль</strong></td>
-							<td><form:password path="confirmPassword" /></td>
+							<td><form:input path="confirmPassword" /></td>
 							<td><form:errors path="confirmPassword" cssStyle="color: #ff0000" /></td>	
 						</tr>
 					</c:if>
