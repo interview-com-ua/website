@@ -70,7 +70,7 @@
 							</c:choose></td>
 					</tr>
 					<c:if test="${mode != Modes.MODE_VIEW}">
-						<spring:message code="test.message"/>
+						<spring:message code="invalid"/>
 						<tr>
 							<td><strong>Пароль</strong></td>
 							<td><form:password path="password" /></td>

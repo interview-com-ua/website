@@ -13,26 +13,20 @@
 	<import resource="web-context.xml" />
 	<import resource="service-context.xml" />    
 	
-	<mvc:annotation-driven />
+	<mvc:annotation-driven validator="validator" />
 	
     <!-- bind your messages.properties -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
         p:defaultEncoding="UTF-8"
         p:useCodeAsDefaultMessage="false">
-		<property name="basenames">
-			<list>
-				<value>classpath:messages</value>
-			</list>
-		</property>
+			<property name="basename" value="classpath:messages"/>
 	</bean>
 	
 	<bean id="validator"
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" >
-		<property name="messageInterpolator" ref="validatorCustomMessageInterpolator" />
     	<property name="validationMessageSource" ref="messageSource" />
 	</bean>
 	
-	<bean id="validatorCustomMessageInterpolator" class="ua.com.itinterview.validation.CustomValidationMessageInterpolator"/> 
 
 </beans>
