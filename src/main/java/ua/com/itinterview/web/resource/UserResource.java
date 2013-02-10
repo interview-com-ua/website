@@ -10,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,18 +22,11 @@ import ua.com.itinterview.web.resource.viewpages.ModeView;
 
 @Controller
 @RequestMapping(value = "/user")
-public class UserResource {
+public class UserResource extends ValidatedResource {
 
     ModeView modeView;
     @Autowired
     private UserService userService;
-    @Autowired
-    private Validator validator;
-
-    @InitBinder
-    public void initBinder(WebDataBinder webDataBinder) {
-	webDataBinder.setValidator(validator);
-    }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public ModelAndView getSignupUserPage() {
