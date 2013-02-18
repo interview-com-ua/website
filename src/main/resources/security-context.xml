@@ -4,19 +4,18 @@
           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
           http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
-	
-	<sec:global-method-security pre-post-annotations="enabled"/>
-	
+
+	<sec:global-method-security
+		pre-post-annotations="enabled" />
+
 	<sec:http use-expressions="true" auto-config="true">
-		<sec:intercept-url pattern="/j_spring_security_check"
-			access="permitAll" />
-		<sec:intercept-url pattern="/j_spring_security_logout"
-			access="permitAll" />	
-			
-		<sec:logout invalidate-session="true" logout-url="/user/logout" logout-success-url="/user/signup"/>
-		
+		<sec:form-login login-page="/login" authentication-failure-url="/login?login_error=1" />
+		<sec:logout logout-url="/j_spring_security_logout" logout-success-url="/login" />
+		<sec:remember-me key="myAppKey" token-validity-seconds="1" />
+
 		<sec:intercept-url pattern="/index.html" access="isAnonymous()" />
-		<sec:intercept-url pattern="/signup" access="isAnonymous()" />
+		<sec:intercept-url pattern="/user/signup" access="isAnonymous()" />
+		<sec:intercept-url pattern="/user/create" access="isAnonymous()" />
 		<sec:intercept-url pattern="/user/**" access="isAuthenticated()" />
 
 		<sec:intercept-url pattern="/**" access="isAnonymous()" />
@@ -25,11 +24,8 @@
 	<sec:authentication-manager>
 		<sec:authentication-provider
 			user-service-ref="userSecurityService">
-			<sec:password-encoder hash="md5"/>
 		</sec:authentication-provider>
 	</sec:authentication-manager>
 	
-	<bean id="userSecurityService" class="ua.com.itinterview.web.security.UserSecurityService" />
-	
-	<!-- bean id="authenticationUtils" class="ua.com.itinterview.web.security.AuthenticationUtils" /-->
+	<bean id="userSecurityService" class="ua.com.itinterview.service.UserSecurityService" />
 </beans>
