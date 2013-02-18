@@ -23,11 +23,11 @@
 			<email>voch83@mail.ru</email>
 		</developer>
 		<developer>
-			<name>Прутян Владимир Владимирович</name>
+			<name>Прут�?н Владимир Владимирович</name>
 			<email>vladprut@bigmir.net</email>
 		</developer>
 		<developer>
-			<name>Новокшонов Евгений Анатольевич</name>
+			<name>�?овокшонов Евгений �?натольевич</name>
 			<email>dzmk@i.ua</email>
 		</developer>
 		<developer>
@@ -35,19 +35,19 @@
 			<email>oleksii.novokshonov@gmail.com</email>
 		</developer>
 		<developer>
-			<name>Мосолов Артем Юрійович</name>
+			<name>Мо�?олов �?ртем Юрійович</name>
 			<email>kle0n@mail.ru</email>
 		</developer>
 		<developer>
-			<name>Педич Максим Михайлович</name>
+			<name>Педич Мак�?им Михайлович</name>
 			<email>maximpedich@gmail.com</email>
 		</developer>
 		<developer>
-			<name>Романiв Андрій Володимирович</name>
+			<name>Романiв �?ндрій Володимирович</name>
 			<email>twentyyears@i.ua</email>
 		</developer>
 		<developer>
-			<name>Вольский Дмитрий Дмитриевич</name>
+			<name>Воль�?кий Дмитрий Дмитриевич</name>
 			<email>skiman@i.ua</email>
 		</developer>
 		<developer>
@@ -67,7 +67,7 @@
 			<email>timofiy.bilyi@gmail.com</email>
 		</developer>
 		<developer>
-			<name>Гавриленко Олександр</name>
+			<name>Гавриленко Олек�?андр</name>
 			<email>gavrylenko.aleksandr@gmail.com</email>
 		</developer>
 		<developer>
@@ -79,11 +79,11 @@
 			<email>lazarev4@ukr.net</email>
 		</developer>
 		<developer>
-			<name>Ольга Коструб</name>
+			<name>Ольга Ко�?труб</name>
 			<email>lolga_luga@mail.ru</email>
 		</developer>
 		<developer>
-			<name>Лесничий Сергей Владимирович</name>
+			<name>Ле�?ничий Сергей Владимирович</name>
 			<email>ljore@ukr.net</email>
 		</developer>
 	</developers>
@@ -191,6 +191,16 @@
 			<artifactId>gag-annotations</artifactId>
 			<version>1.0.1</version>
 		</dependency>
+		<dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-server</artifactId>
+            <version>2.28.0</version>
+        </dependency>
+       <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>2.28.0</version>
+        </dependency>	
 	</dependencies>
 
 	<properties>
