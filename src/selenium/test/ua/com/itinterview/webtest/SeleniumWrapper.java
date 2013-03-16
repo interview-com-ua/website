@@ -21,9 +21,8 @@ public class SeleniumWrapper {
     private RemoteWebDriver driver;
     private String host = "localhost";
 
-    @SuppressWarnings("deprecation")
     public void start() throws IOException {
-	String browser = System.getProperty(BROWSER, FIREFOX);
+	String browser = System.getProperty(BROWSER, CHROME);
 
 	if (FIREFOX.equals(browser)) {
 	    driver = new FirefoxDriver();
@@ -32,6 +31,8 @@ public class SeleniumWrapper {
 		    .internetExplorer();
 	    driver = new InternetExplorerDriver(ieCapabilities);
 	} else if (CHROME.equals(browser)) {
+	    System.getProperties().setProperty("webdriver.chrome.driver",
+		    "D:/dev/Selenium/chromedriver/chromedriver.exe");
 	    DesiredCapabilities chromeCapabilities = DesiredCapabilities
 		    .chrome();
 	    chromeCapabilities.setCapability("chrome.switches",
