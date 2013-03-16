@@ -12,14 +12,14 @@ import ua.com.itinterview.validation.FieldsEquals;
 public class UserCommand {
 
     private int id;
-    @NotEmpty(message = "User Name cannot be empty. Please, enter some user name")
+    @NotEmpty(message = "{empty.user.name}")
     @Length(max = 255, message = "Too long user name")
     private String userName;
     @Email
     @NotEmpty
     @Length(max = 255)
     private String email;
-    @NotEmpty
+    @NotEmpty(message = "{empty.name}")
     @Length(max = 255)
     private String name;
     private Sex sex;

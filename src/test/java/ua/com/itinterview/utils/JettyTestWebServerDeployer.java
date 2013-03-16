@@ -7,15 +7,20 @@ public class JettyTestWebServerDeployer {
 
     private static final int DEFAULT_PORT = 8080;
 
+    private static final String DEFAULT_CONTEXT_PATH = "/it-interview";
+
     private Server server;
     private int port;
+    private String contextPath;
 
     public JettyTestWebServerDeployer() {
 	port = DEFAULT_PORT;
+	contextPath = DEFAULT_CONTEXT_PATH;
     }
 
-    public JettyTestWebServerDeployer(int port) {
+    public JettyTestWebServerDeployer(int port, String contextPath) {
 	this.port = port;
+	this.contextPath = contextPath;
     }
 
     public static void main(String[] args) {
@@ -28,7 +33,7 @@ public class JettyTestWebServerDeployer {
 	WebAppContext context = new WebAppContext();
 	context.setDescriptor("src/main/webapp/WEB-INF/web.xml");
 	context.setResourceBase("src/main/webapp");
-	context.setContextPath("/it-interview");
+	context.setContextPath(contextPath);
 	context.setParentLoaderPriority(true);
 
 	server.setHandler(context);

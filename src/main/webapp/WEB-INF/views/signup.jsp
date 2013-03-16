@@ -70,7 +70,6 @@
 							</c:choose></td>
 					</tr>
 					<c:if test="${mode != Modes.MODE_VIEW}">
-						<spring:message code="invalid"/>
 						<tr>
 							<td><strong>Пароль</strong></td>
 							<td><form:password path="password" /></td>
@@ -78,13 +77,13 @@
 						</tr>
 						<tr>
 							<td><strong>Подтвердить пароль</strong></td>
-							<td><form:input path="confirmPassword" /></td>
+							<td><form:password path="confirmPassword" /></td>
 							<td><form:errors path="confirmPassword" cssStyle="color: #ff0000" /></td>	
 						</tr>
 					</c:if>
 				</tbody>
 			</table>
-			<input type="submit" value="${submitValue}" />
+			<input type='submit' value='${submitValue}' />
 		</fieldset>
 	</form:form>
 </body>
