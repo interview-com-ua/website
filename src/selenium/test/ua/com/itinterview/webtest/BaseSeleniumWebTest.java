@@ -1,34 +1,31 @@
 package ua.com.itinterview.webtest;
 
-import static org.junit.Assert.fail;
-
-import java.util.concurrent.TimeUnit;
-
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-
-import ua.com.itinterview.webtest.pages.LoginPage;
 
 @ContextConfiguration(value = { "classpath:selenium-context.xml" })
 public class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTests {
 
-    private RemoteWebDriver driver;
+    private static final long MILIS_IN_SECCOND = 1000;
 
-    private LoginPage loginPage;
+    protected RemoteWebDriver driver;
+
     private String host;
+
+    @Value("${httpPort}")
+    private String httpPort;
+
+    @Value("${contextPath}")
+    private String contextPath;
 
     @Before
     public void setUp() {
-	System.getProperties().setProperty("webdriver.chrome.driver",
-		"D:/dev/Selenium/chromedriver/chromedriver.exe");
-	driver = new ChromeDriver();
 	driver.manage().deleteAllCookies();
-	loginPage = new LoginPage(driver);
     }
 
     @After
@@ -36,15 +33,19 @@ public class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTests {
 	driver.quit();
     }
 
-    @Test
-    public void fakeTest() throws InterruptedException {
-	driver.get("http://google.com");
-	driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-	Thread.sleep(5000);
-	fail("Default behaviour for mock test");
+    protected void pause(int secconds) {
+	try {
+	    Thread.sleep(secconds * MILIS_IN_SECCOND);
+	} catch (InterruptedException e) {
+	}
     }
 
-    // @Autowired
+    protected String constructUrl(String relativePath) {
+	return new StringBuilder(host).append(":").append(httpPort)
+		.append(contextPath).append(relativePath).toString();
+    }
+
+    @Autowired
     public void setSeleniumWrapper(SeleniumWrapper wrapper) {
 	this.driver = wrapper.getDriver();
 	this.host = wrapper.getHost();
