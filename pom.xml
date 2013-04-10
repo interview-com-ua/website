@@ -87,15 +87,6 @@
 			<email>ljore@ukr.net</email>
 		</developer>
 	</developers>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jdk>1.6</jdk>
-		<db.dir>${project.build.directory}/db</db.dir>
-		<sonar.language>java</sonar.language>
-		<sonar.host.url>http://home.stokito.name:9000/</sonar.host.url>
-		<jetty.version>9.0.0.M4</jetty.version>
-		<spring.version>3.1.2.RELEASE</spring.version>
-	</properties>
 
 	<dependencies>
 		<dependency>
@@ -128,7 +119,12 @@
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
-			<version>2.2.8</version>
+			<version>${hsqldb.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgres.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -150,14 +146,12 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
@@ -198,19 +192,76 @@
 			<version>1.0.1</version>
 		</dependency>
 	</dependencies>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jdk>1.6</jdk>
+		<db.dir>${project.build.directory}/db</db.dir>
+		<sonar.language>java</sonar.language>
+		<sonar.host.url>http://home.stokito.name:9000/</sonar.host.url>
+
+		<hsqldb.version>2.2.8</hsqldb.version>
+		<postgres.version>9.1-901.jdbc4</postgres.version>
+		<jetty.version>9.0.0.M4</jetty.version>
+		<spring.version>3.1.2.RELEASE</spring.version>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<profile.resources>src/main/resources/dev</profile.resources>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources/dev</directory>
+						<filtering>true</filtering>
+						<includes>
+							<include>*.properties</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<profile.resources>src/main/resources/prod</profile.resources>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources/prod</directory>
+						<filtering>true</filtering>
+						<includes>
+							<include>*.properties</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+	</profiles>
+
 	<build>
-		<finalName>it-interview</finalName>
+		<finalName>ROOT</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
 				<configuration>
 					<source>${jdk}</source>
 					<target>${jdk}</target>
@@ -222,27 +273,39 @@
 				</configuration>
 			</plugin>
 
+			<!-- Load properties for dbmaintain -->
 			<plugin>
-				<groupId>org.dbmaintain</groupId>
-				<artifactId>dbmaintain-maven-plugin</artifactId>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0-alpha-2</version>
 				<executions>
 					<execution>
 						<phase>validate</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<files>
+								<file>${profile.resources}/persistence.properties</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.dbmaintain</groupId>
+				<artifactId>dbmaintain-maven-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
 						<goals>
 							<goal>updateDatabase</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<databases>
-						<database>
-							<driverClassName>org.hsqldb.jdbcDriver</driverClassName>
-							<userName>sa</userName>
-							<password></password>
-							<url>jdbc:hsqldb:file:${db.dir}/it-interview;shutdown=true;sql.syntax_pgs=true</url>
-							<schemaNames>PUBLIC</schemaNames>
-						</database>
-					</databases>
 					<scriptLocations>src/main/sql</scriptLocations>
 					<autoCreateDbMaintainScriptsTable>true</autoCreateDbMaintainScriptsTable>
 					<fromScratchEnabled>true</fromScratchEnabled>
@@ -251,7 +314,12 @@
 					<dependency>
 						<groupId>org.hsqldb</groupId>
 						<artifactId>hsqldb</artifactId>
-						<version>2.2.8</version>
+						<version>${hsqldb.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>postgresql</groupId>
+						<artifactId>postgresql</artifactId>
+						<version>${postgres.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -273,18 +341,19 @@
 				<directory>src/test/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>**/*.properties</include>
-					<include>**/*.xml</include>
+					<include>*.xml</include>
+					<include>*.properties</include>
 				</includes>
 			</testResource>
 		</testResources>
+
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>**/*.properties</include>
-					<include>**/*.xml</include>
+					<include>*.xml</include>
+					<include>*.properties</include>
 				</includes>
 			</resource>
 		</resources>
