@@ -11,24 +11,26 @@
         http://www.springframework.org/schema/context/spring-context-3.1.xsd       	
 		http://www.springframework.org/schema/aop 
         http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="classpath:persistence.properties"/>
+    </bean>       	
        	
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="ua.com.itinterview.entity"/>
         <property name="hibernateProperties">
             <value>
-                hibernate.dialect=org.hibernate.dialect.HSQLDialect
+                hibernate.dialect=${database.hibernate.dialect}
                 hibernate.show_sql=true
                 hibernate.format_sql=true
             </value>
         </property>
-    </bean>
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations" value="classpath:persistence.properties"/>
     </bean>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -37,10 +39,8 @@
         <property name="username" value="${database.userName}"/>
         <property name="password" value="${database.password}"/>
     </bean>
-
     
-    <!--  Dao beans -->
-    
+    <!--  Dao beans -->    
     <bean id="userDao" class="ua.com.itinterview.dao.UserDao" />
     <bean id="companyDao" class="ua.com.itinterview.dao.CompanyDao" />
     <bean id="questionDao" class="ua.com.itinterview.dao.QuestionDao" />

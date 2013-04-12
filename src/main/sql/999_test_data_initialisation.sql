@@ -2,7 +2,7 @@ insert into users (id, userName, name, password, email, sex)
 	values (1, 'vkuchyn', 'Viktor Kuchyn', 'password', 'kuchin.victor@gmail.com', 'MALE');
 alter sequence users_id start with 2; 
 insert into company (id, companyName, companyPhone, companyLogoUrl, companyAddress, companyWebPage) values
-	(1, 'TestCompany', '2223322', 'http://logo.url', 'address', '');
+	(1, 'TestCompany', '2223322', 'http://logo.url', 'address', 'lt80');
 alter sequence company_id start with 2;
 insert into city (id, cityName) values (1, 'TestCity');
 alter sequence city_id start with 2;
