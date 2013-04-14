@@ -35,9 +35,7 @@ public class UserResource extends ValidatedResource {
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ModelAndView createUser(
 	    @Valid @ModelAttribute UserCommand userCommand,
-	    BindingResult bindResult, HttpServletResponse response) {
-	response.setContentType("text/html; charset=UTF-8");
-	response.setCharacterEncoding("UTF-8");
+	    BindingResult bindResult) {
 	if (bindResult.hasErrors()) {
 	    Map<String, String> validationErrors = new HashMap<String, String>();
 	    return goToSignupPageWithCommand(userCommand, ModeView.CREATE,

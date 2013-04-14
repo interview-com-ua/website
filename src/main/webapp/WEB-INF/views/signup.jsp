@@ -1,36 +1,32 @@
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java"%>
-<% request.setCharacterEncoding("utf-8"); %>
 	<c:choose>
 		<c:when test='${mode == "CREATE"}'>
 			<c:set var="actionValue"
 				value="${pageContext.request.contextPath}/signup" />
 			<c:set var="formMethod" value="post" />
 			<c:set var="submitValue" value="Зарегистрировать" />
-			<c:set var="title" value="Регистрация пользователя" />
+			<c:set var="title" scope="request" value="Регистрация пользователя" />
 		</c:when>
 		<c:when test='${mode == "EDIT"}'>
 			<c:set var="actionValue"
 				value="${pageContext.request.contextPath}/user/${userCommand.id}/save" />
 			<c:set var="formMethod" value="post" />
 			<c:set var="submitValue" value="Сохранить" />
-			<c:set var="title" value="Редактирование пользователя" />
+			<c:set var="title" scope="request" value="Редактирование пользователя" />
 		</c:when>
 		<c:otherwise>
 			<c:set var="actionValue"
 				value="${pageContext.request.contextPath}/user/${userCommand.id}/edit" />
 			<c:set var="formMethod" value="get" />
 			<c:set var="submitValue" value="Редактировать" />
-			<c:set var="title" value="Сохранение пользователя" />
+			<c:set var="title" scope="request" value="Сохранение пользователя" />
 		</c:otherwise>
 	</c:choose>   
 <!--  bullshit bug with jsp:include and encodding -->
-<jsp:include page="header.jsp">
-	<jsp:param name="title" value="${title}" />    
-</jsp:include>
-
+<jsp:include page="header.jsp" />
         <!-- main -->
         <div id="main">
             <!-- registration -->

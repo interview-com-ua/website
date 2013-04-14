@@ -1,11 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java"%>
-<% request.setCharacterEncoding("utf-8"); %>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=8"/>
-	<title>${param.title}</title>
+	<title>${title}</title>
     <link rel="stylesheet" type="text/css" href="resources/css/style.css" />
     <link rel="stylesheet" type="text/css" href="resources/css/jNice.css" />
     <script type="text/javascript" src="resources/js/jquery-1.7.1.min.js"></script> 
