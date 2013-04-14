@@ -3,14 +3,13 @@ package ua.com.itinterview.web.resource;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +21,6 @@ import ua.com.itinterview.web.command.UserCommand;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
 
 @Controller
-@RequestMapping(value = "/user")
 public class UserResource extends ValidatedResource {
 
     ModeView modeView;
@@ -34,20 +32,14 @@ public class UserResource extends ValidatedResource {
 	return goToSignupPageWithCommand(new UserCommand(), ModeView.CREATE);
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ModelAndView createUser(
 	    @Valid @ModelAttribute UserCommand userCommand,
-	    BindingResult bindResult, HttpServletRequest request) {
+	    BindingResult bindResult, HttpServletResponse response) {
+	response.setContentType("text/html; charset=UTF-8");
+	response.setCharacterEncoding("UTF-8");
 	if (bindResult.hasErrors()) {
-	    System.out.println("Errors have been detected");
 	    Map<String, String> validationErrors = new HashMap<String, String>();
-	    validationErrors.put("name", "Manual error");
-
-	    for (ObjectError error : bindResult.getAllErrors()) {
-		System.out.println(error.getCode() + " "
-			+ error.getDefaultMessage() + " "
-			+ error.getObjectName());
-	    }
 	    return goToSignupPageWithCommand(userCommand, ModeView.CREATE,
 		    validationErrors);
 	}
@@ -58,20 +50,20 @@ public class UserResource extends ValidatedResource {
     }
 
     @PreAuthorize("#userId == principal.id")
-    @RequestMapping(value = "/{id}/view", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{id}/view", method = RequestMethod.GET)
     public ModelAndView getViewUser(@PathVariable("id") Integer userId) {
 	UserCommand userCommand = userService.getUserById(userId);
 	return goToSignupPageWithCommand(userCommand, ModeView.VIEW);
     }
 
     @PreAuthorize("#userId == principal.id")
-    @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{id}/edit", method = RequestMethod.GET)
     public ModelAndView getEditUser(@PathVariable("id") Integer userId) {
 	UserCommand userCommand = userService.getUserById(userId);
 	return goToSignupPageWithCommand(userCommand, ModeView.EDIT);
     }
 
-    @RequestMapping(value = "/{id}/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/{id}/save", method = RequestMethod.POST)
     public ModelAndView saveUser(@PathVariable("id") int userId,
 	    @ModelAttribute UserCommand userCommand, BindingResult bindResult) {
 	if (bindResult.hasErrors()) {
@@ -82,9 +74,6 @@ public class UserResource extends ValidatedResource {
 
     private ModelAndView goToSignupPageWithCommand(UserCommand userCommand,
 	    ModeView modeView) {
-	ModelAndView view = new ModelAndView("signup");
-	view.addObject(userCommand);
-	view.addObject("mode", modeView);
 	return goToSignupPageWithCommand(userCommand, modeView, null);
     }
 

@@ -3,6 +3,7 @@
 .project
 /.settings/
 /db/
+999_*.sql
 chromedriver.log
 *.class
 # Package Files #

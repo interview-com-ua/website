@@ -19,7 +19,7 @@ public class SignupPage {
     public ProxyWebElement confirmPassword;
     public ProxyWebElement confirmPasswordError;
 
-    public ProxyWebElement confirmButton;
+    public ProxyWebElement submitButton;
 
     public SignupPage(WebDriver driver) {
 	userName = new ProxyWebElement(driver, "userName");
@@ -32,7 +32,7 @@ public class SignupPage {
 	confirmPassword = new ProxyWebElement(driver, "confirmPassword");
 	confirmPasswordError = new ProxyWebElement(driver,
 		"confirmPassword.errors");
-	confirmButton = new ProxyWebElement(driver,
+	submitButton = new ProxyWebElement(driver,
 		By.xpath("//input[@type='submit']"));
     }
 
