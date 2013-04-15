@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import ua.com.itinterview.entity.FeedbackEntity;
@@ -11,9 +12,13 @@ import ua.com.itinterview.entity.FeedbackEntity;
 public class FeedbackCommand {
     @NotNull
     @NotBlank
-    private String feedbackText, email;
-    private Date createTime;
-    private boolean checked;
+    private String feedbackText;
+    @NotNull
+    @NotBlank
+    @Email
+    private String email;
+    private Date createTime = new Date();
+    private boolean checked = false;
 
     public FeedbackCommand(FeedbackEntity entity) {
 	feedbackText = entity.getFeedbackText();
@@ -23,7 +28,6 @@ public class FeedbackCommand {
     }
 
     public FeedbackCommand() {
-
     }
 
     public String getEmail() {
