@@ -22,11 +22,11 @@
 			<email>voch83@mail.ru</email>
 		</developer>
 		<developer>
-			<name>Прутян Владимир Владимирович</name>
+			<name>Прут�?н Владимир Владимирович</name>
 			<email>vladprut@bigmir.net</email>
 		</developer>
 		<developer>
-			<name>Новокшонов Евгений Анатольевич</name>
+			<name>�?овокшонов Евгений �?натольевич</name>
 			<email>dzmk@i.ua</email>
 		</developer>
 		<developer>
@@ -34,19 +34,19 @@
 			<email>oleksii.novokshonov@gmail.com</email>
 		</developer>
 		<developer>
-			<name>Мосолов Артем Юрійович</name>
+			<name>Мо�?олов �?ртем Юрійович</name>
 			<email>kle0n@mail.ru</email>
 		</developer>
 		<developer>
-			<name>Педич Максим Михайлович</name>
+			<name>Педич Мак�?им Михайлович</name>
 			<email>maximpedich@gmail.com</email>
 		</developer>
 		<developer>
-			<name>Романiв Андрій Володимирович</name>
+			<name>Романiв �?ндрій Володимирович</name>
 			<email>twentyyears@i.ua</email>
 		</developer>
 		<developer>
-			<name>Вольский Дмитрий Дмитриевич</name>
+			<name>Воль�?кий Дмитрий Дмитриевич</name>
 			<email>skiman@i.ua</email>
 		</developer>
 		<developer>
@@ -66,7 +66,7 @@
 			<email>timofiy.bilyi@gmail.com</email>
 		</developer>
 		<developer>
-			<name>Гавриленко Олександр</name>
+			<name>Гавриленко Олек�?андр</name>
 			<email>gavrylenko.aleksandr@gmail.com</email>
 		</developer>
 		<developer>
@@ -78,11 +78,11 @@
 			<email>lazarev4@ukr.net</email>
 		</developer>
 		<developer>
-			<name>Ольга Коструб</name>
+			<name>Ольга Ко�?труб</name>
 			<email>lolga_luga@mail.ru</email>
 		</developer>
 		<developer>
-			<name>Лесничий Сергей Владимирович</name>
+			<name>Ле�?ничий Сергей Владимирович</name>
 			<email>ljore@ukr.net</email>
 		</developer>
 	</developers>
@@ -189,7 +189,25 @@
 			<version>${jetty.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-util</artifactId>
+            <version>${jetty.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-http</artifactId>
+            <version>${jetty.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-io</artifactId>
+            <version>${jetty.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>3.0-alpha-1</version>
@@ -205,17 +223,35 @@
 			<artifactId>gag-annotations</artifactId>
 			<version>1.0.1</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-server</artifactId>
-			<version>2.28.0</version>
+			<version>${selenium.version}</version>
 		</dependency>
-		<dependency>
+        <dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>2.28.0</version>
+			<version>${selenium.version}</version>
 		</dependency>
-		<dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-firefox-driver</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-ie-driver</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+
+        <dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.12</version>
@@ -229,9 +265,10 @@
 		<sonar.language>java</sonar.language>
 		<sonar.host.url>http://home.stokito.name:9000/</sonar.host.url>
 
+        <selenium.version>2.31.0</selenium.version>
 		<hsqldb.version>2.2.8</hsqldb.version>
 		<postgres.version>9.1-901.jdbc4</postgres.version>
-		<jetty.version>9.0.0.M4</jetty.version>
+		<jetty.version>9.0.0.v20130308</jetty.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
 	</properties>
 
@@ -257,14 +294,14 @@
 			</build>
 		</profile>
 		<profile>
-			<id>prod</id>
+			<id>ci</id>
 			<properties>
-				<profile.resources>src/main/resources/prod</profile.resources>
+				<profile.resources>src/main/resources/ci</profile.resources>
 			</properties>
 			<build>
 				<resources>
 					<resource>
-						<directory>src/main/resources/prod</directory>
+						<directory>src/main/resources/ci</directory>
 						<filtering>true</filtering>
 						<includes>
 							<include>*.properties</include>
