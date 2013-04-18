@@ -22,11 +22,11 @@
 			<email>voch83@mail.ru</email>
 		</developer>
 		<developer>
-			<name>Прут�?н Владимир Владимирович</name>
+			<name>Прут�?н Владимир Владимирович</name>
 			<email>vladprut@bigmir.net</email>
 		</developer>
 		<developer>
-			<name>�?овокшонов Евгений �?натольевич</name>
+			<name>�?овокшонов Евгений �?натольевич</name>
 			<email>dzmk@i.ua</email>
 		</developer>
 		<developer>
@@ -34,19 +34,19 @@
 			<email>oleksii.novokshonov@gmail.com</email>
 		</developer>
 		<developer>
-			<name>Мо�?олов �?ртем Юрійович</name>
+			<name>Мо�?олов �?ртем Юрійович</name>
 			<email>kle0n@mail.ru</email>
 		</developer>
 		<developer>
-			<name>Педич Мак�?им Михайлович</name>
+			<name>Педич Мак�?им Михайлович</name>
 			<email>maximpedich@gmail.com</email>
 		</developer>
 		<developer>
-			<name>Романiв �?ндрій Володимирович</name>
+			<name>Романiв �?ндрій Володимирович</name>
 			<email>twentyyears@i.ua</email>
 		</developer>
 		<developer>
-			<name>Воль�?кий Дмитрий Дмитриевич</name>
+			<name>Воль�?кий Дмитрий Дмитриевич</name>
 			<email>skiman@i.ua</email>
 		</developer>
 		<developer>
@@ -66,7 +66,7 @@
 			<email>timofiy.bilyi@gmail.com</email>
 		</developer>
 		<developer>
-			<name>Гавриленко Олек�?андр</name>
+			<name>Гавриленко Олек�?андр</name>
 			<email>gavrylenko.aleksandr@gmail.com</email>
 		</developer>
 		<developer>
@@ -78,11 +78,11 @@
 			<email>lazarev4@ukr.net</email>
 		</developer>
 		<developer>
-			<name>Ольга Ко�?труб</name>
+			<name>Ольга Ко�?труб</name>
 			<email>lolga_luga@mail.ru</email>
 		</developer>
 		<developer>
-			<name>Ле�?ничий Сергей Владимирович</name>
+			<name>Ле�?ничий Сергей Владимирович</name>
 			<email>ljore@ukr.net</email>
 		</developer>
 	</developers>
@@ -273,43 +273,11 @@
 	</properties>
 
 	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<profile.resources>src/main/resources/dev</profile.resources>
-			</properties>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources/dev</directory>
-						<filtering>true</filtering>
-						<includes>
-							<include>*.properties</include>
-						</includes>
-					</resource>
-				</resources>
-			</build>
-		</profile>
-		<profile>
-			<id>ci</id>
-			<properties>
-				<profile.resources>src/main/resources/ci</profile.resources>
-			</properties>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources/ci</directory>
-						<filtering>true</filtering>
-						<includes>
-							<include>*.properties</include>
-						</includes>
-					</resource>
-				</resources>
-			</build>
-		</profile>
+        <profile>
+            <id>prod</id>
+            <build>
+            </build>
+        </profile>
 	</profiles>
 
 	<build>
@@ -339,25 +307,14 @@
 				</configuration>
 			</plugin>
 
-			<!-- Load properties for dbmaintain -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>properties-maven-plugin</artifactId>
-				<version>1.0-alpha-2</version>
-				<executions>
-					<execution>
-						<phase>validate</phase>
-						<goals>
-							<goal>read-project-properties</goal>
-						</goals>
-						<configuration>
-							<files>
-								<file>${profile.resources}/persistence.properties</file>
-							</files>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
 
 			<plugin>
 				<groupId>org.dbmaintain</groupId>
@@ -365,17 +322,34 @@
 				<version>2.4</version>
 				<executions>
 					<execution>
-						<phase>initialize</phase>
+                        <id>db-test</id>
+						<phase>validate</phase>
 						<goals>
 							<goal>updateDatabase</goal>
 						</goals>
+                        <configuration>
+                            <configFile>src/test/resources/persistence.properties</configFile>
+                        </configuration>
 					</execution>
+
+                    <execution>
+                        <id>db-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>updateDatabase</goal>
+                        </goals>
+                        <configuration>
+                            <configFile>src/main/resources/persistence.properties</configFile>
+                        </configuration>
+                    </execution>
 				</executions>
+
 				<configuration>
-					<scriptLocations>src/main/sql</scriptLocations>
+                    <scriptLocations>src/main/sql</scriptLocations>
 					<autoCreateDbMaintainScriptsTable>true</autoCreateDbMaintainScriptsTable>
 					<fromScratchEnabled>true</fromScratchEnabled>
 				</configuration>
+
 				<dependencies>
 					<dependency>
 						<groupId>org.hsqldb</groupId>
@@ -393,7 +367,16 @@
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.0</version>
+				<version>2.1</version>
+                <executions>
+                    <execution>
+                        <id>tomcat-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
 				<configuration>
 					<url>http://it-interviewit.rhcloud.com/manager/text</url>
 					<server>openshift.interviewit</server>
@@ -407,10 +390,18 @@
 				<directory>src/test/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>*.xml</include>
-					<include>*.properties</include>
+					<include>**.xml</include>
+					<include>**.properties</include>
 				</includes>
 			</testResource>
+            <testResource>
+                <directory>src/selenium/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**.xml</include>
+                    <include>**.properties</include>
+                </includes>
+            </testResource>
 		</testResources>
 
 		<resources>
@@ -418,8 +409,8 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>*.xml</include>
-					<include>*.properties</include>
+					<include>**.xml</include>
+					<include>**.properties</include>
 				</includes>
 			</resource>
 		</resources>

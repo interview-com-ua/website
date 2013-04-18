@@ -11,11 +11,9 @@
         http://www.springframework.org/schema/context/spring-context-3.1.xsd       	
 		http://www.springframework.org/schema/aop 
         http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
-	
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations" value="classpath:persistence.properties"/>
-    </bean>       	
-       	
+
+    <context:property-placeholder location="classpath:persistence.properties" order="1"/>
+
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
