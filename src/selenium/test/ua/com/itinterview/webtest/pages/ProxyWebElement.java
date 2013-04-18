@@ -1,15 +1,18 @@
 package ua.com.itinterview.webtest.pages;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class ProxyWebElement extends RemoteWebElement {
 
@@ -104,4 +107,19 @@ public class ProxyWebElement extends RemoteWebElement {
 
     }
 
+    public void waitingForVisible(int seconds) {
+        WebDriverWait wait = new WebDriverWait(driver, seconds);
+        WebElement webElement = wait.until(ExpectedConditions.visibilityOfElementLocated(closure));
+        assertTrue(webElement != null);
+    }
+
+    public void waitingForInvisible(int seconds) {
+        WebDriverWait wait = new WebDriverWait(driver, seconds);
+        assertTrue(wait.until(ExpectedConditions.invisibilityOfElementLocated(closure)));
+    }
+
+    public void waitingForText(String text, int seconds) {
+        WebDriverWait wait = new WebDriverWait(driver, seconds);
+        assertTrue(wait.until(ExpectedConditions.textToBePresentInElement(closure, text)));
+    }
 }
