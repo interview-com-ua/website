@@ -22,11 +22,11 @@
 			<email>voch83@mail.ru</email>
 		</developer>
 		<developer>
-			<name>Прут�?н Владимир Владимирович</name>
+			<name>Прут�?н Владимир Владимирович</name>
 			<email>vladprut@bigmir.net</email>
 		</developer>
 		<developer>
-			<name>�?овокшонов Евгений �?натольевич</name>
+			<name>�?овокшонов Евгений �?натольевич</name>
 			<email>dzmk@i.ua</email>
 		</developer>
 		<developer>
@@ -34,19 +34,19 @@
 			<email>oleksii.novokshonov@gmail.com</email>
 		</developer>
 		<developer>
-			<name>Мо�?олов �?ртем Юрійович</name>
+			<name>Мо�?олов �?ртем Юрійович</name>
 			<email>kle0n@mail.ru</email>
 		</developer>
 		<developer>
-			<name>Педич Мак�?им Михайлович</name>
+			<name>Педич Мак�?им Михайлович</name>
 			<email>maximpedich@gmail.com</email>
 		</developer>
 		<developer>
-			<name>Романiв �?ндрій Володимирович</name>
+			<name>Романiв �?ндрій Володимирович</name>
 			<email>twentyyears@i.ua</email>
 		</developer>
 		<developer>
-			<name>Воль�?кий Дмитрий Дмитриевич</name>
+			<name>Воль�?кий Дмитрий Дмитриевич</name>
 			<email>skiman@i.ua</email>
 		</developer>
 		<developer>
@@ -66,7 +66,7 @@
 			<email>timofiy.bilyi@gmail.com</email>
 		</developer>
 		<developer>
-			<name>Гавриленко Олек�?андр</name>
+			<name>Гавриленко Олек�?андр</name>
 			<email>gavrylenko.aleksandr@gmail.com</email>
 		</developer>
 		<developer>
@@ -78,11 +78,11 @@
 			<email>lazarev4@ukr.net</email>
 		</developer>
 		<developer>
-			<name>Ольга Ко�?труб</name>
+			<name>Ольга Ко�?труб</name>
 			<email>lolga_luga@mail.ru</email>
 		</developer>
 		<developer>
-			<name>Ле�?ничий Сергей Владимирович</name>
+			<name>Ле�?ничий Сергей Владимирович</name>
 			<email>ljore@ukr.net</email>
 		</developer>
 	</developers>
@@ -154,17 +154,17 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>${spring.version}</version>
+			<version>${spring.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>${spring.version}</version>
+			<version>${spring.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>${spring.version}</version>
+			<version>${spring.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
@@ -269,7 +269,8 @@
 		<hsqldb.version>2.2.8</hsqldb.version>
 		<postgres.version>9.1-901.jdbc4</postgres.version>
 		<jetty.version>9.0.0.v20130308</jetty.version>
-		<spring.version>3.1.2.RELEASE</spring.version>
+		<spring.version>3.2.0.RELEASE</spring.version>
+		<spring.security.version>3.1.3.RELEASE</spring.security.version>
 	</properties>
 
 	<profiles>
