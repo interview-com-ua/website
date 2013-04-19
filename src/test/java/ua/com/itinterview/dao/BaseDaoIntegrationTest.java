@@ -34,7 +34,7 @@ import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.entity.UserEntity.Sex;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:context.xml" })
+@ContextConfiguration(locations = { "classpath:test-context.xml" })
 public abstract class BaseDaoIntegrationTest extends
 	AbstractTransactionalJUnit4SpringContextTests {
 
