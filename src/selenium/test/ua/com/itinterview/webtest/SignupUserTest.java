@@ -21,7 +21,7 @@ public class SignupUserTest extends BaseSeleniumWebTest {
 
     @Test
     public void testSignUpUserSuccessfullyAndLogin() {
-	driver.get(constructUrl("/signup"));
+	driver.get(constructUrl("/register"));
 	signupPage.userName.sendKeys("testUser");
 	signupPage.email.sendKeys("testUser@domain.com");
 	signupPage.name.sendKeys("Name");
@@ -36,7 +36,7 @@ public class SignupUserTest extends BaseSeleniumWebTest {
 
     @Test
     public void testSignUpUserWithBadDataAndGetErrorMEssages() {
-	driver.get(constructUrl("/signup"));
+	driver.get(constructUrl("/register"));
 	signupPage.userName.sendKeys("");
 	signupPage.email.sendKeys("invalid_email");
 	signupPage.name.sendKeys("");

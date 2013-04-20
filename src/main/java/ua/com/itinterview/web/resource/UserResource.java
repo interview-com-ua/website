@@ -3,7 +3,6 @@ package ua.com.itinterview.web.resource;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +22,15 @@ import ua.com.itinterview.web.resource.viewpages.ModeView;
 @Controller
 public class UserResource extends ValidatedResource {
 
-    ModeView modeView;
     @Autowired
-    private UserService userService;
+    UserService userService;
 
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView getSignupUserPage() {
 	return goToSignupPageWithCommand(new UserCommand(), ModeView.CREATE);
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ModelAndView createUser(
 	    @Valid @ModelAttribute UserCommand userCommand,
 	    BindingResult bindResult) {

@@ -1,4 +1,4 @@
-package ua.com.itinterview.service;
+package ua.com.itinterview.web.security;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
-import ua.com.itinterview.security.UserSecurityDetail;
 
 public class UserSecurityService implements UserDetailsService {
 

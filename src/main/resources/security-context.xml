@@ -16,8 +16,7 @@
 		<sec:logout invalidate-session="true" logout-url="/user/logout" logout-success-url="/user/signup"/>
 		
 		<sec:intercept-url pattern="/index.html" access="isAnonymous()" />
-		<sec:intercept-url pattern="/user/signup" access="isAnonymous()" />
-		<sec:intercept-url pattern="/user/create" access="isAnonymous()" />
+		<sec:intercept-url pattern="/signup" access="isAnonymous()" />
 		<sec:intercept-url pattern="/user/**" access="isAuthenticated()" />
 
 		<sec:intercept-url pattern="/**" access="isAnonymous()" />
@@ -26,7 +25,11 @@
 	<sec:authentication-manager>
 		<sec:authentication-provider
 			user-service-ref="userSecurityService">
+			<sec:password-encoder hash="md5"/>
 		</sec:authentication-provider>
 	</sec:authentication-manager>
-	<bean id="userSecurityService" class="ua.com.itinterview.service.UserSecurityService" />
+	
+	<bean id="userSecurityService" class="ua.com.itinterview.web.security.UserSecurityService" />
+	
+	<!-- bean id="authenticationUtils" class="ua.com.itinterview.web.security.AuthenticationUtils" /-->
 </beans>

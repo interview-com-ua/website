@@ -16,78 +16,14 @@
 		<developerConnection>https://github.com/interview-com-ua/website.git</developerConnection>
 		<url>https://github.com/interview-com-ua/website</url>
 	</scm>
-	<developers>
-		<developer>
-			<name>Чирков Владимир Валериевич</name>
-			<email>voch83@mail.ru</email>
-		</developer>
-		<developer>
-			<name>Прут�?н Владимир Владимирович</name>
-			<email>vladprut@bigmir.net</email>
-		</developer>
-		<developer>
-			<name>�?овокшонов Евгений �?натольевич</name>
-			<email>dzmk@i.ua</email>
-		</developer>
-		<developer>
-			<name>Novokshonov Oleksii</name>
-			<email>oleksii.novokshonov@gmail.com</email>
-		</developer>
-		<developer>
-			<name>Мо�?олов �?ртем Юрійович</name>
-			<email>kle0n@mail.ru</email>
-		</developer>
-		<developer>
-			<name>Педич Мак�?им Михайлович</name>
-			<email>maximpedich@gmail.com</email>
-		</developer>
-		<developer>
-			<name>Романiв �?ндрій Володимирович</name>
-			<email>twentyyears@i.ua</email>
-		</developer>
-		<developer>
-			<name>Воль�?кий Дмитрий Дмитриевич</name>
-			<email>skiman@i.ua</email>
-		</developer>
-		<developer>
-			<name>Бутолин Дмитрий Геннадьевич</name>
-			<email>djemen@gmail.com</email>
-		</developer>
-		<developer>
-			<name>Andrey Stasyuk</name>
-			<email>shmishleniy@gmail.com</email>
-		</developer>
-		<developer>
-			<name>Морозов Пётр Владимирович</name>
-			<email>petia.morozov@gmail.com</email>
-		</developer>
-		<developer>
-			<name>Тимофей</name>
-			<email>timofiy.bilyi@gmail.com</email>
-		</developer>
-		<developer>
-			<name>Гавриленко Олек�?андр</name>
-			<email>gavrylenko.aleksandr@gmail.com</email>
-		</developer>
-		<developer>
-			<name>Целуйко Игорь Валентинович</name>
-			<email>igor7311@gmail.com</email>
-		</developer>
-		<developer>
-			<name>Євген Лазарев</name>
-			<email>lazarev4@ukr.net</email>
-		</developer>
-		<developer>
-			<name>Ольга Ко�?труб</name>
-			<email>lolga_luga@mail.ru</email>
-		</developer>
-		<developer>
-			<name>Ле�?ничий Сергей Владимирович</name>
-			<email>ljore@ukr.net</email>
-		</developer>
-	</developers>
-
 	<dependencies>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.8.4</version>
+			<scope>test</scope>
+		</dependency>
+            
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>

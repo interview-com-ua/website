@@ -1,4 +1,4 @@
-package ua.com.itinterview.security;
+package ua.com.itinterview.web.security;
 
 import java.util.Collection;
 
