@@ -22,7 +22,7 @@
 		<sec:intercept-url pattern="/**" access="isAnonymous()" />
 	</sec:http>
 
-	<sec:authentication-manager>
+	<sec:authentication-manager alias="authenticationManager">
 		<sec:authentication-provider
 			user-service-ref="userSecurityService">
 			<sec:password-encoder hash="md5"/>
@@ -31,5 +31,5 @@
 	
 	<bean id="userSecurityService" class="ua.com.itinterview.web.security.UserSecurityService" />
 	
-	<!-- bean id="authenticationUtils" class="ua.com.itinterview.web.security.AuthenticationUtils" /-->
+	<bean id="authenticationUtils" class="ua.com.itinterview.web.security.AuthenticationUtils" />
 </beans>

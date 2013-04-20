@@ -374,7 +374,7 @@ html>body #page {height: auto; min-height: 100%;}
 	float: left;
 	margin: 0 25px 0 0;
 }
-.registration_form .jRadioWrapper {margin: 0 7px 0 0;}
+/*.registration_form .jRadioWrapper {margin: 0 7px 0 0;}*/
 .registration_form button {
 	display: block;
 	float: right;
@@ -449,7 +449,7 @@ html>body #page {height: auto; min-height: 100%;}
 	line-height: 20px;
 	color: #808080;
 }
-.profile_edit_form .jRadioWrapper {margin: 0 7px 0 0;}
+/*.profile_edit_form .jRadioWrapper {margin: 0 7px 0 0;}*/
 .profile_edit_form button {
 	width: 65px;
 	border: 2px solid #5EC4FF;

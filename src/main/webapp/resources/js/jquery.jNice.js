@@ -42,7 +42,7 @@
 	};
 
 	var RadioAdd = function(){
-		var $input = $(this).addClass('jNiceHidden').wrap('<span class="jRadioWrapper jNiceWrapper"></span>');
+//		var $input = $(this).addClass('jNiceHidden').wrap('<span class="jRadioWrapper jNiceWrapper"></span>');
 		var $wrapper = $input.parent();
 		var $a = $('<span class="jNiceRadio"></span>');
 		$wrapper.prepend($a);

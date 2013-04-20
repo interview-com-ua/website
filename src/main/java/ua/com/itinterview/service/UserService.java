@@ -1,6 +1,7 @@
 package ua.com.itinterview.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
@@ -10,17 +11,15 @@ public class UserService {
 
     @Autowired
     UserDao userDao;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public UserCommand createUser(UserCommand userCommand) {
-	if (userDao.doesUserExistsWithUserName(userCommand.getUserName())) {
-	    throw new RuntimeException("User " + userCommand
-		    + " already exists");
-	} else {
-	    UserEntity user = new UserEntity(userCommand);
-	    return new UserCommand(userDao.save(user));
-	}
+	UserEntity user = new UserEntity(userCommand);
+	user.setPassword(passwordEncoder.encodePassword(user.getPassword(), ""));
+	return new UserCommand(userDao.save(user));
     }
-    
+
     public UserCommand updateUser(Integer userId, UserCommand userCommand) {
 	UserEntity userEntity = userDao.getEntityById(userId);
 	userEntity.setEmail(userCommand.getEmail());
@@ -29,7 +28,7 @@ public class UserService {
 	UserEntity savedEntity = userDao.save(userEntity);
 	return new UserCommand(savedEntity);
     }
-    
+
     public UserCommand getUserById(Integer userId) {
 	UserEntity userEntity = userDao.getEntityById(userId);
 	return new UserCommand(userEntity);

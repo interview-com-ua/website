@@ -15,7 +15,14 @@ import ua.com.itinterview.web.command.UserCommand;
 public class UserEntity extends EntityWithId {
 
     public enum Sex {
-	MALE, FEMALE
+	MALE, FEMALE;
+
+	public String getValue() {
+	    return name();
+	}
+
+	public void setValue(String value) {
+	}
     }
 
     @Column(unique = true)

@@ -1,5 +1,8 @@
 package ua.com.itinterview.web.command;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -14,16 +17,21 @@ public class UserCommand {
     private int id;
     @NotEmpty(message = "{empty.user.name}")
     @Length(max = 255, message = "Too long user name")
+    @Pattern(regexp = "[a-z|A-z|0-9|_|-]*", message = "{invalid.symbol}")
     private String userName;
     @Email
-    @NotEmpty
+    @NotEmpty(message = "{empty.email}")
     @Length(max = 255)
     private String email;
     @NotEmpty(message = "{empty.name}")
     @Length(max = 255)
     private String name;
-    private Sex sex;
+    private Sex sex = Sex.MALE;
+    @Length(min = 6, message = "{password.short}")
+    @NotNull
     private String password;
+    @Length(min = 6, message = "{password.short}")
+    @NotNull
     private String confirmPassword;
 
     public UserCommand() {
@@ -34,8 +42,6 @@ public class UserCommand {
 	userName = userEntity.getUserName();
 	email = userEntity.getEmail();
 	name = userEntity.getName();
-	password = userEntity.getPassword();
-	confirmPassword = userEntity.getPassword();
 	sex = userEntity.getSex();
     }
 

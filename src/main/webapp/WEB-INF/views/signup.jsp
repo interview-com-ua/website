@@ -5,7 +5,7 @@
 	<c:choose>
 		<c:when test='${mode == "CREATE"}'>
 			<c:set var="actionValue"
-				value="${pageContext.request.contextPath}/signup" />
+				value="${pageContext.request.contextPath}/register" />
 			<c:set var="formMethod" value="post" />
 			<c:set var="submitValue" value="Зарегистрировать" />
 			<c:set var="title" scope="request" value="Регистрация пользователя" />
@@ -54,8 +54,8 @@
 							</c:otherwise>
 						</c:choose>           	
 			            <label>Пол</label>
-			            <input type="radio" name="sex" id="male" /><span class="label">M</span>
-			            <input type="radio" name="sex" id="female" /><span class="label">Ж</span>
+			            М<form:radiobutton path="sex" id="sex" value="MALE" />
+			            Ж<form:radiobutton path="sex" id="sex" value="FEMALE" />
 			           	
 						<c:choose>
 							<c:when test='${mode != "VIEW"}'>

@@ -13,6 +13,7 @@ import org.easymock.Capture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
@@ -26,7 +27,9 @@ public class UserServiceUnitTest {
     private static final String NAME = "name";
     private static final String USER_NAME = "userName";
     private static final String PASSWORD = "password";
-    private static final Sex SEX = Sex.MALE;
+    private static final Sex MALE = Sex.MALE;
+
+    private static final String ENCODED_PASSWORD = "encodedPassword";
 
     private static final String FAKE_USER_NAME = "Fake User Name";
     private static final String NEW_NAME = "new name";
@@ -36,22 +39,25 @@ public class UserServiceUnitTest {
 
     private UserDao userDaoMock;
     private UserService userService;
+    private PasswordEncoder passwordEncoder;
 
     @Before
     public void createMocks() {
 	userDaoMock = createMock(UserDao.class);
 	userService = new UserService();
 	userService.userDao = userDaoMock;
+	passwordEncoder = createMock(PasswordEncoder.class);
+	userService.passwordEncoder = passwordEncoder;
     }
 
     private void replayAllMocks() {
-	replay(userDaoMock);
+	replay(userDaoMock, passwordEncoder);
     }
 
     @Test
     public void testConvertUserCommandToUserEntity() {
 	replayAllMocks();
-	UserCommand userCommand = createUserCommand();
+	UserCommand userCommand = createUserCommandWithPassword();
 	UserEntity expectedUserEntity = createUserEntity();
 	UserEntity actualUserEntity = new UserEntity(userCommand);
 	assertEquals(expectedUserEntity, actualUserEntity);
@@ -67,30 +73,20 @@ public class UserServiceUnitTest {
     }
 
     @Test
-    public void testCreateUserWhenThereAreNoUsernameInDatabase() {
-	UserCommand userCommand = createUserCommand();
+    public void testCreateUser() {
+	UserCommand userCommand = createUserCommandWithPassword();
 	UserEntity userEntity = new UserEntity(userCommand);
+	userEntity.setPassword(ENCODED_PASSWORD);
 
-	expect(
-		userDaoMock.doesUserExistsWithUserName(userCommand
-			.getUserName())).andReturn(false);
 	expect(userDaoMock.save(userEntity)).andReturn(userEntity);
+	expect(passwordEncoder.encodePassword(PASSWORD, "")).andReturn(
+		ENCODED_PASSWORD);
 	replayAllMocks();
 
 	UserCommand actualUserCommand = userService.createUser(userCommand);
 	UserCommand expectedUserCommand = createUserCommand();
 	expectedUserCommand.setId(actualUserCommand.getId());
 	assertEquals(expectedUserCommand, actualUserCommand);
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void testCreateUserWhenUsernameInDatabase() {
-	UserCommand userCommand = createUserCommand();
-	expect(
-		userDaoMock.doesUserExistsWithUserName(userCommand
-			.getUserName())).andReturn(true);
-	replayAllMocks();
-	userService.createUser(userCommand);
     }
 
     @Test
@@ -105,8 +101,8 @@ public class UserServiceUnitTest {
 		oldUserInDb);
 	replayAllMocks();
 
-	UserCommand expectedCommand = createCustomUserCommand(USER_ID,
-		PASSWORD, NEW_EMAIL, NEW_NAME, USER_NAME, NEW_SEX);
+	UserCommand expectedCommand = createCustomUserCommand(USER_ID, null,
+		NEW_EMAIL, NEW_NAME, USER_NAME, NEW_SEX);
 	assertEquals(expectedCommand,
 		userService.updateUser(USER_ID, userToUpdate));
 
@@ -149,7 +145,7 @@ public class UserServiceUnitTest {
 
     @After
     public void verifyAllMocks() {
-	verify(userDaoMock);
+	verify(userDaoMock, passwordEncoder);
     }
 
     private UserCommand createCustomUserCommand(int id, String password,
@@ -166,15 +162,16 @@ public class UserServiceUnitTest {
     }
 
     private UserCommand createUserCommand() {
-	UserCommand command = new UserCommand();
-	command.setId(USER_ID);
-	command.setConfirmPassword(PASSWORD);
-	command.setPassword(PASSWORD);
-	command.setEmail(EMAIL);
-	command.setName(NAME);
-	command.setUserName(USER_NAME);
-	command.setSex(SEX);
+	UserCommand command = createCustomUserCommand(USER_ID, null, EMAIL,
+		NAME, USER_NAME, MALE);
 	return command;
+    }
+
+    private UserCommand createUserCommandWithPassword() {
+	UserCommand res = createUserCommand();
+	res.setPassword(PASSWORD);
+	res.setConfirmPassword(PASSWORD);
+	return res;
     }
 
     private UserEntity createUserEntity() {
@@ -184,7 +181,7 @@ public class UserServiceUnitTest {
 	userEntity.setEmail(EMAIL);
 	userEntity.setName(NAME);
 	userEntity.setUserName(USER_NAME);
-	userEntity.setSex(SEX);
+	userEntity.setSex(MALE);
 	return userEntity;
     }
 }
