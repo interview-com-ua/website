@@ -25,11 +25,7 @@ public class UserSecurityService implements UserDetailsService {
 	UserEntity user = userDao.getUserByUserName(userName);
 	List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 	authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-
-	UserSecurityDetail userSecurityDetail = new UserSecurityDetail(user.getId(), user.getUserName(),
+	return new UserSecurityDetail(user, user.getUserName(),
 		user.getPassword(), authorities);
-	
-	System.out.println("Id = " + userSecurityDetail.getId());
-	return userSecurityDetail;
     }
 }

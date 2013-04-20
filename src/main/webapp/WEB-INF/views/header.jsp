@@ -1,4 +1,7 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -79,44 +82,11 @@
             </div>
         </div>
         <!-- end header -->
-        
-        <!-- user block -->
-        <div class="user_block">
-        	<div class="user_block_left">
-            	<div class="user_block_right">
-                	<!-- login form -->
-                	<div class="login_form">
-                    	<form action="" class="jNice">
-                        	<div class="field user_name">
-                                <div class="input_wrapper">
-                                    <div class="input_inner">
-                                        <input type="text" class="text_inp" placeholder="Имя пользователя" value="" />
-                                    </div>
-                                </div>
-                            </div>    
 
-                        	<div class="field user_pass">
-                                <div class="input_wrapper">
-                                    <div class="input_inner">
-                                        <input type="text" class="text_inp" placeholder="**********" value="" />
-                                    </div>
-                                </div>
-                            </div>  
-                            
-                            <div class="field remember_me">
-                            	<div class="remember_checkbox"><input type="checkbox" checked="checked" /></div>
-                                <div class="remember_label">
-                                	<label>Запомнить меня на этом компьютере</label>
-                                	<a href="" class="forget_link">Забыли пароль?</a>
-                                </div>
-                            </div>  
-                            
-                            <input type="submit" class="enter_but" value="Вход" />
-                        </form>
-                    </div>
-                	<!-- end login form -->
-                </div>
-            </div>
-        </div>
-        <!-- end user block -->
+        <sec:authorize access="isAnonymous()">
+            <jsp:include page="user_block_anonymous.jsp" />
+        </sec:authorize>
+        <sec:authorize access="isAuthenticated()">
+            <jsp:include page="user_block_authorized.jsp" />
+        </sec:authorize>
         

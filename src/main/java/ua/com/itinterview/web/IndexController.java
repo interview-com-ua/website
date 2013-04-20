@@ -13,4 +13,9 @@ public class IndexController {
 	ModelAndView view = new ModelAndView("index");
 	return view;
     }
+    
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String getLogin() {
+	return "login";
+    }
 }
