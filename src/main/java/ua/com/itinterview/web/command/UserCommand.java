@@ -10,6 +10,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.entity.UserEntity.Sex;
 import ua.com.itinterview.validation.FieldsEquals;
+import ua.com.itinterview.validation.UniqueEmail;
+import ua.com.itinterview.validation.UniqueUserName;
 
 @FieldsEquals(firstField = "password", secondField = "confirmPassword", errorKey = "confirmPassword", message = "{confirm.password}")
 public class UserCommand {
@@ -18,10 +20,12 @@ public class UserCommand {
     @NotEmpty(message = "{empty.user.name}")
     @Length(max = 255, message = "Too long user name")
     @Pattern(regexp = "[a-z|A-z|0-9|_|-]*", message = "{invalid.symbol}")
+    @UniqueUserName
     private String userName;
     @Email
     @NotEmpty(message = "{empty.email}")
     @Length(max = 255)
+    @UniqueEmail
     private String email;
     @NotEmpty(message = "{empty.name}")
     @Length(max = 255)

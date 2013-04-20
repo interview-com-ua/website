@@ -17,6 +17,8 @@ import ua.com.itinterview.entity.UserEntity;
 public class UserDaoIntegrationTest extends
 	BaseEntityWithIdDaoIntegrationTest<UserEntity> {
 
+    private static final String SOME_OTHER_EMAIL = "someemail@test.com";
+
     @Autowired
     private UserDao userDao;
 
@@ -35,6 +37,12 @@ public class UserDaoIntegrationTest extends
     public void testDoesUserWithUserNameExists() {
 	assertFalse(userDao.doesUserExistsWithUserName("userName"));
 	assertTrue(userDao.doesUserExistsWithUserName(DEFAULT_TEST_USER_NAME));
+    }
+
+    @Test
+    public void testDoesUserWithEmailExists() {
+	assertTrue(userDao.doesUserExistsWithEmail(TEST_USER_EMAIL));
+	assertFalse(userDao.doesUserExistsWithEmail(SOME_OTHER_EMAIL));
     }
 
     @Override

@@ -20,7 +20,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +30,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import ua.com.itinterview.dao.UserDao;
+import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.service.UserService;
 import ua.com.itinterview.web.command.UserCommand;
 import ua.com.itinterview.web.security.AuthenticationUtils;
@@ -35,7 +39,8 @@ import ua.com.itinterview.web.security.AuthenticationUtils;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:test-web-context.xml")
-public class UserResourceIntegrationTest {
+public class UserResourceIntegrationTest extends
+	AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -50,6 +55,9 @@ public class UserResourceIntegrationTest {
 
     @Autowired
     private UserResource userResource;
+
+    @Autowired
+    private UserDao userDao;
 
     @Before
     public void setUp() {
@@ -110,6 +118,39 @@ public class UserResourceIntegrationTest {
 	assertEquals("UserName", captureUserName.getValue());
 	assertEquals("123456", capturePassword.getValue());
 
+    }
+
+    @Test
+    public void testRegisterUserWithUserNameAlreadyExists() throws Exception {
+	insertUserToDataBase("someTest@email.com", "testUserName");
+	mockMvc.perform(
+		registerUser("testUserName", "name", "valid@email.com",
+			"123456", "123456"))
+		.andExpect(model().hasErrors())
+		.andExpect(model().errorCount(1))
+		.andExpect(
+			model().attributeHasFieldErrors("userCommand",
+				"userName"));
+    }
+
+    @Test
+    public void testRegisterUserWithEmailAlreadyExists() throws Exception {
+	insertUserToDataBase("exist@email.com", "testUserName");
+	mockMvc.perform(
+		registerUser("validUserName", "name", "exist@email.com",
+			"123456", "123456"))
+		.andExpect(model().hasErrors())
+		.andExpect(model().errorCount(1))
+		.andExpect(
+			model().attributeHasFieldErrors("userCommand", "email"));
+    }
+
+    @Rollback
+    private void insertUserToDataBase(String email, String userName) {
+	UserEntity user = new UserEntity();
+	user.setEmail(email);
+	user.setUserName(userName);
+	userDao.save(user);
     }
 
     private MockHttpServletRequestBuilder registerUser(String userName,

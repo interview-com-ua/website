@@ -14,6 +14,16 @@ public class UserDao extends EntityWithIdDao<UserEntity> {
     }
 
     @Transactional
+    public boolean doesUserExistsWithEmail(String email) {
+	try {
+	    getOneResultByParameter("email", email);
+	    return true;
+	} catch (EntityNotFoundException e) {
+	    return false;
+	}
+    }
+
+    @Transactional
     public boolean doesUserExistsWithUserName(String userName) {
 	try {
 	    getUserByUserName(userName);
