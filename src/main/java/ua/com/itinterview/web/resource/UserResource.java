@@ -45,14 +45,14 @@ public class UserResource extends ValidatedResource {
 
     }
 
-    @PreAuthorize("#userId == principal.id")
+    @PreAuthorize("#userId == principal.info.id")
     @RequestMapping(value = "/user/{id}/view", method = RequestMethod.GET)
     public ModelAndView getViewUser(@PathVariable("id") Integer userId) {
 	UserCommand userCommand = userService.getUserById(userId);
 	return goToSignupPageWithCommand(userCommand, ModeView.VIEW);
     }
 
-    @PreAuthorize("#userId == principal.id")
+    @PreAuthorize("#userId == principal.info.id")
     @RequestMapping(value = "/user/{id}/edit", method = RequestMethod.GET)
     public ModelAndView getEditUser(@PathVariable("id") Integer userId) {
 	UserCommand userCommand = userService.getUserById(userId);

@@ -9,12 +9,12 @@
 		pre-post-annotations="enabled" />
 
 	<sec:http use-expressions="true" auto-config="true">
-		<sec:form-login login-page="/login" authentication-failure-url="/login?login_error=1" />
-		<sec:logout logout-url="/j_spring_security_logout" logout-success-url="/login" />
-		<sec:remember-me key="myAppKey" token-validity-seconds="1" />
+		<sec:form-login login-page="/register" authentication-failure-url="/register?login_error=1" default-target-url="/profile" />
+		<sec:logout logout-url="/j_spring_security_logout" logout-success-url="/register" />
+		<sec:remember-me key="sessionKey" token-validity-seconds="3600" user-service-ref="userSecurityService" />
 
-		<sec:intercept-url pattern="/index.html" access="isAnonymous()" />
-		<sec:intercept-url pattern="/user/signup" access="isAnonymous()" />
+		<sec:intercept-url pattern="/index.html" access="permitAll" />
+		<sec:intercept-url pattern="/user/register" access="isAnonymous()" />
 		<sec:intercept-url pattern="/user/create" access="isAnonymous()" />
 		<sec:intercept-url pattern="/user/**" access="isAuthenticated()" />
 
@@ -27,5 +27,5 @@
 		</sec:authentication-provider>
 	</sec:authentication-manager>
 	
-	<bean id="userSecurityService" class="ua.com.itinterview.service.UserSecurityService" />
+	<bean id="userSecurityService" class="ua.com.itinterview.web.security.UserSecurityService" />
 </beans>
