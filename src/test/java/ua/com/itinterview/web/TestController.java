@@ -1,4 +1,4 @@
-package ua.com.itinterview.web.resource;
+package ua.com.itinterview.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/test")
-public class TestResource {
+public class TestController {
     @Autowired
     private FeedbackService feedbackService;
 

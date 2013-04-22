@@ -14,18 +14,8 @@
 	<import resource="persistence-context.xml"/>
 	<import resource="security-context.xml"/>
 	
-	<context:component-scan base-package="ua.com.itinterview.web.resource" >
-		 <context:include-filter type="assignable" expression="ua.com.itinterview.web.resource.UserResource"/>
-	</context:component-scan>
+	<context:component-scan base-package="ua.com.itinterview.web.resource" />
 	
 	<mvc:annotation-driven/>
 	
-	<bean id="userService" class="org.easymock.EasyMock" factory-method="createMock">
-		<constructor-arg value="ua.com.itinterview.service.UserService"/>
-	</bean>
-	
-	<bean id="authenticationUtils" class="org.easymock.EasyMock" factory-method="createMock">
-		<constructor-arg value="ua.com.itinterview.web.security.AuthenticationUtils"/>
-	</bean>  
-
 </beans>
