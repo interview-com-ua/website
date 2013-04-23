@@ -1,5 +1,5 @@
 insert into users (id, userName, name, password, email, sex) 
-	values (1, 'vkuchyn', 'Viktor Kuchyn', 'password', 'kuchin.victor@gmail.com', 'MALE');
+	values (1, 'vkuchyn', 'Viktor Kuchyn', '5f4dcc3b5aa765d61d8327deb882cf99', 'kuchin.victor@gmail.com', 'MALE');
 alter sequence users_id start with 2; 
 insert into company (id, companyName, companyPhone, companyLogoUrl, companyAddress, companyWebPage) values
 	(1, 'TestCompany', '2223322', 'http://logo.url', 'address', 'lt80');

@@ -50,8 +50,23 @@ public class UserResource extends ValidatedResource {
     @RequestMapping(value = "/user/{id}/view", method = RequestMethod.GET)
     public ModelAndView getViewUser(@PathVariable("id") Integer userId) {
 	UserCommand userCommand = userService.getUserById(userId);
-	return goToSignupPageWithCommand(userCommand, ModeView.VIEW);
+	ModelAndView view = new ModelAndView("signup");
+	view.addObject("userCommand", userCommand);
+	return view;
+	/*
+	 * UserCommand userCommand = userService.getUserById(userId);
+	 * map.put("userCommand", userCommand); return "profile_page";
+	 */
     }
+
+    /*
+     * @PreAuthorize("#userId == principal.info.id")
+     * 
+     * @RequestMapping(value = "/user/{id}/view", method = RequestMethod.GET)
+     * public ModelAndView getViewUser(@PathVariable("id") Integer userId) {
+     * UserCommand userCommand = userService.getUserById(userId); return
+     * goToSignupPageWithCommand(userCommand, ModeView.VIEW); }
+     */
 
     @PreAuthorize("#userId == principal.info.id")
     @RequestMapping(value = "/user/{id}/edit", method = RequestMethod.GET)
