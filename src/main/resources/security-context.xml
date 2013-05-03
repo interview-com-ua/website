@@ -8,6 +8,8 @@
 	<sec:global-method-security
 		pre-post-annotations="enabled" />
 
+    <sec:http pattern="/resources/**" security="none"/>
+
 	<sec:http use-expressions="true" auto-config="true">
 		<sec:form-login login-page="/register" authentication-failure-url="/register?login_error=1" authentication-success-handler-ref="authenticationSuccessHandler" />
 		<sec:logout logout-url="/j_spring_security_logout" logout-success-url="/register" />
