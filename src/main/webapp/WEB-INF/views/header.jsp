@@ -8,24 +8,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=8"/>
 	<title>${title}</title>
-    <link rel="stylesheet" type="text/css" href="resources/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="resources/css/jNice.css" />
-    <script type="text/javascript" src="resources/js/jquery-1.7.1.min.js"></script> 
-    <script type="text/javascript" src="resources/js/jquery.jNice.js"></script> 
-    <!--[if IE]><script type="text/javascript" src="js/box-shadow.min.js"></script><![endif]-->
+    <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.7.1.min.js"/>" ></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/jquery.jNice.js"/>" ></script>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/style.css"/>" />
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/jNice.css"/>" />
+    <!--[if IE]><script type="text/javascript" src="/resources/js/box-shadow.min.js" ></script><![endif]-->
 	<script>
 		$(document).ready(function() {
-			$(".menu_item").click(function(){
-				$(".menu_item").removeClass("active");
-				$(".menu_item span").hide();
-				$(this).addClass("active");
-				$(this).next().children("span").css({"display":"block"});
-				return false
-			});
-			
 			var content_height = $(document).height() - $("#header").height() - $("#footer").height() - $(".user_block").height() - 28;
 			$("#main").css({"min-height": content_height});
-			
+
 
 			$("input[type=text], textarea").each(function () {
 				var default_value = this.value;
@@ -43,8 +35,8 @@
 					}
 				});
 			});
-			
-		});		
+
+		});
 	</script>
 </head>
 <body>
@@ -59,15 +51,15 @@
                 	<div class="wrapper">
                     	<!-- main menu -->
                     	<ul id="nav">
-                        	<li class="menu_item">
+                        	<li class="menu_item ${mainActive}">
                             	<a href="">Главная</a>
                                 <span class="item_shadow"></span>
                             </li>
-                            <li class="menu_item">
+                            <li class="menu_item ${aboutActive}">
                             	<a href="">О нас</a>
                                 <span class="item_shadow"></span>
                             </li>
-                            <li class="menu_item">
+                            <li class="menu_item ${developersActive}">
                             	<a href="">История создания</a>
                                 <span class="item_shadow"></span>
                             </li>
@@ -75,7 +67,7 @@
                     	<!-- end main menu -->
                         
                         <!-- registration button -->
-                        <a href="" class="registration active">Регистрация</a>
+                        <a href="" class="registration ${registerActive}">Регистрация</a>
                         <!-- end registration button -->
                     </div>
                 </div>
