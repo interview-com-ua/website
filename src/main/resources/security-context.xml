@@ -19,6 +19,8 @@
 		<sec:intercept-url pattern="/register" access="isAnonymous()" />
 		<sec:intercept-url pattern="/user/**" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/**" access="isAnonymous()" />
+
+        <sec:access-denied-handler ref="accessDeniedHandler" />
 	</sec:http>
 
 	<sec:authentication-manager alias="authenticationManager">
@@ -26,7 +28,9 @@
 			<sec:password-encoder hash="md5"/>
 		</sec:authentication-provider>
 	</sec:authentication-manager>
-	
+
+    <bean id="accessDeniedHandler" class="ua.com.itinterview.web.security.RedirectAccessDeniedHandler" />
+
 	<bean id="userSecurityService" class="ua.com.itinterview.web.security.UserSecurityService" />
 	
 	<bean id="authenticationUtils" class="ua.com.itinterview.web.security.AuthenticationUtils" />
