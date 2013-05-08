@@ -79,15 +79,15 @@ public class UserServiceUnitTest {
     }
 
     @Test
-    public void testConvertUserEditProfileCommandToUserEntity() {
+    public void testConvertUserCommandToUserEditProfileCommand() {
 	replayAllMocks();
-	UserEditProfileCommand userEditProfileCommand = creatUserEditProfileCommand();
-	UserEntity actualUserEntity = new UserEntity(userEditProfileCommand);
+	UserCommand userCommand = createUserCommand();
+	UserEditProfileCommand actualUserEditProfileCommand = new UserEditProfileCommand(
+		userCommand);
 
-	UserEntity expectedUserEntity = createUserEntity();
-	expectedUserEntity.setPassword(null);
-	expectedUserEntity.setUserName(null);
-	assertEquals(expectedUserEntity, actualUserEntity);
+	UserEditProfileCommand expectedUserEditProfileCommand1 = creatUserEditProfileCommand();
+	assertEquals(expectedUserEditProfileCommand1,
+		actualUserEditProfileCommand);
     }
 
     @Test

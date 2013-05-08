@@ -23,6 +23,13 @@ public class UserEditProfileCommand {
     public UserEditProfileCommand() {
     }
 
+    public UserEditProfileCommand(UserCommand userCommand) {
+	this.id = userCommand.getId();
+	this.name = userCommand.getName();
+	this.email = userCommand.getEmail();
+	this.sex = userCommand.getSex();
+    }
+
     public UserEditProfileCommand(UserEntity userEntity) {
 	this.id = userEntity.getId();
 	this.name = userEntity.getName();

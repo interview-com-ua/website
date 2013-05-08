@@ -31,12 +31,6 @@ public class UserEntity extends EntityWithId {
 	sex = userCommand.getSex();
     }
 
-    public UserEntity(UserEditProfileCommand userEditProfileCommand) {
-	name = userEditProfileCommand.getName();
-	email = userEditProfileCommand.getEmail();
-	sex = userEditProfileCommand.getSex();
-    }
-
     public String getUserName() {
 	return userName;
     }
