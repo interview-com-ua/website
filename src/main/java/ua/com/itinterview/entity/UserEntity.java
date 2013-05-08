@@ -1,29 +1,14 @@
 package ua.com.itinterview.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import ua.com.itinterview.web.command.UserCommand;
+import ua.com.itinterview.web.command.UserEditProfileCommand;
 
 @Entity
 @Table(name = "users")
 @SequenceGenerator(name = "sequence", sequenceName = "users_id", allocationSize = 1)
 public class UserEntity extends EntityWithId {
-
-    public enum Sex {
-	MALE, FEMALE;
-
-	public String getValue() {
-	    return name();
-	}
-
-	public void setValue(String value) {
-	}
-    }
 
     @Column(unique = true)
     private String userName;
@@ -44,6 +29,12 @@ public class UserEntity extends EntityWithId {
 	email = userCommand.getEmail();
 	name = userCommand.getName();
 	sex = userCommand.getSex();
+    }
+
+    public UserEntity(UserEditProfileCommand userEditProfileCommand) {
+	name = userEditProfileCommand.getName();
+	email = userEditProfileCommand.getEmail();
+	sex = userEditProfileCommand.getSex();
     }
 
     public String getUserName() {
@@ -141,6 +132,17 @@ public class UserEntity extends EntityWithId {
     public String toString() {
 	return "UserEntity [userName=" + userName + ", password=" + password
 		+ ", email=" + email + ", name=" + name + ", sex=" + sex + "]";
+    }
+
+    public enum Sex {
+	MALE, FEMALE;
+
+	public String getValue() {
+	    return name();
+	}
+
+	public void setValue(String value) {
+	}
     }
 
 }

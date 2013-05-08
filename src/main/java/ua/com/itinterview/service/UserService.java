@@ -6,6 +6,7 @@ import org.springframework.security.authentication.encoding.PasswordEncoder;
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.web.command.UserCommand;
+import ua.com.itinterview.web.command.UserEditProfileCommand;
 
 public class UserService {
 
@@ -32,5 +33,15 @@ public class UserService {
     public UserCommand getUserById(Integer userId) {
 	UserEntity userEntity = userDao.getEntityById(userId);
 	return new UserCommand(userEntity);
+    }
+
+    public UserEditProfileCommand updateUser(int userId,
+	    UserEditProfileCommand changedUserProfile) {
+	UserEntity userEntityToUpdate = userDao.getEntityById(userId);
+	userEntityToUpdate.setName(changedUserProfile.getName());
+	userEntityToUpdate.setEmail(changedUserProfile.getEmail());
+	userEntityToUpdate.setSex(changedUserProfile.getSex());
+	UserEntity changedUser = userDao.save(userEntityToUpdate);
+	return new UserEditProfileCommand(changedUser);
     }
 }

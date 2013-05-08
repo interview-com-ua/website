@@ -1,10 +1,6 @@
 package ua.com.itinterview.service;
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
 import javax.persistence.EntityNotFoundException;
@@ -19,6 +15,7 @@ import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.entity.UserEntity.Sex;
 import ua.com.itinterview.web.command.UserCommand;
+import ua.com.itinterview.web.command.UserEditProfileCommand;
 
 public class UserServiceUnitTest {
 
@@ -27,16 +24,13 @@ public class UserServiceUnitTest {
     private static final String NAME = "name";
     private static final String USER_NAME = "userName";
     private static final String PASSWORD = "password";
-    private static final Sex MALE = Sex.MALE;
-
+    private static final Sex SEX = Sex.MALE;
     private static final String ENCODED_PASSWORD = "encodedPassword";
-
     private static final String FAKE_USER_NAME = "Fake User Name";
     private static final String NEW_NAME = "new name";
     private static final String NEW_EMAIL = "new email";
     private static final int NEW_USER_ID = USER_ID + 1;
     private static final Sex NEW_SEX = Sex.FEMALE;
-
     private UserDao userDaoMock;
     private UserService userService;
     private PasswordEncoder passwordEncoder;
@@ -70,6 +64,30 @@ public class UserServiceUnitTest {
 	UserCommand expectedUserCommand = createUserCommand();
 	UserCommand actualUserCommand = new UserCommand(userEntity);
 	assertEquals(expectedUserCommand, actualUserCommand);
+    }
+
+    @Test
+    public void testConvertUserEntityToUserEditProfileCommand() {
+	replayAllMocks();
+	UserEntity userEntity = createUserEntity();
+	UserEditProfileCommand actualUserEditProfileCommand = new UserEditProfileCommand(
+		userEntity);
+
+	UserEditProfileCommand expectedUserEditProfileCommand = creatUserEditProfileCommand();
+	assertEquals(expectedUserEditProfileCommand,
+		actualUserEditProfileCommand);
+    }
+
+    @Test
+    public void testConvertUserEditProfileCommandToUserEntity() {
+	replayAllMocks();
+	UserEditProfileCommand userEditProfileCommand = creatUserEditProfileCommand();
+	UserEntity actualUserEntity = new UserEntity(userEditProfileCommand);
+
+	UserEntity expectedUserEntity = createUserEntity();
+	expectedUserEntity.setPassword(null);
+	expectedUserEntity.setUserName(null);
+	assertEquals(expectedUserEntity, actualUserEntity);
     }
 
     @Test
@@ -113,6 +131,34 @@ public class UserServiceUnitTest {
 	assertEquals(USER_ID, actualSavedEntity.getId());
 	assertEquals(PASSWORD, actualSavedEntity.getPassword());
 	assertEquals(NEW_SEX, actualSavedEntity.getSex());
+    }
+
+    @Test
+    public void testUpdateUserEditProfile() {
+	UserEntity userEntityToChange = createUserEntity();
+	expect(userDaoMock.getEntityById(USER_ID))
+		.andReturn(userEntityToChange);
+	Capture<UserEntity> savedUserEntityCapture = new Capture<UserEntity>();
+	expect(userDaoMock.save(capture(savedUserEntityCapture))).andReturn(
+		userEntityToChange);
+	replayAllMocks();
+
+	UserEditProfileCommand changedUserProfile = createCustomUserEditProfileCommand(
+		NEW_USER_ID, NEW_NAME, NEW_EMAIL, NEW_SEX);
+	UserEditProfileCommand actualUserEditProfile = userService.updateUser(
+		USER_ID, changedUserProfile);
+
+	UserEntity savedUserEntity = savedUserEntityCapture.getValue();
+	assertEquals(USER_ID, savedUserEntity.getId());
+	assertEquals(USER_NAME, savedUserEntity.getUserName());
+	assertEquals(PASSWORD, savedUserEntity.getPassword());
+	assertEquals(NEW_NAME, savedUserEntity.getName());
+	assertEquals(NEW_EMAIL, savedUserEntity.getEmail());
+	assertEquals(NEW_SEX, savedUserEntity.getSex());
+
+	UserEditProfileCommand expectedUserProfile = createCustomUserEditProfileCommand(
+		USER_ID, NEW_NAME, NEW_EMAIL, NEW_SEX);
+	assertEquals(expectedUserProfile, actualUserEditProfile);
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -163,8 +209,22 @@ public class UserServiceUnitTest {
 
     private UserCommand createUserCommand() {
 	UserCommand command = createCustomUserCommand(USER_ID, null, EMAIL,
-		NAME, USER_NAME, MALE);
+		NAME, USER_NAME, SEX);
 	return command;
+    }
+
+    private UserEditProfileCommand creatUserEditProfileCommand() {
+	return createCustomUserEditProfileCommand(USER_ID, NAME, EMAIL, SEX);
+    }
+
+    private UserEditProfileCommand createCustomUserEditProfileCommand(int id,
+	    String name, String email, UserEntity.Sex sex) {
+	UserEditProfileCommand userEditProfileCommand = new UserEditProfileCommand();
+	userEditProfileCommand.setId(id);
+	userEditProfileCommand.setName(name);
+	userEditProfileCommand.setEmail(email);
+	userEditProfileCommand.setSex(sex);
+	return userEditProfileCommand;
     }
 
     private UserCommand createUserCommandWithPassword() {
@@ -181,7 +241,7 @@ public class UserServiceUnitTest {
 	userEntity.setEmail(EMAIL);
 	userEntity.setName(NAME);
 	userEntity.setUserName(USER_NAME);
-	userEntity.setSex(MALE);
+	userEntity.setSex(SEX);
 	return userEntity;
     }
 }
