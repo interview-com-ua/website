@@ -1,5 +1,7 @@
 package ua.com.itinterview.web.resource;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ua.com.itinterview.service.UserService;
 import ua.com.itinterview.web.command.UserCommand;
+import ua.com.itinterview.web.command.UserEditProfileCommand;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
 import ua.com.itinterview.web.security.AuthenticationUtils;
 
@@ -48,40 +51,36 @@ public class UserResource extends ValidatedResource {
 
     @PreAuthorize("#userId == principal.info.id")
     @RequestMapping(value = "/user/{id}/view", method = RequestMethod.GET)
-    public ModelAndView getViewUser(@PathVariable("id") Integer userId) {
+    public String getViewUser(@PathVariable("id") Integer userId,
+	    Map<String, Object> map) {
 	UserCommand userCommand = userService.getUserById(userId);
-	ModelAndView view = new ModelAndView("signup");
-	view.addObject("userCommand", userCommand);
-	return view;
-	/*
-	 * UserCommand userCommand = userService.getUserById(userId);
-	 * map.put("userCommand", userCommand); return "profile_page";
-	 */
+	map.put("userCommand", userCommand);
+	return "profile_page";
     }
-
-    /*
-     * @PreAuthorize("#userId == principal.info.id")
-     * 
-     * @RequestMapping(value = "/user/{id}/view", method = RequestMethod.GET)
-     * public ModelAndView getViewUser(@PathVariable("id") Integer userId) {
-     * UserCommand userCommand = userService.getUserById(userId); return
-     * goToSignupPageWithCommand(userCommand, ModeView.VIEW); }
-     */
 
     @PreAuthorize("#userId == principal.info.id")
     @RequestMapping(value = "/user/{id}/edit", method = RequestMethod.GET)
-    public ModelAndView getEditUser(@PathVariable("id") Integer userId) {
-	UserCommand userCommand = userService.getUserById(userId);
-	return goToSignupPageWithCommand(userCommand, ModeView.EDIT);
+    public String getEditUser(@PathVariable("id") Integer userId,
+	    Map<String, Object> map) {
+	UserEditProfileCommand userEditProfileCommand = new UserEditProfileCommand(
+		userService.getUserById(userId));
+	map.put("userEditProfileCommand", userEditProfileCommand);
+	return "profile_page";
     }
 
     @RequestMapping(value = "/user/{id}/save", method = RequestMethod.POST)
-    public ModelAndView saveUser(@PathVariable("id") int userId,
-	    @ModelAttribute UserCommand userCommand, BindingResult bindResult) {
+    public String saveUser(
+	    @PathVariable("id") int userId,
+	    @Valid @ModelAttribute UserEditProfileCommand userEditProfileCommand,
+	    BindingResult bindResult, HttpServletRequest request,
+	    Map<String, Object> map) {
 	if (bindResult.hasErrors()) {
-	    return goToSignupPageWithCommand(userCommand, ModeView.EDIT);
+	    map.put("UserEditProfileCommand", userEditProfileCommand);
+	    return "profile_page";
 	}
-	return new ModelAndView("redirect:/user/" + userId + "/view");
+
+	userService.updateUser(userId, userEditProfileCommand);
+	return "redirect:/user/" + userId + "/view";
     }
 
     private ModelAndView goToSignupPageWithCommand(UserCommand userCommand,
