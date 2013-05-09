@@ -51,7 +51,7 @@
 				var $input = $(this).addClass('jNiceChecked').siblings('input').attr('checked',true);
 				/* uncheck all others of same name */
 				$('input:radio[name="'+ $input.attr('name') +'"]').not($input).each(function(){
-					$(this).attr('checked',false).siblings('.jNiceRadio').removeClass('jNiceChecked');
+					$(this).siblings('.jNiceRadio').removeClass('jNiceChecked');
 				});
 				return false;
 		});
