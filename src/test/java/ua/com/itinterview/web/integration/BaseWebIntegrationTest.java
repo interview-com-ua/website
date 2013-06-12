@@ -14,11 +14,9 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import ua.com.itinterview.web.command.UserCommand;
-
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-web-context.xml")
+@ContextConfiguration({ "classpath:test-web-context.xml" })
 public abstract class BaseWebIntegrationTest extends
 	AbstractTransactionalJUnit4SpringContextTests {
 
@@ -34,20 +32,6 @@ public abstract class BaseWebIntegrationTest extends
 
     protected MockHttpServletRequestBuilder registerUser(String userName,
 	    String name, String email, String password, String confirmPassword) {
-	return registerUser(userName, name, email, password, confirmPassword,
-		null);
-    }
-
-    protected MockHttpServletRequestBuilder registerUser(String userName,
-	    String name, String email, String password, String confirmPassword,
-	    UserCommand userCommand) {
-	if (userCommand != null) {
-	    userCommand.setConfirmPassword(confirmPassword);
-	    userCommand.setEmail(email);
-	    userCommand.setName(name);
-	    userCommand.setPassword(password);
-	    userCommand.setUserName(userName);
-	}
 	return post("/register").param("userName", userName)
 		.param("name", name).param("email", email)
 		.param("password", password)
