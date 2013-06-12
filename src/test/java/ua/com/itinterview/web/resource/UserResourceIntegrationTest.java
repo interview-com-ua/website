@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.web.servlet.ResultActions;
 
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
@@ -60,10 +61,13 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest {
 
     @Test
     public void testRegisterUser() throws Exception {
-	mvc.perform(
-		registerUser("UserName", "Viktor", "email@mail.com", "123456",
-			"123456")).andExpect(model().hasNoErrors())
-		.andExpect(redirectedUrl("/user/23/view"))
+
+	ResultActions requestActions = mvc.perform(registerUser("UserName",
+		"Viktor", "email@mail.com", "123456", "123456"));
+	String userId = String.valueOf(userDao.getUserByUserName("UserName")
+		.getId());
+	requestActions.andExpect(model().hasNoErrors())
+		.andExpect(redirectedUrl("/user/" + userId + "/view"))
 		.andExpect(status().isMovedTemporarily());
 
     }
