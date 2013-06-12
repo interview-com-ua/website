@@ -13,20 +13,9 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
-import ua.com.itinterview.service.UserService;
 import ua.com.itinterview.web.integration.BaseWebIntegrationTest;
-import ua.com.itinterview.web.security.AuthenticationUtils;
 
 public class UserResourceIntegrationTest extends BaseWebIntegrationTest {
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private AuthenticationUtils authenticationUtils;
-
-    @Autowired
-    private UserResource userResource;
 
     @Autowired
     private UserDao userDao;
@@ -104,4 +93,5 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest {
 	user.setUserName(userName);
 	userDao.save(user);
     }
+
 }

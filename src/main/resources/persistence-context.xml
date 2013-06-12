@@ -12,7 +12,7 @@
 		http://www.springframework.org/schema/aop 
         http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
 
-    <context:property-placeholder location="classpath:persistence.properties" order="1"/>
+    <context:property-placeholder location="classpath:persistence.properties" order="0"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">

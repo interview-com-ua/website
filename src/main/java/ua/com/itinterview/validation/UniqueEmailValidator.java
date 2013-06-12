@@ -26,6 +26,7 @@ public class UniqueEmailValidator implements
     public boolean isValid(String email, ConstraintValidatorContext context) {
 	UserDetails userDetails = authenticationUtils.getUserDetails();
 	if (userDetails != null) {
+	    System.out.println(userDetails.getUsername());
 	    UserEntity userEntity = userDao.getUserByUserName(userDetails
 		    .getUsername());
 	    String userEmail = userEntity.getEmail();
