@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.validation.UniqueEmail;
 
+import javax.validation.constraints.NotNull;
+
 public class UserEditProfileCommand {
 
     private int id;
@@ -18,6 +20,7 @@ public class UserEditProfileCommand {
     @Length(max = 255)
     @UniqueEmail
     private String email;
+    @NotNull
     private UserEntity.Sex sex = UserEntity.Sex.MALE;
 
     public UserEditProfileCommand() {

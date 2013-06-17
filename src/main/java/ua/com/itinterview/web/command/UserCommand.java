@@ -30,6 +30,7 @@ public class UserCommand {
     @NotEmpty(message = "{empty.name}")
     @Length(max = 255)
     private String name;
+    @NotNull
     private Sex sex = Sex.MALE;
     @Length(min = 6, message = "{password.short}")
     @NotNull
