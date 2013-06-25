@@ -144,4 +144,15 @@ public class CompanyEntity extends EntityWithId {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "CompanyEntity{" +
+                "companyName='" + companyName + '\'' +
+                ", companyPhone='" + companyPhone + '\'' +
+                ", companyLogoUrl='" + companyLogoUrl + '\'' +
+                ", companyAddress='" + companyAddress + '\'' +
+                ", companyWebPage='" + companyWebPage + '\'' +
+                ", companyType=" + companyType +
+                '}';
+    }
 }
