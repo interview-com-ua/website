@@ -36,9 +36,9 @@ public class InterviewService {
 
     }
 
-    private List<InterviewCommand> convertToInterviewCommandList(
+        private List<InterviewCommand> convertToInterviewCommandList(
 	    List<InterviewEntity> interviewEntities) {
-	List<InterviewCommand> result = new ArrayList<InterviewCommand>();
+	List<InterviewCommand> result = new ArrayList<InterviewCommand>(interviewEntities.size());
 	for (InterviewEntity interviewEntity : interviewEntities) {
 	    result.add(new InterviewCommand(interviewEntity));
 	}
