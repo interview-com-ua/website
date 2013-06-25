@@ -57,9 +57,14 @@ public abstract class BaseWebIntegrationTest extends
 
     protected MockHttpServletRequestBuilder registerUser(String userName,
                                                          String name, String email, String password, String confirmPassword) {
+        return registerUser(userName, name, email, password, confirmPassword, UserEntity.Sex.MALE);
+    }
+
+    protected MockHttpServletRequestBuilder registerUser(String userName,
+                                                         String name, String email, String password, String confirmPassword, UserEntity.Sex sex) {
         return post("/register").param("userName", userName)
                 .param("name", name).param("email", email)
-                .param("password", password)
+                .param("password", password).param("sex", sex.toString())
                 .param("confirmPassword", confirmPassword);
     }
 

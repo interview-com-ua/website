@@ -31,7 +31,7 @@ public class UserCommand {
     @Length(max = 255)
     private String name;
     @NotNull
-    private Sex sex = Sex.MALE;
+    private Sex sex;
     @Length(min = 6, message = "{password.short}")
     @NotNull
     private String password;
