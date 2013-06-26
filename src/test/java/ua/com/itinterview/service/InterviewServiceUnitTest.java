@@ -1,28 +1,21 @@
 package ua.com.itinterview.service;
 
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
+import org.easymock.Capture;
+import org.easymock.EasyMock;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import ua.com.itinterview.dao.InterviewDao;
+import ua.com.itinterview.dao.UserDao;
+import ua.com.itinterview.entity.*;
+import ua.com.itinterview.web.command.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.easymock.EasyMock;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import ua.com.itinterview.dao.InterviewDao;
-import ua.com.itinterview.dao.UserDao;
-import ua.com.itinterview.entity.CityEntity;
-import ua.com.itinterview.entity.CompanyEntity;
-import ua.com.itinterview.entity.InterviewEntity;
-import ua.com.itinterview.entity.PositionEntity;
-import ua.com.itinterview.entity.TechnologyEntity;
-import ua.com.itinterview.entity.UserEntity;
-import ua.com.itinterview.web.command.*;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 public class InterviewServiceUnitTest {
     public static final String FEEDBACK_TEXT = "Feedback text";
@@ -52,7 +45,7 @@ public class InterviewServiceUnitTest {
         verify(interviewDaoMock);
     }
 
-    public void replayAll() {
+    public void replayAllMocks() {
         replay(interviewDaoMock);
     }
 
@@ -66,7 +59,7 @@ public class InterviewServiceUnitTest {
         // .andReturn(1);
         EasyMock.expect(interviewDaoMock.save(interviewEntity)).andReturn(
                 interviewEntity);
-        replayAll();
+        replayAllMocks();
         interviewService.addInterview(interviewCommand);
         verifyAll();
     }
@@ -84,8 +77,35 @@ public class InterviewServiceUnitTest {
     }
 
     @Test
+    public void testGetUserInterviewList() {
+        List<InterviewEntity> interviewEntities = getInterviewEntities();
+        Capture<UserEntity> userEntityCapture = new Capture<UserEntity>();
+        expect(interviewDaoMock.getInterviewsByUser(capture(userEntityCapture))).andReturn(interviewEntities);
+        replayAllMocks();
+        UserCommand userCommand = createUserCommand();
+        List<InterviewCommand> actualInterviewCommands = interviewService.getUserInterviewList(userCommand);
+        List<InterviewCommand> expectedInterviewCommands = getInterviewCommands();
+        assertEquals(expectedInterviewCommands, actualInterviewCommands);
+        UserEntity actualUserEntity = userEntityCapture.getValue();
+        UserEntity expectedUserEntity = createUserEntity();
+        assertEquals(expectedUserEntity, actualUserEntity);
+    }
+
+    private List<InterviewCommand> getInterviewCommands() {
+        List<InterviewCommand> expectedInterviewCommands = new ArrayList<InterviewCommand>();
+        expectedInterviewCommands.add(createInterviewCommand());
+        return expectedInterviewCommands;
+    }
+
+    private List<InterviewEntity> getInterviewEntities() {
+        List<InterviewEntity> interviewEntities = new ArrayList<InterviewEntity>();
+        interviewEntities.add(createInterviewEntity());
+        return interviewEntities;
+    }
+
+    @Test
     public void testConvertCommandToEntity() {
-        replayAll();
+        replayAllMocks();
         InterviewCommand command = createInterviewCommand();
         InterviewEntity expectedEntity = createInterviewEntity();
         InterviewEntity actualEntity = new InterviewEntity(command);
@@ -94,7 +114,7 @@ public class InterviewServiceUnitTest {
 
     @Test
     public void testConvertEntityToCommand() {
-        replayAll();
+        replayAllMocks();
         InterviewEntity interviewEntity = createInterviewEntity();
         InterviewCommand expectedCommand = createInterviewCommand();
         InterviewCommand actualCommand = new InterviewCommand(interviewEntity);
