@@ -189,6 +189,23 @@ public class UserServiceUnitTest {
 	userService.getUserById(NEW_USER_ID);
     }
 
+    @Test
+    public void testGetUserByUsername() {
+        UserEntity userEntity = createUserEntity();
+        expect(userDaoMock.getUserByUserName(USER_NAME)).andReturn(userEntity);
+        replayAllMocks();
+        UserCommand expectedUserCommand = createUserCommand();
+        UserCommand actualUserCommand = userService.getUserByUserName(USER_NAME);
+        assertEquals(expectedUserCommand, actualUserCommand);
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void testGetUserByUsernameWhenUserDoesNotExist() {
+        expect(userDaoMock.getUserByUserName(FAKE_USER_NAME)).andThrow(new EntityNotFoundException());
+        replayAllMocks();
+        userService.getUserByUserName(FAKE_USER_NAME);
+    }
+
     @After
     public void verifyAllMocks() {
 	verify(userDaoMock, passwordEncoder);

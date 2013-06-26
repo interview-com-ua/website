@@ -35,6 +35,11 @@ public class UserService {
 	return new UserCommand(userEntity);
     }
 
+    public UserCommand getUserByUserName(String userName) {
+        UserEntity userEntity = userDao.getUserByUserName(userName);
+        return new UserCommand(userEntity);
+    }
+
     public UserEditProfileCommand updateUser(int userId,
 	    UserEditProfileCommand changedUserProfile) {
 	UserEntity userEntityToUpdate = userDao.getEntityById(userId);
