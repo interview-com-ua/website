@@ -92,6 +92,22 @@ public class InterviewServiceUnitTest {
         assertEquals(expectedUserEntity.getId(), actualUserEntity.getId());
     }
 
+    @Test
+    public void testGetUserInterviewListWithUserId() {
+        List<InterviewEntity> interviewEntities = getInterviewEntities();
+        Capture<UserEntity> userEntityCapture = new Capture<UserEntity>();
+        expect(interviewDaoMock.getInterviewsByUser(capture(userEntityCapture))).andReturn(interviewEntities);
+        replayAllMocks();
+        UserCommand userCommand = createUserCommand();
+        List<InterviewCommand> actualInterviewCommands = interviewService.getUserInterviewList(userCommand.getId());
+        List<InterviewCommand> expectedInterviewCommands = getInterviewCommands();
+        assertEquals(expectedInterviewCommands, actualInterviewCommands);
+        UserEntity actualUserEntity = userEntityCapture.getValue();
+        UserEntity expectedUserEntity = createUserEntity();
+        assertEquals(expectedUserEntity, actualUserEntity);
+        assertEquals(expectedUserEntity.getId(), actualUserEntity.getId());
+    }
+
     private List<InterviewCommand> getInterviewCommands() {
         List<InterviewCommand> expectedInterviewCommands = new ArrayList<InterviewCommand>();
         expectedInterviewCommands.add(createInterviewCommand());
