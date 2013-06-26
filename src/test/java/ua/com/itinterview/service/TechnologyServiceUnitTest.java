@@ -92,6 +92,7 @@ public class TechnologyServiceUnitTest {
 
     @Test
     public void testConvertCommandToEntity() {
+        replayMocks();
         TechnologyEntity expectedEntity = createTestTechnologyEntity();
         TechnologyEntity actualEntity = new TechnologyEntity(createTestTechnologyCommand());
         assertEquals(expectedEntity, actualEntity);
