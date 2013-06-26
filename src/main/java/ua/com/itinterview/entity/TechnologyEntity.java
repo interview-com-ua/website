@@ -1,5 +1,7 @@
 package ua.com.itinterview.entity;
 
+import ua.com.itinterview.web.command.TechnologyCommand;
+
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -9,6 +11,14 @@ import javax.persistence.Table;
 @SequenceGenerator(name = "sequence", sequenceName = "technologies_id", allocationSize = 1)
 public class TechnologyEntity extends EntityWithId {
     private String technologyName;
+
+    public TechnologyEntity() {
+
+    }
+
+    public TechnologyEntity(TechnologyCommand technologyCommand) {
+        technologyName = technologyCommand.getName();
+    }
 
     public String getTechnologyName() {
 	return technologyName;

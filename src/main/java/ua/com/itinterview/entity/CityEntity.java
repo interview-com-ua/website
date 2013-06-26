@@ -1,5 +1,7 @@
 package ua.com.itinterview.entity;
 
+import ua.com.itinterview.web.command.CityCommand;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
@@ -15,6 +17,10 @@ public class CityEntity extends EntityWithId {
 
     public CityEntity() {
 
+    }
+
+    public CityEntity(CityCommand cityCommand) {
+        cityName = cityCommand.getCityName();
     }
 
     public String getCityName() {

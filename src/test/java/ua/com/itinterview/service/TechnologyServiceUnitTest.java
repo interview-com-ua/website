@@ -91,6 +91,13 @@ public class TechnologyServiceUnitTest {
     }
 
     @Test
+    public void testConvertCommandToEntity() {
+        TechnologyEntity expectedEntity = createTestTechnologyEntity();
+        TechnologyEntity actualEntity = new TechnologyEntity(createTestTechnologyCommand());
+        assertEquals(expectedEntity, actualEntity);
+    }
+
+    @Test
     public void testGetTechnologyList() {
 
 	List<TechnologyEntity> technologies = generateTechnologyList();

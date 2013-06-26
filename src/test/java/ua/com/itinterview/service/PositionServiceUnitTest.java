@@ -95,6 +95,14 @@ public class PositionServiceUnitTest {
     }
 
     @Test
+    public void testConvertCommandToEntity() {
+        replayMocks();
+        PositionEntity expectedEntity = createTestPositionEntity();
+        PositionEntity actualEntity = new PositionEntity(createTestPositionCommand());
+        assertEquals(expectedEntity, actualEntity);
+    }
+
+    @Test
     public void testGetPositionList() {
 
 	List<PositionEntity> positions = generatePositionList();

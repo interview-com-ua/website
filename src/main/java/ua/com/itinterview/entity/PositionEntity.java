@@ -1,5 +1,7 @@
 package ua.com.itinterview.entity;
 
+import ua.com.itinterview.web.command.PositionCommand;
+
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -10,6 +12,15 @@ import javax.persistence.Table;
 public class PositionEntity extends EntityWithId {
     private String positionGroup;
     private String positionName;
+
+    public PositionEntity() {
+
+    }
+
+    public PositionEntity(PositionCommand positionCommand) {
+        positionGroup = positionCommand.getGroup();
+        positionName = positionCommand.getName();
+    }
 
     public String getPositionGroup() {
 	return positionGroup;

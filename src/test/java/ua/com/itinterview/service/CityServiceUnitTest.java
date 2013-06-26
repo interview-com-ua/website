@@ -44,6 +44,14 @@ public class CityServiceUnitTest {
     }
 
     @Test
+    public void testConvertCommandToEntity() {
+        replayAllMocks();
+        CityEntity exceptedEntity = createCityEntity(CITY_ID, CITY_NAME);
+        CityEntity actualEntity = new CityEntity(createCityCommand());
+        assertEquals(exceptedEntity, actualEntity);
+    }
+
+    @Test
     public void testGetAllCities() {
 	CityEntity kiev = createCityEntity(2, "Kiev");
 	CityEntity moscow = createCityEntity(3, "Moskow");
