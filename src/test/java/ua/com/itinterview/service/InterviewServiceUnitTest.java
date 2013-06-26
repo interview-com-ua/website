@@ -89,6 +89,7 @@ public class InterviewServiceUnitTest {
         UserEntity actualUserEntity = userEntityCapture.getValue();
         UserEntity expectedUserEntity = createUserEntity();
         assertEquals(expectedUserEntity, actualUserEntity);
+        assertEquals(expectedUserEntity.getId(), actualUserEntity.getId());
     }
 
     private List<InterviewCommand> getInterviewCommands() {

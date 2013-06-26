@@ -36,7 +36,9 @@ public class InterviewService {
     }
 
     public List<InterviewCommand> getUserInterviewList(UserCommand userCommand) {
-        List<InterviewEntity> interviewEntities = interviewEntityDao.getInterviewsByUser(new UserEntity(userCommand));
+        UserEntity user = new UserEntity(userCommand);
+        user.setId(userCommand.getId());
+        List<InterviewEntity> interviewEntities = interviewEntityDao.getInterviewsByUser(user);
         return convertToInterviewCommandList(interviewEntities);
     }
 
