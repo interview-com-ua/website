@@ -2,6 +2,7 @@ package ua.com.itinterview.web.resource;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,9 +16,13 @@ import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.service.InterviewService;
 import ua.com.itinterview.service.QuestionService;
+import ua.com.itinterview.service.UserService;
 import ua.com.itinterview.web.command.InterviewCommand;
 import ua.com.itinterview.web.command.QuestionCommand;
+import ua.com.itinterview.web.command.UserCommand;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
+import ua.com.itinterview.web.security.AuthenticationUtils;
+import ua.com.itinterview.web.security.UserSecurityDetail;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -29,23 +34,18 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/interview")
 public class InterviewResource {
-
-    private final static Logger LOGGER = Logger
-            .getLogger(InterviewResource.class);
+    private final static Logger LOGGER = Logger.getLogger(InterviewResource.class);
 
     @Autowired
     private QuestionService questionService;
-
     @Autowired
     private InterviewService interviewService;
-
     @Autowired
-    private UserDao userDao;
-
+    private UserService userService;
     @Autowired
     private InterviewDao interviewEntityDao;
-
-    ModeView modeView;
+    @Autowired
+    private AuthenticationUtils authenticationUtils;
 
     @RequestMapping(value = "/{interviewId}/question_list", method = RequestMethod.GET)
     public ModelAndView showQuestionListFoeInterview(
@@ -60,7 +60,7 @@ public class InterviewResource {
             @PathVariable Integer interviewId) {
         ModelAndView view = new ModelAndView("add_question");
         view.addObject(new QuestionCommand());
-        modeView = ModeView.CREATE;
+        ModeView modeView = ModeView.CREATE;
         view.addObject("mode", modeView);
         return view;
     }
@@ -150,23 +150,12 @@ public class InterviewResource {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String showInterviewList(Map<String, Object> params) {
-        params.put("list", interviewService.getInterviewList());
-        Map<Integer, String> users = new HashMap<Integer, String>();
-        users.put(0, "Bob");
-        users.put(1, "Tom");
-        params.put("users", users);
-        InterviewCommand interviewCommand = createInterviewCommand();
-        params.put("interviewCommand", interviewCommand);
-        return "show_interview_list";
-    }
-
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public String saveInterview(@ModelAttribute InterviewCommand interviewCommand,
-                                Map<String, Object> map, BindingResult bindResult) {
-        System.out.println(interviewCommand.getUser().getId());
-        map.put("interviewCommand", interviewCommand);
-        return "show_interview_list";
+    public ModelAndView showInterviewList() {
+        UserCommand userCommand = userService.getUserByUserName(authenticationUtils.getUserDetails().getUsername());
+        List<InterviewCommand> interviewList = interviewService.getUserInterviewList(userCommand);
+        ModelAndView modelAndView = new ModelAndView("show_interview_list");
+        modelAndView.addObject("interviewList", interviewList);
+        return modelAndView;
     }
 
     private UserEntity createUser(String name) {
