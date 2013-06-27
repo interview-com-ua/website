@@ -12,7 +12,11 @@
     <script type="text/javascript" src="<c:url value="/resources/js/jquery.jNice.js"/>" ></script>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/style.css"/>" />
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/jNice.css"/>" />
-    <!--[if IE]><script type="text/javascript" src="/resources/js/box-shadow.min.js" ></script><![endif]-->
+    <!--Needed by interview list-->
+    <script type="text/javascript" src="<c:url value="/resources/js/jquery.fancybox.js?v=2.1.4"/>" ></script>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/jquery.fancybox.css?v=2.1.4"/>" media="screen" />
+
+    <!--[if IE]><script type="text/javascript" src="<c:url value="/resources/js/box-shadow.min.js"/>" ></script><![endif]-->
 	<script>
 		$(document).ready(function() {
 			var content_height = $(document).height() - $("#header").height() - $("#footer").height() - $(".user_block").height() - 28;

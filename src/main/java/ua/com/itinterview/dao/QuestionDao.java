@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.springframework.transaction.annotation.Transactional;
 
 import ua.com.itinterview.entity.InterviewEntity;
@@ -34,6 +35,13 @@ public class QuestionDao extends EntityWithIdDao<QuestionEntity> {
 	Criteria criteria = session.createCriteria(QuestionEntity.class);
 	criteria.add(eq("interview", interview));
 	return criteria.list();
+    }
+
+    @Transactional Integer getQuestionsCountForInterview(InterviewEntity interview) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(QuestionEntity.class);
+        criteria.add(eq("interview", interview));
+        return (Integer)criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
     
     @Transactional

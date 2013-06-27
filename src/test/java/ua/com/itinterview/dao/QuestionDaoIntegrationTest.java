@@ -56,6 +56,7 @@ public class QuestionDaoIntegrationTest extends
 	// When
 	List<QuestionEntity> list = questionDao
 		.getQuestionsForInterview(interview1);
+        questionDao.getQuestionsCountForInterview(interview1);
 	// Then
 	assertEquals(1, list.size());
 	assertEquals(question1.getQuestion(), list.get(0).getQuestion());
