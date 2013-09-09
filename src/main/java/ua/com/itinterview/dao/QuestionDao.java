@@ -37,11 +37,11 @@ public class QuestionDao extends EntityWithIdDao<QuestionEntity> {
 	return criteria.list();
     }
 
-    @Transactional Integer getQuestionsCountForInterview(InterviewEntity interview) {
+    @Transactional Long getQuestionsCountForInterview(InterviewEntity interview) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria(QuestionEntity.class);
         criteria.add(eq("interview", interview));
-        return (Integer)criteria.setProjection(Projections.rowCount()).uniqueResult();
+        return ((Long) criteria.setProjection(Projections.rowCount()).uniqueResult());
     }
     
     @Transactional
