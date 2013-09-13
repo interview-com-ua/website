@@ -22,6 +22,7 @@ public class InterviewCommand {
     @NotBlank
     private String feedback;
     private Date created;
+    private int questionCount;
 
     public InterviewCommand() {
 
@@ -36,6 +37,7 @@ public class InterviewCommand {
         technology = new TechnologyCommand(interviewEntity.getTechnology());
         position = new PositionCommand(interviewEntity.getPosition());
         city = new CityCommand(interviewEntity.getCity());
+        questionCount = interviewEntity.getQuestionCount();
     }
 
     public Integer getId() {
@@ -102,6 +104,14 @@ public class InterviewCommand {
         this.created = created;
     }
 
+    public int getQuestionCount() {
+        return questionCount;
+    }
+
+    public void setQuestionCount(int questionCount) {
+        this.questionCount = questionCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -109,6 +119,7 @@ public class InterviewCommand {
 
         InterviewCommand that = (InterviewCommand) o;
 
+        if (questionCount != that.questionCount) return false;
         if (city != null ? !city.equals(that.city) : that.city != null) return false;
         if (company != null ? !company.equals(that.company) : that.company != null) return false;
         if (created != null ? !created.equals(that.created) : that.created != null) return false;
@@ -131,6 +142,7 @@ public class InterviewCommand {
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (feedback != null ? feedback.hashCode() : 0);
         result = 31 * result + (created != null ? created.hashCode() : 0);
+        result = 31 * result + questionCount;
         return result;
     }
 
@@ -145,6 +157,7 @@ public class InterviewCommand {
                 ", city=" + city +
                 ", feedback='" + feedback + '\'' +
                 ", created=" + created +
+                ", questionCount=" + questionCount +
                 '}';
     }
 }

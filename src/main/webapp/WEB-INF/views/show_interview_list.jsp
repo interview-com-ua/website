@@ -1,6 +1,7 @@
-﻿<jsp:include page="header.jsp"/>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<c:set scope="request" var="mainActive" value="active" />
+<jsp:include page="header.jsp"/>
 <script>
     $(document).ready(function () {
         $('.fancybox').fancybox();
@@ -32,7 +33,7 @@
                         <div class="interview_company_city"><a href="">${interview.city.cityName}</a></div>
                         <div class="interview_company_vacancy"><a href="">${interview.position.name}</a></div>
                         <div class="interview_questions">
-                            <span>${questionsTotal[currN]}</span>
+                            <span>${interview.questionCount}</span>
                             вопросов
                         </div>
                     </div>

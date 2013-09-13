@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
 import sun.text.UCompactIntArray;
 import ua.com.itinterview.web.command.InterviewCommand;
 import ua.com.itinterview.web.command.UserCommand;
@@ -35,6 +36,9 @@ public class InterviewEntity extends EntityWithId {
     private CityEntity city;
     private String feedback;
     private Date created;
+
+    @Formula("(select count(*) from interview_question q where q.id = id)")
+    private int questionCount;
 
     public InterviewEntity() {
 
@@ -106,76 +110,59 @@ public class InterviewEntity extends EntityWithId {
         this.created = created;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((city == null) ? 0 : city.hashCode());
-        result = prime * result + ((company == null) ? 0 : company.hashCode());
-        result = prime * result + ((created == null) ? 0 : created.hashCode());
-        result = prime * result
-                + ((feedback == null) ? 0 : feedback.hashCode());
-        result = prime * result
-                + ((position == null) ? 0 : position.hashCode());
-        result = prime * result
-                + ((technology == null) ? 0 : technology.hashCode());
-        result = prime * result + ((user == null) ? 0 : user.hashCode());
-        return result;
+    public int getQuestionCount() {
+        return questionCount;
+    }
+
+    public void setQuestionCount(int questionCount) {
+        this.questionCount = questionCount;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        InterviewEntity other = (InterviewEntity) obj;
-        if (city == null) {
-            if (other.city != null)
-                return false;
-        } else if (!city.equals(other.city))
-            return false;
-        if (company == null) {
-            if (other.company != null)
-                return false;
-        } else if (!company.equals(other.company))
-            return false;
-        if (created == null) {
-            if (other.created != null)
-                return false;
-        } else if (!created.equals(other.created))
-            return false;
-        if (feedback == null) {
-            if (other.feedback != null)
-                return false;
-        } else if (!feedback.equals(other.feedback))
-            return false;
-        if (position == null) {
-            if (other.position != null)
-                return false;
-        } else if (!position.equals(other.position))
-            return false;
-        if (technology == null) {
-            if (other.technology != null)
-                return false;
-        } else if (!technology.equals(other.technology))
-            return false;
-        if (user == null) {
-            if (other.user != null)
-                return false;
-        } else if (!user.equals(other.user))
-            return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        InterviewEntity that = (InterviewEntity) o;
+
+        if (questionCount != that.questionCount) return false;
+        if (city != null ? !city.equals(that.city) : that.city != null) return false;
+        if (company != null ? !company.equals(that.company) : that.company != null) return false;
+        if (created != null ? !created.equals(that.created) : that.created != null) return false;
+        if (feedback != null ? !feedback.equals(that.feedback) : that.feedback != null) return false;
+        if (position != null ? !position.equals(that.position) : that.position != null) return false;
+        if (technology != null ? !technology.equals(that.technology) : that.technology != null) return false;
+        if (user != null ? !user.equals(that.user) : that.user != null) return false;
+
         return true;
     }
 
     @Override
-    public String toString() {
-        return "InterviewEntity [user=" + user + ", company=" + company
-                + ", technology=" + technology + ", position=" + position
-                + ", city=" + city + ", feedback=" + feedback + ", created="
-                + created + "]";
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (company != null ? company.hashCode() : 0);
+        result = 31 * result + (technology != null ? technology.hashCode() : 0);
+        result = 31 * result + (position != null ? position.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (feedback != null ? feedback.hashCode() : 0);
+        result = 31 * result + (created != null ? created.hashCode() : 0);
+        result = 31 * result + questionCount;
+        return result;
     }
 
+    @Override
+    public String toString() {
+        return "InterviewEntity{" +
+                "user=" + user +
+                ", company=" + company +
+                ", technology=" + technology +
+                ", position=" + position +
+                ", city=" + city +
+                ", feedback='" + feedback + '\'' +
+                ", created=" + created +
+                ", questionCount=" + questionCount +
+                '}';
+    }
 }
