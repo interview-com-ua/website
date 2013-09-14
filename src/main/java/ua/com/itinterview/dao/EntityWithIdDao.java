@@ -10,8 +10,10 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.Projection;
 import org.springframework.transaction.annotation.Transactional;
 
 import ua.com.itinterview.dao.paging.PagingFilter;
@@ -66,6 +68,18 @@ public class EntityWithIdDao<T extends EntityWithId> {
 		* pagingFilter.getCurrentPage();
 	return criteria.setFirstResult(firstPosition)
 		.setMaxResults(pagingFilter.getItemsPerPage()).list();
+    }
+
+    @Transactional
+    public Long getCount() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(clazz);
+        return getCount(criteria);
+    }
+
+    @Transactional
+    public Long getCount(Criteria criteria) {
+        return (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Transactional

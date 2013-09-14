@@ -27,17 +27,17 @@ public abstract class BaseEntityWithIdDaoIntegrationTest<T extends EntityWithId>
     }
 
     @Test
+    public void testGetCount() {
+        cleanUpBeforeTest();
+        createEntities();
+        assertEquals(2L, getEntityWithIdDao().getCount().longValue());
+    }
+
+    @Test
     public void testGetAllWithLimit() {
 	cleanUpBeforeTest();
 
-	List<T> entityList = createEntityList();
-	if (entityList.size() < 2) {
-	    fail("Entity list should contain two or more elements");
-	}
-
-	for (T entity : entityList) {
-	    getEntityWithIdDao().save(entity);
-	}
+        List<T> entityList = createEntities();
 
 	List<T> entityGetWithoutLimit = getEntityWithIdDao().getAll();
 	assertEquals(entityList.size(), entityGetWithoutLimit.size());
@@ -84,6 +84,17 @@ public abstract class BaseEntityWithIdDaoIntegrationTest<T extends EntityWithId>
 	}
 
 	cleanUpEntity(clazz);
+    }
+
+    private List<T> createEntities() {
+        List<T> entityList = createEntityList();
+        if (entityList.size() < 2) {
+            fail("Entity list should contain two or more elements");
+        }
+        for (T entity : entityList) {
+            getEntityWithIdDao().save(entity);
+        }
+        return entityList;
     }
 
     protected List<T> createEntityList() {
