@@ -1,6 +1,8 @@
-﻿<jsp:include page="header.jsp"/>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<c:set scope="request" var="mainLink" value="${pageContext.request.contextPath}/interview/my" />
+<jsp:include page="header.jsp"/>
+
 <script>
     $(document).ready(function () {
         $(".pass_data .jNiceCheckbox").click(function () {

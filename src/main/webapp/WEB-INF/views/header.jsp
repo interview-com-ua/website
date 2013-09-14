@@ -56,7 +56,7 @@
                     	<!-- main menu -->
                     	<ul id="nav">
                         	<li class="menu_item ${mainActive}">
-                            	<a href="">Главная</a>
+                            	<a href="${mainLink}">Главная</a>
                                 <span class="item_shadow"></span>
                             </li>
                             <li class="menu_item ${aboutActive}">

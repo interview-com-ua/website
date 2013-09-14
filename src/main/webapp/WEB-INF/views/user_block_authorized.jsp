@@ -10,9 +10,11 @@
                     <img alt="" src="<c:url value='/resources/img/user_m.jpg'/>"/>
                 </div>
                 <div class="user_name">
-                    <a href="" class="user_name_link"><sec:authentication property="principal.info.name"/>
+                    <a href="${pageContext.request.contextPath}/user/<sec:authentication property="principal.info.id"/>/view"
+                       class="user_name_link"><sec:authentication property="principal.info.name"/>
                         (<sec:authentication property="principal.info.email"/>)</a>
-                    <a href="" class="quiz_link">Пройти quiz (underline)</a>
+                    <a href="${pageContext.request.contextPath}/user/<sec:authentication property="principal.info.id"/>/view"
+                       class="quiz_link">Пройти quiz (underline)</a>
                 </div>
                 <a href="${pageContext.request.contextPath}/j_spring_security_logout" class="logout">Выход</a>
             </div>
