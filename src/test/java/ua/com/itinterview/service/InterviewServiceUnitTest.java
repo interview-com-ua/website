@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.UserDao;
+import ua.com.itinterview.dao.paging.PagingFilter;
 import ua.com.itinterview.entity.*;
 import ua.com.itinterview.web.command.*;
 
@@ -80,7 +81,8 @@ public class InterviewServiceUnitTest {
     public void testGetUserInterviewList() {
         List<InterviewEntity> interviewEntities = getInterviewEntities();
         Capture<UserEntity> userEntityCapture = new Capture<UserEntity>();
-        expect(interviewDaoMock.getInterviewsByUser(capture(userEntityCapture))).andReturn(interviewEntities);
+        Capture<PagingFilter> pagingFilterCapture = new Capture<PagingFilter>();
+        expect(interviewDaoMock.getInterviewsByUser(capture(userEntityCapture), capture(pagingFilterCapture))).andReturn(interviewEntities);
         replayAllMocks();
         UserCommand userCommand = createUserCommand();
         List<InterviewCommand> actualInterviewCommands = interviewService.getUserInterviewList(userCommand);
@@ -96,7 +98,8 @@ public class InterviewServiceUnitTest {
     public void testGetUserInterviewListWithUserId() {
         List<InterviewEntity> interviewEntities = getInterviewEntities();
         Capture<UserEntity> userEntityCapture = new Capture<UserEntity>();
-        expect(interviewDaoMock.getInterviewsByUser(capture(userEntityCapture))).andReturn(interviewEntities);
+        Capture<PagingFilter> pagingFilterCapture = new Capture<PagingFilter>();
+        expect(interviewDaoMock.getInterviewsByUser(capture(userEntityCapture), capture(pagingFilterCapture))).andReturn(interviewEntities);
         replayAllMocks();
         UserCommand userCommand = createUserCommand();
         List<InterviewCommand> actualInterviewCommands = interviewService.getUserInterviewList(userCommand.getId());
