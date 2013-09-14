@@ -2,7 +2,6 @@ package ua.com.itinterview.web.resource;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,23 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import ua.com.itinterview.dao.InterviewDao;
-import ua.com.itinterview.dao.UserDao;
-import ua.com.itinterview.entity.InterviewEntity;
-import ua.com.itinterview.entity.UserEntity;
+import ua.com.itinterview.dao.paging.PagingFilter;
 import ua.com.itinterview.service.InterviewService;
 import ua.com.itinterview.service.QuestionService;
 import ua.com.itinterview.service.UserService;
 import ua.com.itinterview.web.command.InterviewCommand;
+import ua.com.itinterview.web.command.PaginateCommand;
 import ua.com.itinterview.web.command.QuestionCommand;
 import ua.com.itinterview.web.command.UserCommand;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
 import ua.com.itinterview.web.security.AuthenticationUtils;
-import ua.com.itinterview.web.security.UserSecurityDetail;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +30,7 @@ import java.util.Map;
 @RequestMapping(value = "/interview")
 public class InterviewResource {
     private final static Logger LOGGER = Logger.getLogger(InterviewResource.class);
+    private final static Integer RESULTS_ON_PAGE = 10;
 
     @Autowired
     private QuestionService questionService;
@@ -149,18 +145,18 @@ public class InterviewResource {
         return interviewCommand;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ModelAndView showInterviewList() {
+    @RequestMapping(value = "/my", method = RequestMethod.GET)
+    public ModelAndView showInterviewList(@Valid @ModelAttribute PaginateCommand paginateCommand, BindingResult bindResult) {
         UserCommand userCommand = userService.getUserByUserName(authenticationUtils.getUserDetails().getUsername());
-        List<InterviewCommand> interviewList = interviewService.getUserInterviewList(userCommand);
-        ModelAndView modelAndView = new ModelAndView("show_interview_list");
+        Long totalResults = interviewService.getInterviewsCountForUser(userCommand.getId());
+        PagingFilter pagingFilter = new PagingFilter(0, RESULTS_ON_PAGE, totalResults.intValue());
+        if (paginateCommand != null && !bindResult.hasErrors()){
+            pagingFilter.setCurrentPage(paginateCommand.getPage());
+        }
+        List<InterviewCommand> interviewList = interviewService.getUserInterviewList(userCommand.getId(), pagingFilter);
+        ModelAndView modelAndView = new ModelAndView("show_personal_interview_list");
         modelAndView.addObject("interviewList", interviewList);
+        modelAndView.addObject("pagingFilter", pagingFilter);
         return modelAndView;
-    }
-
-    private UserEntity createUser(String name) {
-        UserEntity user = new UserEntity();
-        user.setName(name);
-        return user;
     }
 }

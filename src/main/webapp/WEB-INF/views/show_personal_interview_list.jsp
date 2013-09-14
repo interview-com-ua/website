@@ -33,8 +33,8 @@
                         <div class="interview_company_city"><a href="">${interview.city.cityName}</a></div>
                         <div class="interview_company_vacancy"><a href="">${interview.position.name}</a></div>
                         <div class="interview_questions">
+                            вопросов:
                             <span>${interview.questionCount}</span>
-                            вопросов
                         </div>
                     </div>
                 </li>
@@ -44,22 +44,8 @@
         <!--  end listing -->
     </c:forEach>
 
-    <!-- paginator -->
-    <div class="paginator">
-        <ul>
-            <li><a href="">&laquo;</a></li>
-            <li><a href="">&lt;</a></li>
-            <li><a href="" class="current">1</a></li>
-            <li><a href="">2</a></li>
-            <li><a href="">3</a></li>
-            <li><a href="">4</a></li>
-            <li><a href="">5</a></li>
-            <li>...</li>
-            <li><a href="">&gt;</a></li>
-            <li><a href="">&raquo;</a></li>
-        </ul>
-    </div>
-    <!-- end paginator -->
+    <c:set scope="page" var="linkMask" value="${pageContext.request.contextPath}/interview/my?page=" />
+    <jsp:include page="paginator.jsp"/>
 </div>
 <!-- end main -->
 <%@ include file="footer.jsp" %>
