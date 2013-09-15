@@ -1,21 +1,23 @@
 package ua.com.itinterview.web.command;
 
-import java.util.Date;
+import org.hibernate.validator.constraints.NotBlank;
+import ua.com.itinterview.entity.*;
+import ua.com.itinterview.validation.DbExist;
 
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
-
-import ua.com.itinterview.entity.InterviewEntity;
-import ua.com.itinterview.entity.UserEntity;
+import java.util.Date;
 
 public class InterviewCommand {
 
     private Integer id;
     private UserCommand user;
+    @DbExist(dbEntity = CompanyEntity.class, message = "{dbexist.company}")
     private CompanyCommand company;
+    @DbExist(dbEntity = TechnologyEntity.class, message = "{dbexist.technology}")
     private TechnologyCommand technology;
+    @DbExist(dbEntity = PositionEntity.class, message = "{dbexist.position}")
     private PositionCommand position;
+    @DbExist(dbEntity = CityEntity.class, message = "{dbexist.city}")
     private CityCommand city;
 
     @NotNull
