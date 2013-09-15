@@ -116,4 +116,11 @@ public class EntityWithIdDao<T extends EntityWithId> {
 	return criteria.list();
     }
 
+    public Class<?> getClazz() {
+        return clazz;
+    }
+
+    public void setClazz(Class<?> clazz) {
+        this.clazz = clazz;
+    }
 }
