@@ -44,6 +44,7 @@ public class CommentDaoIntegrationTest extends
 
     @Test
     public void testGetCommentsForQuestionsOrderByRate() {
+        //Given
 	CommentEntity entity = new CommentEntity();
 	entity.setRate(2);
 	entity.setQuestionEntity(questionEntity);
@@ -66,10 +67,12 @@ public class CommentDaoIntegrationTest extends
 	entity2.setCommentText("comment text3");
 	entity2 = commentDao.save(entity2);
 
+        //When
 	List<CommentEntity> actualList = commentDao
 		.getCommentsForQuestionsOrderedByRate(questionEntity,
 			new PagingFilter());
 
+        //Then
 	assertEquals(3, actualList.size());
 	assertEquals(entity1, actualList.get(0));
 	assertEquals(entity, actualList.get(1));

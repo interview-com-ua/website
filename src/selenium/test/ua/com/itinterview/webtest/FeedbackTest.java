@@ -53,15 +53,18 @@ public class FeedbackTest extends BaseSeleniumWebTest {
 
     @Test
     public void errorWhenEnterIncorrectEmail() {
+        //Given
         showWindowFeedback();
 
         feedbackOnSignupPage.feedbackEmail.sendKeys("incorrect email");
         feedbackOnSignupPage.feedbackText.sendKeys("text");
+        //When
         feedbackOnSignupPage.feedbackSubmit.click();
 
         feedbackOnSignupPage.feedbackEmailError.waitingForVisible(WAITING_SEC);
         feedbackOnSignupPage.feedbackTextError.waitingForInvisible(WAITING_SEC);
 
+        //Then
         feedbackOnSignupPage.feedbackEmailError.waitingForText(ERROR_INCORRECT_EMAIL, WAITING_SEC);
     }
 
