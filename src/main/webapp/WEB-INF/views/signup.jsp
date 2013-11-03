@@ -53,12 +53,23 @@
 							<c:otherwise>
 								<label>${userCommand.name}</label>
 							</c:otherwise>
-						</c:choose>           	
+						</c:choose>
+
 			            <label>Пол</label>
-			            М<form:radiobutton path="sex" id="sex" value="MALE" />
-			            Ж<form:radiobutton path="sex" id="sex" value="FEMALE" />
-			           	
-						<c:choose>
+                        <c:choose>
+                            <c:when test='${mode != "VIEW"}'>
+                                <form:errors path="sex" cssStyle="color: #ff0000" />
+                                <div>
+                                    М<form:radiobutton path="sex" value="MALE" />
+                                    Ж<form:radiobutton path="sex" id="sex" value="FEMALE" />
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <label>${userCommand.sex}</label>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <c:choose>
 							<c:when test='${mode != "VIEW"}'>
 								<form:errors path="email" cssStyle="color: #ff0000" />
 								<form:input type="text" class="text_inp" placeholder="Email" path="email" />
