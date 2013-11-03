@@ -45,7 +45,15 @@
     </c:forEach>
 
     <c:set scope="page" var="linkMask" value="${pageContext.request.contextPath}/interview/my?page=" />
-    <jsp:include page="paginator.jsp"/>
+    <c:choose>
+        <c:when test="${interview.questionCount > 0}">
+            <jsp:include page="paginator.jsp"/>
+        </c:when>
+        <c:otherwise>
+            У вас пока нет собеседований. Нажмите "Добавить собеседование".
+        </c:otherwise>
+    </c:choose>
+
 </div>
 <!-- end main -->
 <%@ include file="footer.jsp" %>
