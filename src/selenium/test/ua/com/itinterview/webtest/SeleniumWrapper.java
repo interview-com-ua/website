@@ -1,16 +1,13 @@
 package ua.com.itinterview.webtest;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class SeleniumWrapper {
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+public class SeleniumWrapper
+{
 
     public static final String TRUE = "true";
     public static final String BROWSER = "browser";
@@ -21,41 +18,24 @@ public class SeleniumWrapper {
     private RemoteWebDriver driver;
     private String host = "localhost";
 
-    public void start() throws IOException {
-	String browser = System.getProperty(BROWSER, CHROME);
-
-	if (FIREFOX.equals(browser)) {
-	    driver = new FirefoxDriver();
-	} else if (INTERNET_EXPLORER.equals(browser)) {
-	    DesiredCapabilities ieCapabilities = DesiredCapabilities
-		    .internetExplorer();
-	    driver = new InternetExplorerDriver(ieCapabilities);
-	} else if (CHROME.equals(browser)) {
-	    System.getProperties().setProperty("webdriver.chrome.driver",
-		    "D:/dev/Selenium/chromedriver/chromedriver.exe");
-	    DesiredCapabilities chromeCapabilities = DesiredCapabilities
-		    .chrome();
-	    chromeCapabilities.setCapability("chrome.switches",
-		    Arrays.asList("--ignore-certificate-errors"));
-	    chromeCapabilities.setCapability("chrome.verbose", true);
-	    driver = new ChromeDriver(chromeCapabilities);
-	    System.setProperty(BROWSER, FIREFOX);
-	} else {
-	    throw new RuntimeException("You must specify browser property "
-		    + browser);
-	}
-	driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    public void start() throws IOException
+    {
+        driver = new FirefoxDriver();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
-    public void stop() {
-	driver.quit();
+    public void stop()
+    {
+        driver.quit();
     }
 
-    public RemoteWebDriver getDriver() {
-	return driver;
+    public RemoteWebDriver getDriver()
+    {
+        return driver;
     }
 
-    public String getHost() {
-	return host;
+    public String getHost()
+    {
+        return host;
     }
 }

@@ -3,11 +3,13 @@ package ua.com.itinterview.webtest;
 import junit.framework.Assert;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ua.com.itinterview.webtest.pages.SignupPage;
 import ua.com.itinterview.webtest.pages.UserProfilePage;
 
+@Ignore
 public class SignupUserTest extends BaseSeleniumWebTest {
 
     private SignupPage signupPage;

@@ -22,7 +22,7 @@ public class FeedbackTest extends BaseSeleniumWebTest {
     @Before
     public void setUpFeedbackPage() {
         feedbackOnSignupPage = new FeedbackOnSignupPage(driver);
-        driver.get(constructUrl("/signup"));
+        driver.get(constructUrl("/register"));
         feedbackOnSignupPage.feedbackLink.waitingForVisible(WAITING_SEC);
     }
 

@@ -7,7 +7,7 @@
 
     <bean id="jettyTestWebServer"
           class="ua.com.itinterview.utils.JettyTestWebServerDeployer"
-          init-method="start">
+          init-method="start" destroy-method="stop">
           <constructor-arg value="${httpPort}"/>
           <constructor-arg value="${contextPath}"/>
     </bean>
