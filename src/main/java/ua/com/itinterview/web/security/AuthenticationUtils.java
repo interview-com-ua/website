@@ -26,13 +26,7 @@ public class AuthenticationUtils {
                                     HttpServletRequest request) {
         Authentication authentication = null;
         authentication = tryToAuthenticate(userName, password);
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        HttpSession session = request.getSession();
-        session.setAttribute(
-                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                SecurityContextHolder.getContext());
         return authentication;
     }
 
