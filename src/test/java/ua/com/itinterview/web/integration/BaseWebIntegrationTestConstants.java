@@ -4,11 +4,8 @@ import ua.com.itinterview.entity.CompanyEntity;
 import ua.com.itinterview.entity.UserEntity;
 
 /**
- * Created with IntelliJ IDEA.
  * User: Vladimir
  * Date: 09.11.13
- * Time: 19:48
- * To change this template use File | Settings | File Templates.
  */
 public interface BaseWebIntegrationTestConstants {
     String USER_NAME = "UserName";
