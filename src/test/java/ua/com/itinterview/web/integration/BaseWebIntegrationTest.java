@@ -18,11 +18,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ua.com.itinterview.dao.UserDao;
-import ua.com.itinterview.entity.UserEntity;
+import ua.com.itinterview.dao.*;
+import ua.com.itinterview.entity.*;
 import ua.com.itinterview.web.security.AuthenticationUtils;
 
 import javax.servlet.http.Cookie;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:test-web-context.xml"})
 public abstract class BaseWebIntegrationTest extends
-        AbstractTransactionalJUnit4SpringContextTests {
+        AbstractTransactionalJUnit4SpringContextTests implements BaseWebIntegrationTestConstants{
 
     protected MockMvc mvc;
 
@@ -43,7 +44,22 @@ public abstract class BaseWebIntegrationTest extends
     private FilterChainProxy springSecurityFilterChain;
 
     @Autowired
-    UserDao userDao;
+    private InterviewDao interviewDao;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private CityDao cityDao;
+
+    @Autowired
+    private CompanyDao companyDao;
+
+    @Autowired
+    private PositionDao positionDao;
+
+    @Autowired
+    private TechnologyDao technologyDao;
 
     @Autowired
     private AuthenticationUtils authenticationUtils;
@@ -53,6 +69,15 @@ public abstract class BaseWebIntegrationTest extends
         mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .addFilter(springSecurityFilterChain)
                 .build();
+    }
+
+    @After
+    public void logout() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+    }
+
+    protected MockHttpServletRequestBuilder registerUser(){
+        return registerUser(USER_NAME, NAME, EMAIL_ANOTHER, PASSWORD, PASSWORD);
     }
 
     protected MockHttpServletRequestBuilder registerUser(String userName,
@@ -68,6 +93,10 @@ public abstract class BaseWebIntegrationTest extends
                 .param("confirmPassword", confirmPassword);
     }
 
+    protected MockHttpServletRequestBuilder loginUser(){
+        return loginUser(USER_NAME, PASSWORD);
+    }
+
     protected MockHttpServletRequestBuilder loginUser(String userName,
                                                       String password) {
         return post("/j_spring_security_check")
@@ -76,22 +105,22 @@ public abstract class BaseWebIntegrationTest extends
                 .param("_spring_security_remember_me", "on");
     }
 
-    @After
-    public void logout() {
-        SecurityContextHolder.getContext().setAuthentication(null);
-    }
-
-    public MockHttpServletRequestBuilder logout(MockHttpSession session) throws Exception {
+    protected MockHttpServletRequestBuilder logout(MockHttpSession session) throws Exception {
         return (post("/j_spring_security_logout").session(session));
     }
 
     @Rollback
-    public UserEntity createUser(String userName, String name, String email, String password) throws Exception {
+    protected UserEntity createUser() throws Exception {
+        return createUser(USER_NAME, NAME, EMAIL, PASSWORD);
+    }
+
+    @Rollback
+    protected UserEntity createUser(String userName, String name, String email, String password) throws Exception {
         return createUser(userName, name, email, password, UserEntity.Sex.FEMALE);
     }
 
     @Rollback
-    public UserEntity createUser(String userName, String name, String email, String password, UserEntity.Sex sex) throws Exception {
+    protected UserEntity createUser(String userName, String name, String email, String password, UserEntity.Sex sex) throws Exception {
         UserEntity userToSave = new UserEntity();
         userToSave.setUserName(userName);
         userToSave.setName(name);
@@ -99,6 +128,53 @@ public abstract class BaseWebIntegrationTest extends
         userToSave.setPassword(authenticationUtils.getMD5Hash(password));
         userToSave.setSex(sex);
         return userDao.save(userToSave);
+    }
+
+    @Rollback
+    protected InterviewEntity createInterview() throws Exception {
+        InterviewEntity interview = new InterviewEntity();
+        interview.setUser(createUser());
+        interview.setCreated(new Date());
+        interview.setCity(createCity());
+        interview.setCompany(createCompany());
+        interview.setFeedback(USER_FEEDBACK);
+        interview.setPosition(createPosition());
+        interview.setTechnology(createTechnology());
+        return interviewDao.save(interview);
+    }
+
+    @Rollback
+    protected PositionEntity createPosition(){
+        PositionEntity position = new PositionEntity();
+        position.setPositionName(POSITION_NAME);
+        position.setPositionGroup(POSITION_GROUP);
+        return positionDao.save(position);
+    }
+
+    @Rollback
+    protected TechnologyEntity createTechnology(){
+        TechnologyEntity technology = new TechnologyEntity();
+        technology.setTechnologyName(TECHNOLOGY_NAME);
+        return technologyDao.save(technology);
+    }
+
+    @Rollback
+    protected CityEntity createCity(){
+        CityEntity city = new CityEntity();
+        city.setCityName(CITY_NAME);
+        return cityDao.save(city);
+    }
+
+    @Rollback
+    protected CompanyEntity createCompany(){
+        CompanyEntity company = new CompanyEntity();
+        company.setCompanyName(COMPANY_NAME);
+        company.setCompanyAddress(COMPANY_ADDRESS);
+        company.setCompanyPhone(COMPANY_PHONE_NUMBER);
+        company.setCompanyLogoUrl(COMPANY_LOGO);
+        company.setCompanyWebPage(COMPANY_WEB_PAGE);
+        company.setType(COMPANY_TYPE);
+        return companyDao.save(company);
     }
 
     public static Cookie[] initCookies() {

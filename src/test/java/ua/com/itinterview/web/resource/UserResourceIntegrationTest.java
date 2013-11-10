@@ -14,22 +14,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class UserResourceIntegrationTest extends BaseWebIntegrationTest {
-
-    public static final String USER_NAME = "UserName";
-    public static final String USER_NAME_ANOTHER = "UserName2";
-    public static final String NAME = "Name";
-    public static final String NAME_ANOTHER = "Name2";
-    public static final String EMAIL = "email@mail.com";
-    public static final String EMAIL_ANOTHER = "email2@mail.com";
-    public static final String PASSWORD = "password";
-    public static final String PASSWORD_ANOTHER = "password2";
-    public static final UserEntity.Sex SEX = UserEntity.Sex.FEMALE;
-    public static final UserEntity.Sex SEX_ANOTHER = UserEntity.Sex.MALE;
-
-    public static final String INVALID_USER_NAME = "$%#^";
-    public static final String INVALID_EMAIL = "invalid_email";
-
+public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
 
     @Autowired
     private UserDao userDao;
