@@ -1,5 +1,6 @@
 package ua.com.itinterview.web.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -14,18 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import ua.com.itinterview.service.CommentService;
-import ua.com.itinterview.service.CompanyService;
-import ua.com.itinterview.service.PositionService;
-import ua.com.itinterview.service.QuestionService;
-import ua.com.itinterview.service.TechnologyService;
-import ua.com.itinterview.web.command.CommentCommand;
-import ua.com.itinterview.web.command.CompanyCommand;
-import ua.com.itinterview.web.command.PositionCommand;
-import ua.com.itinterview.web.command.QuestionCommand;
-import ua.com.itinterview.web.command.QuestionSearchCommand;
-import ua.com.itinterview.web.command.TechnologyCommand;
+import ua.com.itinterview.service.*;
+import ua.com.itinterview.web.command.*;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
+import ua.com.itinterview.web.security.AuthenticationUtils;
 
 @Controller
 @RequestMapping(value = "/question")
@@ -137,5 +130,14 @@ public class QuestionResource {
 	}
 	return new ModelAndView("redirect:/question/" + questionId
 		+ "/comment_list");
+    }
+
+    @RequestMapping(value = "/my", method = RequestMethod.GET)
+    public ModelAndView getQuestions(){
+        String userName = new AuthenticationUtils().getUserDetails().getUsername();
+        List<QuestionCommand> questionCommandList = questionService.getQuestionsForUser(userName);
+        ModelAndView model = new ModelAndView("show_question_list");
+        model.addObject("questionList", questionCommandList);
+        return model;
     }
 }

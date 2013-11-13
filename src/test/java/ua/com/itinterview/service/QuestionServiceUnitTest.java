@@ -11,6 +11,7 @@ import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ua.com.itinterview.dao.InterviewDao;
@@ -97,6 +98,12 @@ public class QuestionServiceUnitTest {
 	replayAllMocks();
 	assertEquals(questionService.getQuestionById(questionId),
 		new QuestionCommand(questionEntity));
+    }
+
+    @Test
+    @Ignore
+    public void testGetQuestionForUser(){
+        //TODO: write test
     }
 
     @Test(expected = EntityNotFoundException.class)

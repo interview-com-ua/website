@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.QuestionDao;
+import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.QuestionEntity;
+import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.web.command.QuestionCommand;
+import ua.com.itinterview.web.command.UserCommand;
 
 public class QuestionService {
 
@@ -17,11 +20,19 @@ public class QuestionService {
     InterviewDao interviewDao;
     @Autowired
     QuestionDao questionDao;
+    @Autowired
+    UserDao userDao;
 
     public QuestionCommand getQuestionById(Integer questionId) {
 	QuestionEntity oneQuestionbyId = questionDao.getEntityById(questionId);
 	return new QuestionCommand(oneQuestionbyId);
 
+    }
+
+    public List<QuestionCommand> getQuestionsForUser(String userName){
+        UserEntity userEntity = userDao.getUserByUserName(userName);
+        List<QuestionEntity> userEntityList = questionDao.getQuestionsForUser(userEntity);
+        return convertToQuestionCommandList(userEntityList);
     }
 
     public List<QuestionCommand> getQuestionListForInterview(Integer interviewId) {

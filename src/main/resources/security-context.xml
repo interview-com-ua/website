@@ -19,6 +19,7 @@
 		<sec:intercept-url pattern="/register" access="isAnonymous()" />
 		<sec:intercept-url pattern="/user/**" access="isAuthenticated()" />
         <sec:intercept-url pattern="/interview/**" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/question/**" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/**" access="isAnonymous()" />
 
         <sec:access-denied-handler ref="accessDeniedHandler" />
