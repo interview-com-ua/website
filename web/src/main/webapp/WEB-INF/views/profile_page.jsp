@@ -73,7 +73,8 @@
                     </c:if>
                 </fieldset>
             </form:form>
-            <form:form class="jNice">
+            <form:form action="${pageContext.request.contextPath}/user/${userCommand.id}/save" method="post"
+                                              commandName="${formCommandName}" class="jNice">
                 <fieldset class="pass_data">
                     <dl>
                         <dt><input type="checkbox" name="change_pass"/></dt>
