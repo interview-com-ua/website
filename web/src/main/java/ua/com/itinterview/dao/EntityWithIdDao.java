@@ -13,7 +13,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.ast.Projection;
 import org.springframework.transaction.annotation.Transactional;
 
 import ua.com.itinterview.dao.paging.PagingFilter;

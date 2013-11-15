@@ -1,6 +1,5 @@
 package ua.com.itinterview.web.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;

@@ -10,7 +10,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Formula;
-import sun.text.UCompactIntArray;
 import ua.com.itinterview.web.command.InterviewCommand;
 import ua.com.itinterview.web.command.UserCommand;
 

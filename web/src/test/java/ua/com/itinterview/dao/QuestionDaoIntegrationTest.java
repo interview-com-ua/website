@@ -7,14 +7,11 @@ import static org.junit.Assert.assertNull;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.QuestionEntity;
-
-import javax.persistence.EntityNotFoundException;
 
 public class QuestionDaoIntegrationTest extends
         BaseEntityWithIdDaoIntegrationTest<QuestionEntity> {

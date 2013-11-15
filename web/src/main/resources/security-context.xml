@@ -20,7 +20,7 @@
 		<sec:intercept-url pattern="/user/**" access="isAuthenticated()" />
         <sec:intercept-url pattern="/interview/**" access="isAuthenticated()" />
         <sec:intercept-url pattern="/question/**" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/**" access="isAnonymous()" />
+		<sec:intercept-url pattern="/ua" access="isAnonymous()" />
 
         <sec:access-denied-handler ref="accessDeniedHandler" />
 	</sec:http>
