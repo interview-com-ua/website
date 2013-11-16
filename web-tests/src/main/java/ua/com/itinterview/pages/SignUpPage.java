@@ -7,6 +7,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.List;
+
 @DefaultUrl("http://localhost:8080/it-interview/register")
 public class SignUpPage extends PageObject {
 
@@ -27,7 +29,11 @@ public class SignUpPage extends PageObject {
     }
 
     public boolean isErrorDisplayed(String fieldName, String message) {
-        WebElement element = getDriver().findElement(By.cssSelector("[id=\"" + fieldName + ".errors\"]"));
-        return element.isDisplayed() && element.getText().equals(message);
+        List<WebElement> elements = getDriver().findElements(By.cssSelector("[id=\"" + fieldName + ".errors\"]"));
+
+        if (elements.isEmpty()) return message.isEmpty();
+
+        WebElement element = elements.get(0);
+        return element.isDisplayed() && element.getText().contains(message);
     }
 }

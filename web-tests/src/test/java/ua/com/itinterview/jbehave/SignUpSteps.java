@@ -20,12 +20,6 @@ public class SignUpSteps {
     }
 
     @Step
-    @When("the user submits empty form")
-    public void submitEmptyForm() {
-        registrationPage.submit();
-    }
-
-    @Step
     @When("the user submits form with '$name', '$email', '$password', '$confirmPassword'")
     public void submitForm(String name, String email, String password, String confirmPassword) {
         registrationPage.fill("name", name);
@@ -36,21 +30,12 @@ public class SignUpSteps {
     }
 
     @Step
-    @Then("they should see the error message '$message' beside login field")
-    public void checkErrorMessageBesideLoginField(String message) {
-        assertTrue(registrationPage.isErrorDisplayed("email", message));
-    }
-
-    @Step
-    @Then("they should see the error message '$message' beside email field")
-    public void checkErrorMessageBesideEmailField(String message) {
-        assertTrue(registrationPage.isErrorDisplayed("email", message));
-    }
-
-    @Step
-    @Then("they should see the error message '$message' beside password confirmation field")
-    public void checkErrorMessageBesidePasswordConfirmationField(String message) {
-        assertTrue(registrationPage.isErrorDisplayed("confirmPassword", message));
+    @Then("they should see the error messages '$nameError', '$emailError', '$passwordError', '$confirmPasswordError'")
+    public void checkErrorMessages(String nameError, String emailError, String passwordError, String confirmPasswordError) {
+        assertTrue(registrationPage.isErrorDisplayed("name", nameError));
+        assertTrue(registrationPage.isErrorDisplayed("email", emailError));
+        assertTrue(registrationPage.isErrorDisplayed("password", passwordError));
+        assertTrue(registrationPage.isErrorDisplayed("confirmPassword", confirmPasswordError));
     }
 
     @Step
