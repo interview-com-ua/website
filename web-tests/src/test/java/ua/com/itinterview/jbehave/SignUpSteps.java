@@ -7,6 +7,7 @@ import org.jbehave.core.annotations.When;
 import ua.com.itinterview.pages.SignUpPage;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class SignUpSteps {
 
@@ -26,34 +27,31 @@ public class SignUpSteps {
 
     @Step
     @When("the user submits form with '$login', '$name', '$email', '$password', '$confirmPassword'")
-    public void submitsForm(String login, String name, String email, String password, String confirmPassword) {
-        registrationPage.fillLogin(login);
-        registrationPage.fill_name(name);
-        registrationPage.fill_email(email);
-        registrationPage.fill_password(password);
-        registrationPage.fill_confirm_password(confirmPassword);
+    public void submitForm(String login, String name, String email, String password, String confirmPassword) {
+        registrationPage.fill("userName", login);
+        registrationPage.fill("name", name);
+        registrationPage.fill("email", email);
+        registrationPage.fill("password", password);
+        registrationPage.fill("confirmPassword", confirmPassword);
         registrationPage.submit();
     }
 
     @Step
     @Then("they should see the error message '$message' beside login field")
     public void checkErrorMessageBesideLoginField(String message) {
-        assertThat(registrationPage.userNameError.isDisplayed());
-        assertThat(registrationPage.userNameError.getText()).isEqualTo(message);
+        assertTrue(registrationPage.isErrorDisplayed("userName", message));
     }
 
     @Step
     @Then("they should see the error message '$message' beside email field")
     public void checkErrorMessageBesideEmailField(String message) {
-        assertThat(registrationPage.emailError.isDisplayed());
-        assertThat(registrationPage.emailError.getText()).isEqualTo(message);
+        assertTrue(registrationPage.isErrorDisplayed("email", message));
     }
 
     @Step
     @Then("they should see the error message '$message' beside password confirmation field")
     public void checkErrorMessageBesidePasswordConfirmationField(String message) {
-        assertThat(registrationPage.confirmPasswordError.isDisplayed());
-        assertThat(registrationPage.confirmPasswordError.getText()).isEqualTo(message);
+        assertTrue(registrationPage.isErrorDisplayed("confirmPassword", message));
     }
 
     @Step
