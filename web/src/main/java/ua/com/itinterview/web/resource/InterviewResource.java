@@ -84,7 +84,6 @@ public class InterviewResource {
         UserEntity user = new UserEntity();
         user.setEmail("email@com");
         user.setPassword("password");
-        user.setUserName("name4");
         user = userDao.save(user);
         interviewCommand.setUser(user);
         interviewCommand.setCreated(new Date());
@@ -147,7 +146,7 @@ public class InterviewResource {
 
     @RequestMapping(value = "/my", method = RequestMethod.GET)
     public ModelAndView showInterviewList(@Valid @ModelAttribute PaginateCommand paginateCommand, BindingResult bindResult) {
-        UserCommand userCommand = userService.getUserByUserName(authenticationUtils.getUserDetails().getUsername());
+        UserCommand userCommand = userService.getUserByEmail(authenticationUtils.getUserDetails().getUsername());
         Long totalResults = interviewService.getInterviewsCountForUser(userCommand.getId());
         PagingFilter pagingFilter = new PagingFilter(0, RESULTS_ON_PAGE, totalResults.intValue());
         if (paginateCommand != null && !bindResult.hasErrors()){

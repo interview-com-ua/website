@@ -1,24 +1,18 @@
 package ua.com.itinterview.web.integration;
 
 import ua.com.itinterview.entity.CompanyEntity;
-import ua.com.itinterview.entity.UserEntity;
 
 /**
  * User: Vladimir
  * Date: 09.11.13
  */
 public interface BaseWebIntegrationTestConstants {
-    String USER_NAME = "UserName";
-    String USER_NAME_ANOTHER = "UserName2";
     String NAME = "Name";
     String NAME_ANOTHER = "Name2";
     String EMAIL = "email@mail.com";
     String EMAIL_ANOTHER = "email2@mail.com";
     String PASSWORD = "password";
     String PASSWORD_ANOTHER = "password2";
-    UserEntity.Sex SEX = UserEntity.Sex.FEMALE;
-    UserEntity.Sex SEX_ANOTHER = UserEntity.Sex.MALE;
-    String INVALID_USER_NAME = "$%#^";
     String INVALID_EMAIL = "invalid_email";
     String USER_FEEDBACK = "Feedback here";
 

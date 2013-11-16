@@ -68,20 +68,6 @@
                     </dl>
                 </fieldset>
                 <fieldset class="sex_data">
-                    <dl>
-                        <dt>Пол:</dt>
-                        <c:choose>
-                            <c:when test="${userCommand != null}">
-                                <dd><a href="${pageContext.request.contextPath}/user/${userCommand.id}/edit" class="edit_link">
-                                        ${userCommand.sex}
-                                </a></dd>
-                            </c:when>
-                            <c:when test="${userEditProfileCommand != null}">
-                                <form:radiobuttons path="sex" />
-                                <form:errors path="sex" cssStyle="color: #ff0000"/>
-                            </c:when>
-                        </c:choose>
-                    </dl>
                     <c:if test="${userEditProfileCommand != null}">
                         <button type="submit">Save</button>
                     </c:if>

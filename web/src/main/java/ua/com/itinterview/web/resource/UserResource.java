@@ -1,10 +1,5 @@
 package ua.com.itinterview.web.resource;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -14,12 +9,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import ua.com.itinterview.service.UserService;
 import ua.com.itinterview.web.command.UserCommand;
 import ua.com.itinterview.web.command.UserEditProfileCommand;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
 import ua.com.itinterview.web.security.AuthenticationUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Map;
 
 @Controller
 public class UserResource extends ValidatedResource {
@@ -42,8 +40,7 @@ public class UserResource extends ValidatedResource {
 	    return goToSignupPageWithCommand(userCommand, ModeView.CREATE);
 	}
 	UserCommand newUserCommand = userService.createUser(userCommand);
-	authenticationUtils.loginUser(userCommand.getUserName(),
-		userCommand.getPassword(), request);
+	authenticationUtils.loginUser(userCommand.getEmail(), userCommand.getPassword(), request);
 	return new ModelAndView("redirect:/user/" + newUserCommand.getId()
 		+ "/view");
 

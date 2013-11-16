@@ -1,10 +1,6 @@
 package ua.com.itinterview.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.QuestionDao;
 import ua.com.itinterview.dao.UserDao;
@@ -12,7 +8,9 @@ import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.QuestionEntity;
 import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.web.command.QuestionCommand;
-import ua.com.itinterview.web.command.UserCommand;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuestionService {
 
@@ -29,8 +27,8 @@ public class QuestionService {
 
     }
 
-    public List<QuestionCommand> getQuestionsForUser(String userName){
-        UserEntity userEntity = userDao.getUserByUserName(userName);
+    public List<QuestionCommand> getQuestionsForUser(String email){
+        UserEntity userEntity = userDao.getUserByEmail(email);
         List<QuestionEntity> userEntityList = questionDao.getQuestionsForUser(userEntity);
         return convertToQuestionCommandList(userEntityList);
     }

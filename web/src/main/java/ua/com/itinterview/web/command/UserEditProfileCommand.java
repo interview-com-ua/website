@@ -3,11 +3,8 @@ package ua.com.itinterview.web.command;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-
 import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.validation.UniqueEmail;
-
-import javax.validation.constraints.NotNull;
 
 public class UserEditProfileCommand {
 
@@ -20,8 +17,6 @@ public class UserEditProfileCommand {
     @Length(max = 255)
     @UniqueEmail
     private String email;
-    @NotNull
-    private UserEntity.Sex sex = UserEntity.Sex.MALE;
 
     public UserEditProfileCommand() {
     }
@@ -30,14 +25,12 @@ public class UserEditProfileCommand {
 	this.id = userCommand.getId();
 	this.name = userCommand.getName();
 	this.email = userCommand.getEmail();
-	this.sex = userCommand.getSex();
     }
 
     public UserEditProfileCommand(UserEntity userEntity) {
 	this.id = userEntity.getId();
 	this.name = userEntity.getName();
 	this.email = userEntity.getEmail();
-	this.sex = userEntity.getSex();
     }
 
     public int getId() {
@@ -64,14 +57,6 @@ public class UserEditProfileCommand {
 	this.email = email;
     }
 
-    public UserEntity.Sex getSex() {
-	return sex;
-    }
-
-    public void setSex(UserEntity.Sex sex) {
-	this.sex = sex;
-    }
-
     @Override
     public boolean equals(Object o) {
 	if (this == o)
@@ -87,8 +72,6 @@ public class UserEditProfileCommand {
 	    return false;
 	if (name != null ? !name.equals(that.name) : that.name != null)
 	    return false;
-	if (sex != that.sex)
-	    return false;
 
 	return true;
     }
@@ -98,7 +81,6 @@ public class UserEditProfileCommand {
 	int result = id;
 	result = 31 * result + (name != null ? name.hashCode() : 0);
 	result = 31 * result + (email != null ? email.hashCode() : 0);
-	result = 31 * result + (sex != null ? sex.hashCode() : 0);
 	return result;
     }
 }

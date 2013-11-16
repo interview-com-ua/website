@@ -1,18 +1,16 @@
 package ua.com.itinterview.dao;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import ua.com.itinterview.entity.UserEntity;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import ua.com.itinterview.entity.UserEntity;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class UserDaoIntegrationTest extends
 	BaseEntityWithIdDaoIntegrationTest<UserEntity> {
@@ -23,20 +21,14 @@ public class UserDaoIntegrationTest extends
     private UserDao userDao;
 
     @Test
-    public void testGetUserByUserName() {
-	UserEntity actual = userDao.getUserByUserName(DEFAULT_TEST_USER_NAME);
-	assertEquals(DEFAULT_TEST_USER_NAME, actual.getUserName());
+    public void testGetUserByEmail() {
+	UserEntity actual = userDao.getUserByEmail(TEST_USER_EMAIL);
+	assertEquals(TEST_USER_EMAIL, actual.getEmail());
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void testGetUserByUserNameWhenNotExistsAndRecesiveException() {
-	userDao.getUserByUserName("userFakeName");
-    }
-
-    @Test
-    public void testDoesUserWithUserNameExists() {
-	assertFalse(userDao.doesUserExistsWithUserName("userName"));
-	assertTrue(userDao.doesUserExistsWithUserName(DEFAULT_TEST_USER_NAME));
+    public void testGetUserByEmailWhenNotExistsAndReceiveException() {
+	userDao.getUserByEmail("userFakeEmail");
     }
 
     @Test
@@ -49,7 +41,6 @@ public class UserDaoIntegrationTest extends
     protected UserEntity createEntity() {
 	UserEntity user = new UserEntity();
 	user.setEmail("email@gmail.com");
-	user.setUserName("userName");
 	user.setPassword("password");
 	return user;
     }
@@ -63,7 +54,6 @@ public class UserDaoIntegrationTest extends
     protected List<UserEntity> createEntityList() {
 	UserEntity user1 = createEntity();
 	UserEntity user2 = createEntity();
-	user2.setUserName(user2.getUserName() + "2");
 	user2.setEmail(user2.getEmail() + "2");
 
 	return Arrays.asList(user1, user2);

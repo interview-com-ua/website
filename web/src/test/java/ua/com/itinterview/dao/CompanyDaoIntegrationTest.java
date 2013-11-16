@@ -1,17 +1,15 @@
 package ua.com.itinterview.dao;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-
-import javax.persistence.EntityNotFoundException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import ua.com.itinterview.entity.CompanyEntity;
 import ua.com.itinterview.entity.CompanyEntity.CompanyType;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class CompanyDaoIntegrationTest extends
 	BaseEntityWithIdDaoIntegrationTest<CompanyEntity> {
@@ -56,7 +54,7 @@ public class CompanyDaoIntegrationTest extends
     }
     
     @Test(expected = EntityNotFoundException.class)
-    public void testGetUserByUserNameWhenNotExistsAndRecesiveException() {
+    public void testGetUserByEmailWhenNotExistsAndRecesiveException() {
 	companyDao.getCompanyByCompanyName("SomeWrongCompanyName!!!");
     }
     

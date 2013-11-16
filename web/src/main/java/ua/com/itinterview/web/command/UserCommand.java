@@ -1,27 +1,18 @@
 package ua.com.itinterview.web.command;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-
 import ua.com.itinterview.entity.UserEntity;
-import ua.com.itinterview.entity.UserEntity.Sex;
 import ua.com.itinterview.validation.FieldsEquals;
 import ua.com.itinterview.validation.UniqueEmail;
-import ua.com.itinterview.validation.UniqueUserName;
+
+import javax.validation.constraints.NotNull;
 
 @FieldsEquals(firstField = "password", secondField = "confirmPassword", errorKey = "confirmPassword", message = "{confirm.password}")
 public class UserCommand {
 
     private int id;
-    @NotEmpty(message = "{empty.user.name}")
-    @Length(max = 255, message = "Too long user name")
-    @Pattern(regexp = "[a-z|A-z|0-9|_|-]*", message = "{invalid.symbol}")
-    @UniqueUserName
-    private String userName;
     @Email
     @NotEmpty(message = "{empty.email}")
     @Length(max = 255)
@@ -30,8 +21,6 @@ public class UserCommand {
     @NotEmpty(message = "{empty.name}")
     @Length(max = 255)
     private String name;
-    @NotNull
-    private Sex sex;
     @Length(min = 6, message = "{password.short}")
     @NotNull
     private String password;
@@ -44,10 +33,8 @@ public class UserCommand {
 
     public UserCommand(UserEntity userEntity) {
 	id = userEntity.getId();
-	userName = userEntity.getUserName();
 	email = userEntity.getEmail();
 	name = userEntity.getName();
-	sex = userEntity.getSex();
     }
 
     public int getId() {
@@ -56,14 +43,6 @@ public class UserCommand {
 
     public void setId(int id) {
 	this.id = id;
-    }
-
-    public String getUserName() {
-	return userName;
-    }
-
-    public void setUserName(String userName) {
-	this.userName = userName;
     }
 
     public String getEmail() {
@@ -80,14 +59,6 @@ public class UserCommand {
 
     public void setName(String name) {
 	this.name = name;
-    }
-
-    public Sex getSex() {
-	return sex;
-    }
-
-    public void setSex(Sex sex) {
-	this.sex = sex;
     }
 
     public String getPassword() {
@@ -117,9 +88,6 @@ public class UserCommand {
 	result = prime * result + ((name == null) ? 0 : name.hashCode());
 	result = prime * result
 		+ ((password == null) ? 0 : password.hashCode());
-	result = prime * result + ((sex == null) ? 0 : sex.hashCode());
-	result = prime * result
-		+ ((userName == null) ? 0 : userName.hashCode());
 	return result;
     }
 
@@ -154,24 +122,12 @@ public class UserCommand {
 		return false;
 	} else if (!password.equals(other.password))
 	    return false;
-	if (sex == null) {
-	    if (other.sex != null)
-		return false;
-	} else if (!sex.equals(other.sex))
-	    return false;
-	if (userName == null) {
-	    if (other.userName != null)
-		return false;
-	} else if (!userName.equals(other.userName))
-	    return false;
 	return true;
     }
 
     @Override
     public String toString() {
-	return "UserCommand [id=" + id + ", userName=" + userName + ", email="
-		+ email + ", name=" + name + ", sex=" + sex + ", password="
-		+ password + ", confirmPassword=" + confirmPassword + "]";
+	return "UserCommand [id=" + id + ", email=" + email + ", name=" + name + ", password=" + password + ", confirmPassword=" + confirmPassword + "]";
     }
 
 }

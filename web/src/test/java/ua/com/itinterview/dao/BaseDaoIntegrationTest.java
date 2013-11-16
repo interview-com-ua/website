@@ -1,15 +1,5 @@
 package ua.com.itinterview.dao;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,7 +11,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
 import ua.com.itinterview.entity.CityEntity;
 import ua.com.itinterview.entity.CommentEntity;
 import ua.com.itinterview.entity.CompanyEntity;
@@ -31,7 +20,15 @@ import ua.com.itinterview.entity.PositionEntity;
 import ua.com.itinterview.entity.QuestionEntity;
 import ua.com.itinterview.entity.TechnologyEntity;
 import ua.com.itinterview.entity.UserEntity;
-import ua.com.itinterview.entity.UserEntity.Sex;
+
+import javax.sql.DataSource;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:test-context.xml" })
@@ -46,8 +43,6 @@ public abstract class BaseDaoIntegrationTest extends
 
     @Autowired
     private UserDao userDao;
-
-    public final static String DEFAULT_TEST_USER_NAME = "test_user";
 
     public final static String TEST_USER_EMAIL = "test.user@gmail.com";
 
@@ -79,9 +74,7 @@ public abstract class BaseDaoIntegrationTest extends
     private UserEntity createTestUser() {
 	UserEntity user = new UserEntity();
 	user.setEmail(TEST_USER_EMAIL);
-	user.setUserName(DEFAULT_TEST_USER_NAME);
 	user.setPassword("password");
-	user.setSex(Sex.FEMALE);
 	return userDao.save(user);
     }
 

@@ -1,16 +1,15 @@
 package ua.com.itinterview.dao;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.transaction.annotation.Transactional;
-
 import ua.com.itinterview.entity.UserEntity;
+
+import javax.persistence.EntityNotFoundException;
 
 public class UserDao extends EntityWithIdDao<UserEntity> {
 
     @Transactional
-    public UserEntity getUserByUserName(String userName) {
-	return getOneResultByParameter("userName", userName);
+    public UserEntity getUserByEmail(String email) {
+	return getOneResultByParameter("email", email);
     }
 
     @Transactional
@@ -22,15 +21,4 @@ public class UserDao extends EntityWithIdDao<UserEntity> {
 	    return false;
 	}
     }
-
-    @Transactional
-    public boolean doesUserExistsWithUserName(String userName) {
-	try {
-	    getUserByUserName(userName);
-	    return true;
-	} catch (EntityNotFoundException e) {
-	    return false;
-	}
-    }
-
 }

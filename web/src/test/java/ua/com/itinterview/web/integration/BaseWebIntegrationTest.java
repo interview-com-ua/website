@@ -18,8 +18,18 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ua.com.itinterview.dao.*;
-import ua.com.itinterview.entity.*;
+import ua.com.itinterview.dao.CityDao;
+import ua.com.itinterview.dao.CompanyDao;
+import ua.com.itinterview.dao.InterviewDao;
+import ua.com.itinterview.dao.PositionDao;
+import ua.com.itinterview.dao.TechnologyDao;
+import ua.com.itinterview.dao.UserDao;
+import ua.com.itinterview.entity.CityEntity;
+import ua.com.itinterview.entity.CompanyEntity;
+import ua.com.itinterview.entity.InterviewEntity;
+import ua.com.itinterview.entity.PositionEntity;
+import ua.com.itinterview.entity.TechnologyEntity;
+import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.web.security.AuthenticationUtils;
 
 import javax.servlet.http.Cookie;
@@ -77,30 +87,24 @@ public abstract class BaseWebIntegrationTest extends
     }
 
     protected MockHttpServletRequestBuilder registerUser(){
-        return registerUser(USER_NAME, NAME, EMAIL_ANOTHER, PASSWORD, PASSWORD);
+        return registerUser(NAME, EMAIL_ANOTHER, PASSWORD, PASSWORD);
     }
 
-    protected MockHttpServletRequestBuilder registerUser(String userName,
-                                                         String name, String email, String password, String confirmPassword) {
-        return registerUser(userName, name, email, password, confirmPassword, UserEntity.Sex.MALE);
-    }
-
-    protected MockHttpServletRequestBuilder registerUser(String userName,
-                                                         String name, String email, String password, String confirmPassword, UserEntity.Sex sex) {
-        return post("/register").param("userName", userName)
-                .param("name", name).param("email", email)
-                .param("password", password).param("sex", sex.toString())
+    protected MockHttpServletRequestBuilder registerUser(String name, String email, String password, String confirmPassword) {
+        return post("/register")
+                .param("name", name)
+                .param("email", email)
+                .param("password", password)
                 .param("confirmPassword", confirmPassword);
     }
 
     protected MockHttpServletRequestBuilder loginUser(){
-        return loginUser(USER_NAME, PASSWORD);
+        return loginUser(EMAIL, PASSWORD);
     }
 
-    protected MockHttpServletRequestBuilder loginUser(String userName,
-                                                      String password) {
+    protected MockHttpServletRequestBuilder loginUser(String email, String password) {
         return post("/j_spring_security_check")
-                .param("j_username", userName)
+                .param("j_username", email)
                 .param("j_password", password)
                 .param("_spring_security_remember_me", "on");
     }
@@ -111,22 +115,15 @@ public abstract class BaseWebIntegrationTest extends
 
     @Rollback
     protected UserEntity createUser() throws Exception {
-        return createUser(USER_NAME, NAME, EMAIL, PASSWORD);
+        return createUser(NAME, EMAIL, PASSWORD);
     }
 
     @Rollback
-    protected UserEntity createUser(String userName, String name, String email, String password) throws Exception {
-        return createUser(userName, name, email, password, UserEntity.Sex.FEMALE);
-    }
-
-    @Rollback
-    protected UserEntity createUser(String userName, String name, String email, String password, UserEntity.Sex sex) throws Exception {
+    protected UserEntity createUser(String name, String email, String password) throws Exception {
         UserEntity userToSave = new UserEntity();
-        userToSave.setUserName(userName);
         userToSave.setName(name);
         userToSave.setEmail(email);
         userToSave.setPassword(authenticationUtils.getMD5Hash(password));
-        userToSave.setSex(sex);
         return userDao.save(userToSave);
     }
 

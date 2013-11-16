@@ -2,7 +2,6 @@ package ua.com.itinterview.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
-
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.web.command.UserCommand;
@@ -25,7 +24,6 @@ public class UserService {
 	UserEntity userEntity = userDao.getEntityById(userId);
 	userEntity.setEmail(userCommand.getEmail());
 	userEntity.setName(userCommand.getName());
-	userEntity.setSex(userCommand.getSex());
 	UserEntity savedEntity = userDao.save(userEntity);
 	return new UserCommand(savedEntity);
     }
@@ -35,8 +33,8 @@ public class UserService {
 	return new UserCommand(userEntity);
     }
 
-    public UserCommand getUserByUserName(String userName) {
-        UserEntity userEntity = userDao.getUserByUserName(userName);
+    public UserCommand getUserByEmail(String email) {
+        UserEntity userEntity = userDao.getUserByEmail(email);
         return new UserCommand(userEntity);
     }
 
@@ -45,7 +43,6 @@ public class UserService {
 	UserEntity userEntityToUpdate = userDao.getEntityById(userId);
 	userEntityToUpdate.setName(changedUserProfile.getName());
 	userEntityToUpdate.setEmail(changedUserProfile.getEmail());
-	userEntityToUpdate.setSex(changedUserProfile.getSex());
 	UserEntity changedUser = userDao.save(userEntityToUpdate);
 	return new UserEditProfileCommand(changedUser);
     }

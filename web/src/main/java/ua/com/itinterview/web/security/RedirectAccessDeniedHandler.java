@@ -1,18 +1,16 @@
 package ua.com.itinterview.web.security;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
-
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class RedirectAccessDeniedHandler extends AccessDeniedHandlerImpl {
     @Autowired
@@ -39,8 +37,8 @@ public class RedirectAccessDeniedHandler extends AccessDeniedHandlerImpl {
     private boolean redirectToUserProfile(UserDetails userDetails,
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws IOException {
-	UserEntity userEntity = userDao.getUserByUserName(userDetails
-		.getUsername());
+	UserEntity userEntity = userDao.getUserByEmail(userDetails
+            .getUsername());
 	if (userEntity != null) {
 	    String userProfilePath = "/user/" + userEntity.getId() + "/view";
 	    response.sendRedirect(request.getContextPath() + userProfilePath);

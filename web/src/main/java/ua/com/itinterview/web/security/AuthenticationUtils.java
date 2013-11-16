@@ -9,10 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,17 +20,16 @@ public class AuthenticationUtils {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public Authentication loginUser(String userName, String password,
-                                    HttpServletRequest request) {
+    public Authentication loginUser(String email, String password, HttpServletRequest request) {
         Authentication authentication = null;
-        authentication = tryToAuthenticate(userName, password);
+        authentication = tryToAuthenticate(email, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return authentication;
     }
 
-    private Authentication tryToAuthenticate(String userName, String password) {
+    private Authentication tryToAuthenticate(String email, String password) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                userName, password);
+                email, password);
         Authentication auth = authenticationManager.authenticate(token);
         return auth;
     }

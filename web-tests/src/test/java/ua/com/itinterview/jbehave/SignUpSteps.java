@@ -26,9 +26,8 @@ public class SignUpSteps {
     }
 
     @Step
-    @When("the user submits form with '$login', '$name', '$email', '$password', '$confirmPassword'")
-    public void submitForm(String login, String name, String email, String password, String confirmPassword) {
-        registrationPage.fill("userName", login);
+    @When("the user submits form with '$name', '$email', '$password', '$confirmPassword'")
+    public void submitForm(String name, String email, String password, String confirmPassword) {
         registrationPage.fill("name", name);
         registrationPage.fill("email", email);
         registrationPage.fill("password", password);
@@ -39,7 +38,7 @@ public class SignUpSteps {
     @Step
     @Then("they should see the error message '$message' beside login field")
     public void checkErrorMessageBesideLoginField(String message) {
-        assertTrue(registrationPage.isErrorDisplayed("userName", message));
+        assertTrue(registrationPage.isErrorDisplayed("email", message));
     }
 
     @Step
