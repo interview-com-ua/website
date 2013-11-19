@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 **/target/
 /target/
+=======
+
+>>>>>>> modify .gitignore
 .classpath
 .project
 /.settings/
