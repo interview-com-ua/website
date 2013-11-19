@@ -1,7 +1,6 @@
 package ua.com.itinterview.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import ua.com.itinterview.dao.CityDao;
 import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.dao.paging.PagingFilter;
@@ -19,9 +18,6 @@ public class InterviewService {
 
     @Autowired
     UserDao userDao;
-
-    @Autowired
-    CityDao cityDao;
 
     public InterviewEntity addInterview(InterviewCommand inputInterview) {
         InterviewEntity interviewEntity = new InterviewEntity(inputInterview);
@@ -66,5 +62,9 @@ public class InterviewService {
             result.add(new InterviewCommand(interviewEntity));
         }
         return result;
+    }
+
+    public InterviewCommand getInterviewById(int id) {
+        return new InterviewCommand(interviewEntityDao.getInterviewById(id));
     }
 }

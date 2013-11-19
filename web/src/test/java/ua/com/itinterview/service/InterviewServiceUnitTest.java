@@ -54,10 +54,6 @@ public class InterviewServiceUnitTest {
     public void testAddInterview() {
         InterviewCommand interviewCommand = createInterviewCommand();
         InterviewEntity interviewEntity = new InterviewEntity(interviewCommand);
-        // EasyMock.expect(
-        // interviewDaoMock
-        // .getInterviewsByUser(interviewCommand.getUser()).size())
-        // .andReturn(1);
         EasyMock.expect(interviewDaoMock.save(interviewEntity)).andReturn(
                 interviewEntity);
         replayAllMocks();
@@ -139,6 +135,16 @@ public class InterviewServiceUnitTest {
         InterviewCommand expectedCommand = createInterviewCommand();
         InterviewCommand actualCommand = new InterviewCommand(interviewEntity);
         assertEquals(expectedCommand, actualCommand);
+    }
+
+    @Test
+    public void testGetInterviewById(){
+
+        InterviewEntity testInterviewEntity= createInterviewEntity();
+        InterviewCommand expectedInterviewCommand = new InterviewCommand(testInterviewEntity);
+        expect(interviewDaoMock.getEntityById(testInterviewEntity.getId())).andReturn(testInterviewEntity);
+        replayAllMocks();
+        assertEquals(expectedInterviewCommand,interviewService.getInterviewById(testInterviewEntity.getId()));
     }
 
     private InterviewCommand createInterviewCommand() {

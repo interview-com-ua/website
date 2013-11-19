@@ -1,18 +1,17 @@
 package ua.com.itinterview.service;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import ua.com.itinterview.dao.TechnologyDao;
 import ua.com.itinterview.entity.TechnologyEntity;
 import ua.com.itinterview.web.command.TechnologyCommand;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class TechnologyServiceUnitTest {
 
@@ -108,6 +107,19 @@ public class TechnologyServiceUnitTest {
 	replayMocks();
 	assertEquals(convertToCommandList(technologies),
 		technologyService.getTechnologyList());
+    }
+
+    @Test
+
+    public void testGetTechnologyById(){
+        TechnologyEntity testTechnologyEntity = createTestTechnologyEntity();
+
+        TechnologyCommand expectedTechnologyCommand = new TechnologyCommand(testTechnologyEntity);
+
+        EasyMock.expect(technologyDao.getEntityById(testTechnologyEntity.getId())).andReturn(testTechnologyEntity);
+        replayMocks();
+        assertEquals(expectedTechnologyCommand, technologyService.getTechnologyById(testTechnologyEntity.getId()));
+
     }
 
 }
