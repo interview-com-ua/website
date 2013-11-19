@@ -4,25 +4,19 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.paging.PagingFilter;
-import ua.com.itinterview.service.InterviewService;
-import ua.com.itinterview.service.QuestionService;
-import ua.com.itinterview.service.UserService;
-import ua.com.itinterview.web.command.InterviewCommand;
-import ua.com.itinterview.web.command.PaginateCommand;
-import ua.com.itinterview.web.command.QuestionCommand;
-import ua.com.itinterview.web.command.UserCommand;
+import ua.com.itinterview.service.*;
+import ua.com.itinterview.web.command.*;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
 import ua.com.itinterview.web.security.AuthenticationUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.beans.PropertyEditorSupport;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +25,6 @@ import java.util.Map;
 public class InterviewResource {
     private final static Logger LOGGER = Logger.getLogger(InterviewResource.class);
     private final static Integer RESULTS_ON_PAGE = 10;
-
     @Autowired
     private QuestionService questionService;
     @Autowired
@@ -39,9 +32,50 @@ public class InterviewResource {
     @Autowired
     private UserService userService;
     @Autowired
-    private InterviewDao interviewEntityDao;
-    @Autowired
     private AuthenticationUtils authenticationUtils;
+    @Autowired
+    private CityService cityService;
+    @Autowired
+    private PositionService positionService;
+    @Autowired
+    private TechnologyService technologyService;
+    @Autowired
+    private CompanyService companyService;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(TechnologyCommand.class, "technology", new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) {
+                TechnologyCommand technologyCommand = technologyService.getTechnologyById(Integer.valueOf(text));
+                setValue(technologyCommand);
+            }
+        });
+
+        binder.registerCustomEditor(CityCommand.class, "city", new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) {
+                CityCommand cityCommand = cityService.getCityById(Integer.valueOf(text));
+               setValue(cityCommand);
+            }
+        });
+
+        binder.registerCustomEditor(PositionCommand.class, "position", new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) {
+                PositionCommand positionCommand = positionService.getPositionById(Integer.valueOf(text));
+                setValue(positionCommand);
+            }
+        });
+
+        binder.registerCustomEditor(CompanyCommand.class, "company", new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) {
+                CompanyCommand companyCommand = companyService.getCompanyById(Integer.valueOf(text));
+                setValue(companyCommand);
+            }
+        });
+    }
 
     @RequestMapping(value = "/{interviewId}/question_list", method = RequestMethod.GET)
     public ModelAndView showQuestionListFoeInterview(
@@ -73,15 +107,17 @@ public class InterviewResource {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ModelAndView addInterview(
-            @Valid @ModelAttribute InterviewCommand interviewCommand,
+       @Valid @ModelAttribute ("interviewCommand") InterviewCommand interviewCommand,
             BindingResult bindResult) {
-        /*if (bindResult.hasErrors()) {
-            ModelAndView view = new ModelAndView("add_interview");
-            view.addObject(interviewCommand);
-            view.addObject("SUCCESS_MESSAGE", "You have errors");
+
+        if (bindResult.hasErrors()) {
+            ModelAndView view = new ModelAndView("my");
+
+
             return view;
         }
-        UserEntity user = new UserEntity();
+
+        /*UserEntity user = new UserEntity();
         user.setEmail("email@com");
         user.setPassword("password");
         user = userDao.save(user);
@@ -101,7 +137,13 @@ public class InterviewResource {
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String getAddInterview(Map<String, Object> map,
                                   HttpServletRequest request) {
-        map.put("interviewCommand", new InterviewCommand());
+        InterviewCommand interviewCommand = new InterviewCommand();
+        interviewCommand.setCreated(new Date());
+        map.put("interviewCommand",interviewCommand);
+        map.put("listCompany", companyService.getCompanyList());
+        map.put("listTechnology",technologyService.getTechnologyList());
+        map.put("listCity", cityService.getCities());
+        map.put("listPosition", positionService.getPositionList());
         map.put("mode", ModeView.CREATE);
         return "interview";
     }
@@ -149,7 +191,7 @@ public class InterviewResource {
         UserCommand userCommand = userService.getUserByEmail(authenticationUtils.getUserDetails().getUsername());
         Long totalResults = interviewService.getInterviewsCountForUser(userCommand.getId());
         PagingFilter pagingFilter = new PagingFilter(0, RESULTS_ON_PAGE, totalResults.intValue());
-        if (paginateCommand != null && !bindResult.hasErrors()){
+        if (paginateCommand != null && !bindResult.hasErrors()) {
             pagingFilter.setCurrentPage(paginateCommand.getPage());
         }
         List<InterviewCommand> interviewList = interviewService.getUserInterviewList(userCommand.getId(), pagingFilter);
