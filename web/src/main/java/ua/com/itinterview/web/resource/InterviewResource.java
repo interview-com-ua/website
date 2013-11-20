@@ -8,6 +8,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.com.itinterview.dao.paging.PagingFilter;
+import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.service.*;
 import ua.com.itinterview.web.command.*;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
@@ -44,35 +45,33 @@ public class InterviewResource {
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
+
         binder.registerCustomEditor(TechnologyCommand.class, "technology", new PropertyEditorSupport() {
             @Override
             public void setAsText(String text) {
-                TechnologyCommand technologyCommand = technologyService.getTechnologyById(Integer.valueOf(text));
-                setValue(technologyCommand);
+                 setValue(technologyService.getTechnologyById(Integer.valueOf(text)));
             }
         });
+
 
         binder.registerCustomEditor(CityCommand.class, "city", new PropertyEditorSupport() {
             @Override
             public void setAsText(String text) {
-                CityCommand cityCommand = cityService.getCityById(Integer.valueOf(text));
-               setValue(cityCommand);
+                setValue(cityService.getCityById(Integer.valueOf(text)));
             }
         });
 
         binder.registerCustomEditor(PositionCommand.class, "position", new PropertyEditorSupport() {
             @Override
             public void setAsText(String text) {
-                PositionCommand positionCommand = positionService.getPositionById(Integer.valueOf(text));
-                setValue(positionCommand);
+                setValue(positionService.getPositionById(Integer.valueOf(text)));
             }
         });
 
         binder.registerCustomEditor(CompanyCommand.class, "company", new PropertyEditorSupport() {
             @Override
             public void setAsText(String text) {
-                CompanyCommand companyCommand = companyService.getCompanyById(Integer.valueOf(text));
-                setValue(companyCommand);
+                setValue(companyService.getCompanyById(Integer.valueOf(text)));
             }
         });
     }
@@ -106,42 +105,28 @@ public class InterviewResource {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ModelAndView addInterview(
-       @Valid @ModelAttribute ("interviewCommand") InterviewCommand interviewCommand,
+    public String addInterview(
+            @Valid @ModelAttribute("interviewCommand") InterviewCommand interviewCommand,
             BindingResult bindResult) {
-
         if (bindResult.hasErrors()) {
-            ModelAndView view = new ModelAndView("my");
-
-
-            return view;
+            return "redirect:/interview/add";
         }
-
-        /*UserEntity user = new UserEntity();
-        user.setEmail("email@com");
-        user.setPassword("password");
-        user = userDao.save(user);
-        interviewCommand.setUser(user);
+        interviewCommand.setUser(userService.getUserByEmail(authenticationUtils.getUserDetails().getUsername()));
         interviewCommand.setCreated(new Date());
-        InterviewEntity interview = interviewService
-                .addInterview(interviewCommand);
-        Integer id = interview.getId();
-        ModelAndView view = new ModelAndView("add_interview");
-        view.addObject(interviewCommand);
-        view.addObject("SUCCESS_MESSAGE",
-                "Interview saved successfully with id=" + id);
-        return view;*/
-        return new ModelAndView();
+        InterviewEntity save = interviewService.addInterview(interviewCommand);
+
+        return "redirect:/interview/" + save.getId() + "/view";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String getAddInterview(Map<String, Object> map,
                                   HttpServletRequest request) {
         InterviewCommand interviewCommand = new InterviewCommand();
+        interviewCommand.setUser(userService.getUserByEmail(authenticationUtils.getUserDetails().getUsername()));
         interviewCommand.setCreated(new Date());
-        map.put("interviewCommand",interviewCommand);
+        map.put("interviewCommand", interviewCommand);
         map.put("listCompany", companyService.getCompanyList());
-        map.put("listTechnology",technologyService.getTechnologyList());
+        map.put("listTechnology", technologyService.getTechnologyList());
         map.put("listCity", cityService.getCities());
         map.put("listPosition", positionService.getPositionList());
         map.put("mode", ModeView.CREATE);

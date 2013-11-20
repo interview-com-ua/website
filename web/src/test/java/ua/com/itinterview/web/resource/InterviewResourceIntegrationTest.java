@@ -1,17 +1,19 @@
 package ua.com.itinterview.web.resource;
 
+import org.easymock.EasyMock;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.ResultActions;
-import ua.com.itinterview.entity.CityEntity;
-import ua.com.itinterview.entity.CompanyEntity;
-import ua.com.itinterview.entity.PositionEntity;
-import ua.com.itinterview.entity.TechnologyEntity;
-import ua.com.itinterview.service.InterviewService;
+import ua.com.itinterview.entity.InterviewEntity;
+import ua.com.itinterview.entity.UserEntity;
+import ua.com.itinterview.web.command.InterviewCommand;
 import ua.com.itinterview.web.integration.BaseWebIntegrationTest;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
 
+import java.util.Date;
+
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -22,8 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Date: 14.11.13
  */
 public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
-    @Autowired
-    private InterviewService interviewService;
 
     @Test
     public void testShowListInterviewByRegisterUser() throws Exception {
@@ -63,55 +63,89 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
         mvc.perform(get("/interview/add").session(session))
                 .andExpect(status().isOk())
                 .andExpect(view().name("interview"))
-                .andExpect(model().attributeExists("interviewCommand"))
                 .andExpect(model().attributeExists("listCompany"))
                 .andExpect(model().attributeExists("listTechnology"))
                 .andExpect(model().attributeExists("listCity"))
                 .andExpect(model().attributeExists("listPosition"))
-                .andExpect(model().attribute("mode", ModeView.CREATE))
+                .andExpect(model().attribute("mode", is(ModeView.CREATE)))
                 .andDo(print());
     }
 
     @Test
     public void testBindingAndValidityNestedObjectsForInterviewCommand() throws Exception {
-        createUser();
-        CityEntity testCityEntity = createCity();
-        PositionEntity testPositionEntity = createPosition();
-        TechnologyEntity testTechnologyEntity = createTechnology();
-        CompanyEntity testCompanyEntity = createCompany();
+        UserEntity userEntity = createUser();
+        InterviewCommand expectedInterviewCommand = createInterviewCommand(userEntity, new Date());
+        ResultActions actions = mvc.perform(loginUser());
+        MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
+        mvc.perform(get("/interview/add").session(session)).andDo(print());
+        ResultActions postRequest = mvc.perform(post("/interview/add").session(session)
+                .param("city", String.valueOf(expectedInterviewCommand.getCity().getId()))
+                .param("company", String.valueOf(expectedInterviewCommand.getCompany().getId()))
+                .param("technology", String.valueOf(expectedInterviewCommand.getTechnology().getId()))
+                .param("position", String.valueOf(expectedInterviewCommand.getPosition().getId()))
+                .param("feedback", USER_FEEDBACK));
 
+        postRequest.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(model().hasNoErrors())
+                .andExpect(model().attribute("interviewCommand", hasProperty("city", is(expectedInterviewCommand.getCity()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("company", is(expectedInterviewCommand.getCompany()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("position", is(expectedInterviewCommand.getPosition()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("technology", is(expectedInterviewCommand.getTechnology()))));
+
+    }
+
+    @Test
+    public void testInvalidValidityNestedObjectsForInterviewCommand() throws Exception {
+        createUser();
+        String invalidId = "1000";
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
         ResultActions postRequest = mvc.perform(post("/interview/add").session(session)
-                .param("city", String.valueOf(testCityEntity.getId()))
-                .param("company", String.valueOf(testCompanyEntity.getId()))
-                .param("technology", String.valueOf(testTechnologyEntity.getId()))
-                .param("position", String.valueOf(testPositionEntity.getId()))
-                .param("feedback", "testFeedback"));
-
+                .param("city", invalidId)
+                .param("company", invalidId)
+                .param("technology", invalidId)
+                .param("position", invalidId));
+        //  .param("feedback", "testFeedback"));    validation null feedback
         postRequest.andExpect(status().isOk())
-                .andExpect(model().hasNoErrors())
+                .andExpect(model().hasErrors())
+                .andExpect(model().attributeHasFieldErrors("interviewCommand"))
                 .andDo(print());
 
     }
 
     @Test
     public void testAddInterviewWithOKFields() throws Exception {
-        createUser();
+        UserEntity userEntity = createUser();
+        InterviewCommand expectedInterviewCommand = createInterviewCommand(userEntity, new Date());
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
+        mvc.perform(get("/interview/add").session(session)).andDo(print());
         ResultActions postRequest = mvc.perform(post("/interview/add").session(session)
-                .param("city", String.valueOf(createCity().getId()))
-                .param("company", String.valueOf(createCompany().getId()))
-                .param("technology", String.valueOf(createTechnology().getId()))
-                .param("position", String.valueOf(createPosition().getId()))
-                .param("feedback", "testFeedback"));
+                .param("city", String.valueOf(expectedInterviewCommand.getCity().getId()))
+                .param("company", String.valueOf(expectedInterviewCommand.getCompany().getId()))
+                .param("technology", String.valueOf(expectedInterviewCommand.getTechnology().getId()))
+                .param("position", String.valueOf(expectedInterviewCommand.getPosition().getId()))
+                .param("feedback", USER_FEEDBACK));
 
-        postRequest.andExpect(status().isOk())
+        postRequest.andDo(print())
+                .andExpect(status().isMovedTemporarily())
                 .andExpect(model().hasNoErrors())
-                .andDo(print());
+                .andExpect(redirectedUrl("/interview/" + expectedInterviewCommand.getId() + "/view"))
+                .andExpect(model().attributeExists("interviewCommand"))
+                .andExpect(model().attribute("mode", is(ModeView.VIEW)));
+    }
 
-
+    private InterviewCommand createInterviewCommand(UserEntity userEntity, Date dateCreated) throws Exception {
+        InterviewEntity interview = new InterviewEntity();
+        interview.setUser(userEntity);
+        interview.setCreated(dateCreated);
+        interview.setCity(createCity());
+        interview.setCompany(createCompany());
+        interview.setFeedback(USER_FEEDBACK);
+        interview.setPosition(createPosition());
+        interview.setTechnology(createTechnology());
+        return new InterviewCommand(interview);
     }
 
     @Test
