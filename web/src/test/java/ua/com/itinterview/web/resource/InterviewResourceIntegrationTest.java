@@ -1,6 +1,5 @@
 package ua.com.itinterview.web.resource;
 
-import org.easymock.EasyMock;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.ResultActions;
@@ -72,7 +71,8 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     }
 
     @Test
-    public void testBindingAndValidityNestedObjectsForInterviewCommand() throws Exception {
+    public void testBindingNestedObjectsForInterviewCommand() throws Exception {
+        
         UserEntity userEntity = createUser();
         InterviewCommand expectedInterviewCommand = createInterviewCommand(userEntity, new Date());
         ResultActions actions = mvc.perform(loginUser());
@@ -86,7 +86,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
                 .param("feedback", USER_FEEDBACK));
 
         postRequest.andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isMovedTemporarily())
                 .andExpect(model().hasNoErrors())
                 .andExpect(model().attribute("interviewCommand", hasProperty("city", is(expectedInterviewCommand.getCity()))))
                 .andExpect(model().attribute("interviewCommand", hasProperty("company", is(expectedInterviewCommand.getCompany()))))
@@ -131,9 +131,8 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
         postRequest.andDo(print())
                 .andExpect(status().isMovedTemporarily())
                 .andExpect(model().hasNoErrors())
-                .andExpect(redirectedUrl("/interview/" + expectedInterviewCommand.getId() + "/view"))
-                .andExpect(model().attributeExists("interviewCommand"))
-                .andExpect(model().attribute("mode", is(ModeView.VIEW)));
+                .andExpect(model().attributeExists("interviewCommand"));
+
     }
 
     private InterviewCommand createInterviewCommand(UserEntity userEntity, Date dateCreated) throws Exception {
@@ -148,19 +147,5 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
         return new InterviewCommand(interview);
     }
 
-    @Test
-    public void testViewInterviewById() {
-
-    }
-
-    @Test
-    public void testEditInterviewWithOKFields() {
-
-    }
-
-    @Test
-    public void testEditInterviewWithFailFields() {
-
-    }
 
 }

@@ -11,7 +11,7 @@
 <div id="main" class="your_interview">
     <!-- your interview -->
     <h1>
-        <a href="#add_smth" class="add_interview fancybox">Добавить собеседование</a>
+        <a href="${pageContext.request.contextPath}/interview/add" class="add_interview fancybox">Добавить собеседование</a>
         Список Ваших собеседований
     </h1>
 
