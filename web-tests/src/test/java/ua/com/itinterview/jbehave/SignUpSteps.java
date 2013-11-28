@@ -7,18 +7,22 @@ import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import ua.com.itinterview.pages.DbCleanerPage;
 import ua.com.itinterview.pages.SignUpPage;
+import ua.com.itinterview.utils.WebLauncher;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class SignUpSteps {
 
-    SignUpPage registrationPage;
-
     DbCleanerPage dbCleanerPage;
+
+    SignUpPage registrationPage;
 
     @BeforeStories
     public void prepareDb() {
+        WebLauncher webLauncher = new WebLauncher();
+        webLauncher.start();
+
         dbCleanerPage.open();
         assertTrue(dbCleanerPage.isSuccessful());
     }
