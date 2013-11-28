@@ -1,9 +1,11 @@
 package ua.com.itinterview.jbehave;
 
 import net.thucydides.core.annotations.Step;
+import org.jbehave.core.annotations.BeforeStories;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+import ua.com.itinterview.pages.DbCleanerPage;
 import ua.com.itinterview.pages.SignUpPage;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -12,6 +14,14 @@ import static org.junit.Assert.assertTrue;
 public class SignUpSteps {
 
     SignUpPage registrationPage;
+
+    DbCleanerPage dbCleanerPage;
+
+    @BeforeStories
+    public void prepareDb() {
+        dbCleanerPage.open();
+        assertTrue(dbCleanerPage.isSuccessful());
+    }
 
     @Step
     @Given("the user is on the registration page")
