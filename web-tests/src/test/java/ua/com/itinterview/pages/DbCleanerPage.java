@@ -17,4 +17,8 @@ public class DbCleanerPage extends PageObject {
     public boolean isSuccessful() {
         return getDriver().getPageSource().contains("OK");
     }
+
+    public void close() {
+        getDriver().quit();
+    }
 }
