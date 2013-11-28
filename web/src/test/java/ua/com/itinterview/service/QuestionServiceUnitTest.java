@@ -111,11 +111,9 @@ public class QuestionServiceUnitTest {
         user.setEmail(email);
         List<QuestionEntity> expectedQuestionEntityList = createTestQuestionList();
         List<QuestionCommand> expectedQuestionCommandList = convertEntityListToCommandList(expectedQuestionEntityList);
-
         EasyMock.expect(userDao.getUserByEmail(email)).andReturn(user);
         EasyMock.expect(questionDao.getQuestionsForUser(user)).andReturn(expectedQuestionEntityList);
         replayAllMocks();
-
         assertArrayEquals(questionService.getQuestionListForUser(email).toArray(), expectedQuestionCommandList.toArray());
     }
 
