@@ -27,7 +27,7 @@ public class QuestionService {
 
     }
 
-    public List<QuestionCommand> getQuestionsForUser(String email){
+    public List<QuestionCommand> getQuestionListForUser(String email){
         UserEntity userEntity = userDao.getUserByEmail(email);
         List<QuestionEntity> userEntityList = questionDao.getQuestionsForUser(userEntity);
         return convertToQuestionCommandList(userEntityList);

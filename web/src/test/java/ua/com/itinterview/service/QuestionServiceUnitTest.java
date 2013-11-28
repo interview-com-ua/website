@@ -1,24 +1,24 @@
 package ua.com.itinterview.service;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.EntityNotFoundException;
-
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
 import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.QuestionDao;
+import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.QuestionEntity;
+import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.web.command.QuestionCommand;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class QuestionServiceUnitTest {
 
@@ -35,6 +35,7 @@ public class QuestionServiceUnitTest {
     private InterviewDao interviewDao;
     private QuestionDao questionDao;
     private QuestionService questionService;
+    private UserDao userDao;
 
     @Before
     public void setUpMocks() {
@@ -45,13 +46,16 @@ public class QuestionServiceUnitTest {
 
 	questionDao = EasyMock.createMock(QuestionDao.class);
 	questionService.questionDao = questionDao;
+
+    userDao = EasyMock.createMock(UserDao.class);
+    questionService.userDao = userDao;
     }
 
     private void replayAllMocks() {
-	EasyMock.replay(interviewDao, questionDao);
+	EasyMock.replay(interviewDao, questionDao, userDao);
     }
 
-    private List<QuestionEntity> getQuestionListForInterviewMockResult() {
+    private List<QuestionEntity> createTestQuestionList() {
 	List<QuestionEntity> result = new ArrayList<QuestionEntity>();
 	QuestionEntity entity = new QuestionEntity();
 	entity.setQuestion("entity");
@@ -101,9 +105,18 @@ public class QuestionServiceUnitTest {
     }
 
     @Test
-    @Ignore
-    public void testGetQuestionForUser(){
-        //TODO: write test
+    public void testGetQuestionListForUser(){
+        String email = "test@email.com";
+        UserEntity user = new UserEntity();
+        user.setEmail(email);
+        List<QuestionEntity> expectedQuestionEntityList = createTestQuestionList();
+        List<QuestionCommand> expectedQuestionCommandList = convertEntityListToCommandList(expectedQuestionEntityList);
+
+        EasyMock.expect(userDao.getUserByEmail(email)).andReturn(user);
+        EasyMock.expect(questionDao.getQuestionsForUser(user)).andReturn(expectedQuestionEntityList);
+        replayAllMocks();
+
+        assertArrayEquals(questionService.getQuestionListForUser(email).toArray(), expectedQuestionCommandList.toArray());
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -133,7 +146,7 @@ public class QuestionServiceUnitTest {
     public void testGetQuestionListForInterviewWhenInterviewExists() {
 	InterviewEntity interview = new InterviewEntity();
 	Integer interviewId = Integer.valueOf(21);
-	List<QuestionEntity> questionListForInterviewResult = getQuestionListForInterviewMockResult();
+	List<QuestionEntity> questionListForInterviewResult = createTestQuestionList();
 	EasyMock.expect(interviewDao.getEntityById(interviewId)).andReturn(
 		interview);
 	EasyMock.expect(questionDao.getQuestionsForInterview(interview))
@@ -226,7 +239,7 @@ public class QuestionServiceUnitTest {
     @Test
     public void testGetRecentQuestionList() {
 
-	List<QuestionEntity> questionList = getQuestionListForInterviewMockResult();
+	List<QuestionEntity> questionList = createTestQuestionList();
 	EasyMock.expect(questionDao.getRecentQuestionList()).andReturn(
 		questionList);
 	replayAllMocks();

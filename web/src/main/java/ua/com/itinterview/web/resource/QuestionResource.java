@@ -9,17 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import ua.com.itinterview.service.CommentService;
-import ua.com.itinterview.service.CompanyService;
-import ua.com.itinterview.service.PositionService;
-import ua.com.itinterview.service.QuestionService;
-import ua.com.itinterview.service.TechnologyService;
-import ua.com.itinterview.web.command.CommentCommand;
-import ua.com.itinterview.web.command.CompanyCommand;
-import ua.com.itinterview.web.command.PositionCommand;
-import ua.com.itinterview.web.command.QuestionCommand;
-import ua.com.itinterview.web.command.QuestionSearchCommand;
-import ua.com.itinterview.web.command.TechnologyCommand;
+import ua.com.itinterview.service.*;
+import ua.com.itinterview.web.command.*;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
 import ua.com.itinterview.web.security.AuthenticationUtils;
 
@@ -141,7 +132,7 @@ public class QuestionResource {
     @RequestMapping(value = "/my", method = RequestMethod.GET)
     public ModelAndView getQuestions(){
         String email = new AuthenticationUtils().getUserDetails().getUsername();
-        List<QuestionCommand> questionCommandList = questionService.getQuestionsForUser(email);
+        List<QuestionCommand> questionCommandList = questionService.getQuestionListForUser(email);
         ModelAndView model = new ModelAndView("show_question_list");
         model.addObject("questionList", questionCommandList);
         return model;
