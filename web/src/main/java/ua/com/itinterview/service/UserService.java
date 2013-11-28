@@ -46,4 +46,8 @@ public class UserService {
 	UserEntity changedUser = userDao.save(userEntityToUpdate);
 	return new UserEditProfileCommand(changedUser);
     }
+
+    public void deleteAll() {
+        userDao.deleteAll();
+    }
 }

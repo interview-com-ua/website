@@ -1,12 +1,7 @@
 package ua.com.itinterview.dao;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.List;
-
-import javax.persistence.EntityNotFoundException;
-
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
@@ -14,9 +9,13 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import ua.com.itinterview.dao.paging.PagingFilter;
 import ua.com.itinterview.entity.EntityWithId;
+
+import javax.persistence.EntityNotFoundException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.List;
 
 public class EntityWithIdDao<T extends EntityWithId> {
 
@@ -113,6 +112,14 @@ public class EntityWithIdDao<T extends EntityWithId> {
 			order.equals("asc") ? Order.asc(orderBy) : Order
 				.desc(orderBy)).setMaxResults(limit);
 	return criteria.list();
+    }
+
+    @Transactional
+    public int deleteAll() {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = String.format("delete from %s", clazz.getSimpleName());
+        Query query = session.createQuery(hql);
+        return query.executeUpdate();
     }
 
     public Class<?> getClazz() {
