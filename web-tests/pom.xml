@@ -21,6 +21,16 @@
     </properties>
 
     <dependencies>
+        <!--Overlay for creating specific war for testing-->
+        <!--<dependency>-->
+            <!--<groupId>ua.com.itinterview</groupId>-->
+            <!--<artifactId>web</artifactId>-->
+            <!--<version>1.0-SNAPSHOT</version>-->
+            <!--<type>war</type>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
+
+
         <dependency>
             <groupId>net.thucydides</groupId>
             <artifactId>thucydides-core</artifactId>
@@ -147,6 +157,49 @@
                         <phase>post-integration-test</phase>
                         <goals>
                             <goal>aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--Uncomment this block if you want to package war file instead of using existing in web module-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-war-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<overlays>-->
+                        <!--<overlay>-->
+                            <!--<groupId>ua.com.itinterview</groupId>-->
+                            <!--<artifactId>web</artifactId>-->
+                        <!--</overlay>-->
+                    <!--</overlays>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <configuration>
+                    <war>${basedir}/../web/target/ROOT.war</war>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start-jetty</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <!--<goal>run</goal>-->
+                            <goal>deploy-war</goal>
+                        </goals>
+                        <configuration>
+                            <daemon>true</daemon>
+                            <reload>manual</reload>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-jetty</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
                         </goals>
                     </execution>
                 </executions>

@@ -277,7 +277,7 @@
                                     <userName>sa</userName>
                                     <password/>
                                     <dialect>hsqldb</dialect>
-                                    <url>jdbc:hsqldb:file:${basedir}/target/website/it-interview;shutdown=true;sql.syntax_pgs=true</url>
+                                    <url>jdbc:hsqldb:file:${basedir}/../db/it-interview;shutdown=true;sql.syntax_pgs=true</url>
                                     <schemaNames>PUBLIC</schemaNames>
                                 </database>
                             </databases>
@@ -298,7 +298,7 @@
                                     <userName>sa</userName>
                                     <password/>
                                     <dialect>hsqldb</dialect>
-                                    <url>jdbc:hsqldb:file:${basedir}/target/website/it-interview;shutdown=true;sql.syntax_pgs=true</url>
+                                    <url>jdbc:hsqldb:file:${basedir}/../db/it-interview;shutdown=true;sql.syntax_pgs=true</url>
                                     <schemaNames>PUBLIC</schemaNames>
                                 </database>
                             </databases>

@@ -1,13 +1,13 @@
 package ua.com.itinterview.jbehave;
 
 import net.thucydides.core.annotations.Step;
-import org.jbehave.core.annotations.BeforeStories;
+import org.jbehave.core.annotations.AfterScenario;
+import org.jbehave.core.annotations.BeforeStory;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import ua.com.itinterview.pages.DbCleanerPage;
 import ua.com.itinterview.pages.SignUpPage;
-import ua.com.itinterview.utils.WebLauncher;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -18,15 +18,17 @@ public class SignUpSteps {
 
     SignUpPage registrationPage;
 
-    @BeforeStories
+    @BeforeStory
     public void prepareDb() {
-        WebLauncher webLauncher = new WebLauncher();
-        webLauncher.start();
-
         dbCleanerPage.open();
         boolean successful = dbCleanerPage.isSuccessful();
         dbCleanerPage.close();
         assertTrue(successful);
+    }
+
+    @AfterScenario
+    public void closePage() {
+        registrationPage.getDriver().quit();
     }
 
     @Step
