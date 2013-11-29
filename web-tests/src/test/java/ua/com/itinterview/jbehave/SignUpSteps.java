@@ -24,8 +24,9 @@ public class SignUpSteps {
         webLauncher.start();
 
         dbCleanerPage.open();
-        assertTrue(dbCleanerPage.isSuccessful());
+        boolean successful = dbCleanerPage.isSuccessful();
         dbCleanerPage.close();
+        assertTrue(successful);
     }
 
     @Step
