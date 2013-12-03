@@ -4,6 +4,7 @@ import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import ua.com.itinterview.dao.InterviewDao;
 import ua.com.itinterview.dao.QuestionDao;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class QuestionServiceUnitTest {
 
@@ -115,6 +117,26 @@ public class QuestionServiceUnitTest {
         EasyMock.expect(questionDao.getQuestionsForUser(user)).andReturn(expectedQuestionEntityList);
         replayAllMocks();
         assertArrayEquals(questionService.getQuestionListForUser(email).toArray(), expectedQuestionCommandList.toArray());
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void testGetQuestionListForUserWhenUserDoesNotExist(){
+    String email = "test@email.com";
+    EasyMock.expect(userDao.getUserByEmail(email)).andThrow(new EntityNotFoundException());
+    replayAllMocks();
+    questionService.getQuestionListForUser(email);
+    }
+
+    @Test
+    public void testGetQuestionListForUserWhenQuestionListIsEmpty(){
+    String email = "test@email.com";
+    UserEntity user = new UserEntity();
+    user.setEmail(email);
+    List<QuestionEntity> empty = new ArrayList<QuestionEntity>();
+    EasyMock.expect(userDao.getUserByEmail(email)).andReturn(user);
+    EasyMock.expect(questionDao.getQuestionsForUser(user)).andReturn(empty);
+    replayAllMocks();
+    assertTrue(questionService.getQuestionListForUser(email).isEmpty());
     }
 
     @Test(expected = EntityNotFoundException.class)
