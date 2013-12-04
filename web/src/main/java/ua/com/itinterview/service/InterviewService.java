@@ -67,4 +67,8 @@ public class InterviewService {
     public InterviewCommand getInterviewById(int id) {
         return new InterviewCommand(interviewEntityDao.getInterviewById(id));
     }
+
+    public InterviewEntity update(InterviewCommand interviewCommand) {
+        return null;  //To change body of created methods use File | Settings | File Templates.
+    }
 }
