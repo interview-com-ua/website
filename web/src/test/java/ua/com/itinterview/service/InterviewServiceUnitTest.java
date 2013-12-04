@@ -27,6 +27,9 @@ public class InterviewServiceUnitTest {
     public static final int USER_ID = 4;
     public static final int TECHNOLOGY_ID = 5;
     public static final int INTERVIEW_ID = 6;
+    public static final int INVALID_INTERVIEW_ID=1000;
+    public static final String INVALID_INTERVIEW_FEEDBACK = "Invalid feedback text" ;
+
     private UserEntity user;
     private InterviewService interviewService;
     private InterviewDao interviewDaoMock;
@@ -145,6 +148,18 @@ public class InterviewServiceUnitTest {
         replayAllMocks();
         InterviewCommand actualInterviewCommand = interviewService.getInterviewById(testInterviewEntity.getId());
         assertEquals(expectedInterviewCommand,actualInterviewCommand);
+        verifyAll();
+    }
+    @Test
+    public void testUpdateInterviewWithExist(){
+        InterviewCommand interviewCommand = createInterviewCommand();
+        interviewCommand.setId(INVALID_INTERVIEW_ID);
+        interviewCommand.setFeedback(INVALID_INTERVIEW_FEEDBACK);
+        InterviewEntity interviewEntity = new InterviewEntity(interviewCommand);
+       EasyMock.expect(interviewDaoMock.save(new InterviewEntity(interviewCommand)))
+                .andReturn(interviewEntity);
+        replayAllMocks();
+        assertEquals(interviewEntity, interviewService.update(interviewCommand));
         verifyAll();
     }
 

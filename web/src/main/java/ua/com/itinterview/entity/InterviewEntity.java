@@ -1,7 +1,6 @@
 package ua.com.itinterview.entity;
 
 import org.hibernate.annotations.Formula;
-import org.joda.time.DateTime;
 import ua.com.itinterview.web.command.InterviewCommand;
 
 import javax.persistence.*;

@@ -69,6 +69,6 @@ public class InterviewService {
     }
 
     public InterviewEntity update(InterviewCommand interviewCommand) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        return interviewEntityDao.save(new InterviewEntity(interviewCommand));
     }
 }

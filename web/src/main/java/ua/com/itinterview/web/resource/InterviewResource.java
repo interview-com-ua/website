@@ -13,11 +13,14 @@ import ua.com.itinterview.dao.paging.PagingFilter;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.service.*;
 import ua.com.itinterview.web.command.*;
+import ua.com.itinterview.web.resource.propertyeditor.CityCommandPropertyEditor;
+import ua.com.itinterview.web.resource.propertyeditor.CompanyCommandPropertyEditor;
+import ua.com.itinterview.web.resource.propertyeditor.PositionCommandPropertyEditor;
+import ua.com.itinterview.web.resource.propertyeditor.TechnologyCommandPropertyEditor;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
 import ua.com.itinterview.web.security.AuthenticationUtils;
 
 import javax.validation.Valid;
-import java.beans.PropertyEditorSupport;
 import java.util.List;
 
 @Controller
@@ -62,30 +65,10 @@ public class InterviewResource {
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(TechnologyCommand.class, "technology", new PropertyEditorSupport() {
-            @Override
-            public void setAsText(String text) {
-                setValue(technologyService.getTechnologyById(Integer.valueOf(text)));
-            }
-        });
-        binder.registerCustomEditor(CityCommand.class, "city", new PropertyEditorSupport() {
-            @Override
-            public void setAsText(String text) {
-                setValue(cityService.getCityById(Integer.valueOf(text)));
-            }
-        });
-        binder.registerCustomEditor(PositionCommand.class, "position", new PropertyEditorSupport() {
-            @Override
-            public void setAsText(String text) {
-                setValue(positionService.getPositionById(Integer.valueOf(text)));
-            }
-        });
-        binder.registerCustomEditor(CompanyCommand.class, "company", new PropertyEditorSupport() {
-            @Override
-            public void setAsText(String text) {
-                setValue(companyService.getCompanyById(Integer.valueOf(text)));
-            }
-        });
+        binder.registerCustomEditor(TechnologyCommand.class, "technology", new TechnologyCommandPropertyEditor(technologyService));
+        binder.registerCustomEditor(CityCommand.class, "city", new CityCommandPropertyEditor(cityService));
+        binder.registerCustomEditor(PositionCommand.class, "position", new PositionCommandPropertyEditor(positionService));
+        binder.registerCustomEditor(CompanyCommand.class, "company", new CompanyCommandPropertyEditor(companyService));
     }
 
     @RequestMapping(value = "/{interviewId}/question_list", method = RequestMethod.GET)
@@ -138,6 +121,7 @@ public class InterviewResource {
         attributes.addFlashAttribute(FLASH_MESSAGE_KEY_FEEDBACK, FLASH_MESSAGE_TEXT_INTERVIEW_ADDED);
         attributes.addAttribute(PARAMETER_INTERVIEW_ID, savedInterviewEntity.getId());
 
+
         return createRedirectViewPath(REQUEST_MAPPING_INTERVIEW_VIEW);
     }
 
@@ -158,6 +142,7 @@ public class InterviewResource {
         }
         InterviewEntity updatedInterviewEntity = interviewService.update(interviewCommand);
         attributes.addAttribute(FLASH_MESSAGE_KEY_FEEDBACK, FEEDBACK_MESSAGE_TEXT_INTERVIEW_UPDATED);
+        attributes.addAttribute(MODEL_ATTRIBUTE_INTERVIEW,interviewCommand);
         attributes.addAttribute(PARAMETER_INTERVIEW_ID, updatedInterviewEntity.getId());
 
         return createRedirectViewPath(REQUEST_MAPPING_INTERVIEW_VIEW);
