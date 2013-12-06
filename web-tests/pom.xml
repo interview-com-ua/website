@@ -180,6 +180,12 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <configuration>
+                    <httpConnector>
+                        <port>8090</port>
+                    </httpConnector>
+                    <webApp>
+                        <contextPath>/it-interview</contextPath>
+                    </webApp>
                     <war>${basedir}/../web/target/ROOT.war</war>
                     <stopKey>foo</stopKey>
                     <stopPort>9999</stopPort>

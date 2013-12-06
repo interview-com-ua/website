@@ -14,18 +14,28 @@ public class JettyTestWebServerDeployer {
     private String contextPath;
 
     public JettyTestWebServerDeployer() {
-	port = DEFAULT_PORT;
-	contextPath = DEFAULT_CONTEXT_PATH;
+        this(DEFAULT_PORT, DEFAULT_CONTEXT_PATH);
+    }
+
+    public JettyTestWebServerDeployer(int port) {
+        this(port, DEFAULT_CONTEXT_PATH);
     }
 
     public JettyTestWebServerDeployer(int port, String contextPath) {
-	this.port = port;
-	this.contextPath = contextPath;
+        this.port = port;
+        this.contextPath = contextPath;
     }
 
     public static void main(String[] args) {
-	JettyTestWebServerDeployer jettyTestServer = new JettyTestWebServerDeployer();
-	jettyTestServer.start();
+        int port;
+        if(args.length > 0) {
+            port = Integer.parseInt(args[0]);
+        } else {
+            port = DEFAULT_PORT;
+        }
+
+        JettyTestWebServerDeployer jettyTestServer = new JettyTestWebServerDeployer(port);
+        jettyTestServer.start();
     }
 
     public void start() {
