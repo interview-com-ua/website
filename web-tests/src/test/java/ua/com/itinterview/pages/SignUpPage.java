@@ -6,11 +6,10 @@ import net.thucydides.core.pages.PageObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import ua.com.itinterview.jbehave.AcceptanceTestSuite;
 
 import java.util.List;
 
-@DefaultUrl(AcceptanceTestSuite.ROOT_URL + "register")
+@DefaultUrl("/register")
 public class SignUpPage extends PageObject {
 
     @FindBy(css = ".reg_data>input[type=\"submit\"]")
