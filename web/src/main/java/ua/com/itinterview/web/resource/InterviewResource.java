@@ -2,6 +2,7 @@ package ua.com.itinterview.web.resource;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,7 @@ import ua.com.itinterview.web.resource.propertyeditor.TechnologyCommandPropertyE
 import ua.com.itinterview.web.resource.viewpages.ModeView;
 import ua.com.itinterview.web.security.AuthenticationUtils;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -30,16 +32,20 @@ public class InterviewResource {
     protected static final String FLASH_MESSAGE_KEY_FEEDBACK = "feedbackMessage";
     protected static final String PARAMETER_INTERVIEW_ID = "interviewId";
     protected static final String MODEL_ATTRIBUTE_INTERVIEW = "interviewCommand";
-
-    protected static final String MODEL_ATTRIBUTE_LIST_COMPANY="listCompany";
-    protected static final String MODEL_ATTRIBUTE_LIST_TECHNOLOGY="listTechnology";
-    protected static final String MODEL_ATTRIBUTE_LIST_CITY="listCity";
-    protected static final String MODEL_ATTRIBUTE_LIST_POSITION= "listPosition";
+    protected static final String MODEL_ATTRIBUTE_LIST_COMPANY = "listCompany";
+    protected static final String MODEL_ATTRIBUTE_LIST_TECHNOLOGY = "listTechnology";
+    protected static final String MODEL_ATTRIBUTE_LIST_CITY = "listCity";
+    protected static final String MODEL_ATTRIBUTE_LIST_POSITION = "listPosition";
 
     protected static final String FLASH_MESSAGE_TEXT_INTERVIEW_ADDED = "OK added";
+    protected static final String FLASH_MESSAGE_TEXT_INTERVIEW_View = "Interview not found";
+
     protected static final String FEEDBACK_MESSAGE_TEXT_INTERVIEW_UPDATED = " OK update";
+
     protected static final String REQUEST_MAPPING_INTERVIEW_LIST = "/my";
     protected static final String REQUEST_MAPPING_INTERVIEW_VIEW = "/{interviewId}/view";
+    protected static final String REQUEST_MAPPING_INTERVIEW_UPDATE = "/{interviewId}/edit";
+
     protected static final String VIEW_INTERVIEW_ADD = "add_interview";
     protected static final String VIEW_INTERVIEW_LIST = "show_personal_interview_list";
     protected static final String VIEW_INTERVIEW_UPDATE = "update_interview";
@@ -100,34 +106,40 @@ public class InterviewResource {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public String showCreateInterviewForm(Model model) {
-        model.addAttribute(MODEL_ATTRIBUTE_INTERVIEW,new InterviewCommand());
-        model.addAttribute(MODEL_ATTRIBUTE_LIST_CITY,cityService.getCities());
-        model.addAttribute(MODEL_ATTRIBUTE_LIST_COMPANY,companyService.getCompanyList());
-        model.addAttribute(MODEL_ATTRIBUTE_LIST_POSITION,positionService.getPositionList());
+    public String showFormCreateInterview(Model model) {
+        model.addAttribute(MODEL_ATTRIBUTE_INTERVIEW, new InterviewCommand());
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_CITY, cityService.getCities());
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_COMPANY, companyService.getCompanyList());
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_POSITION, positionService.getPositionList());
         model.addAttribute(MODEL_ATTRIBUTE_LIST_TECHNOLOGY, technologyService.getTechnologyList());
         return VIEW_INTERVIEW_ADD;
 
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String createInterview(@Valid @ModelAttribute("interviewCommand") InterviewCommand interviewCommand, BindingResult result, RedirectAttributes attributes) {
+    public String createInterview(@Valid @ModelAttribute("interviewCommand") InterviewCommand interviewCommand, BindingResult result, RedirectAttributes attributes, Model model) {
         if (result.hasErrors()) {
             LOGGER.debug("Add interview form was submitted with binding errors. Rendering form view.");
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_CITY, cityService.getCities());
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_COMPANY, companyService.getCompanyList());
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_POSITION, positionService.getPositionList());
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_TECHNOLOGY, technologyService.getTechnologyList());
             return VIEW_INTERVIEW_ADD;
         }
         interviewCommand.setUser(userService.getUserByEmail(authenticationUtils.getUserDetails().getUsername()));
         InterviewEntity savedInterviewEntity = interviewService.addInterview(interviewCommand);
         attributes.addFlashAttribute(FLASH_MESSAGE_KEY_FEEDBACK, FLASH_MESSAGE_TEXT_INTERVIEW_ADDED);
         attributes.addAttribute(PARAMETER_INTERVIEW_ID, savedInterviewEntity.getId());
-
-
         return createRedirectViewPath(REQUEST_MAPPING_INTERVIEW_VIEW);
     }
 
     @RequestMapping(value = "/{interviewId}/edit", method = RequestMethod.GET)
-    public String showUpdateInterviewForm(@PathVariable("interviewId") Integer interviewId, Model model) {
-        model.addAttribute(MODEL_ATTRIBUTE_INTERVIEW, interviewService.getInterviewById(interviewId));
+    public String showFormUpdateInterview(@PathVariable("interviewId") Integer interviewId, Model model) {
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_CITY, cityService.getCities());
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_COMPANY, companyService.getCompanyList());
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_POSITION, positionService.getPositionList());
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_TECHNOLOGY, technologyService.getTechnologyList());
+        model.addAttribute(MODEL_ATTRIBUTE_INTERVIEW,  interviewService.getInterviewById(interviewId));
         return VIEW_INTERVIEW_UPDATE;
     }
 
@@ -135,27 +147,38 @@ public class InterviewResource {
     public String updateInterview(@PathVariable("interviewId") Integer interviewId,
                                   @Valid @ModelAttribute InterviewCommand interviewCommand,
                                   RedirectAttributes attributes,
-                                  BindingResult result) {
+                                  BindingResult result,Model model) {
         if (result.hasErrors()) {
             LOGGER.debug("Update interview form was submitted with binding errors. Rendering form view.");
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_CITY, cityService.getCities());
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_COMPANY, companyService.getCompanyList());
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_POSITION, positionService.getPositionList());
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_TECHNOLOGY, technologyService.getTechnologyList());
             return VIEW_INTERVIEW_UPDATE;
         }
-        InterviewEntity updatedInterviewEntity = interviewService.update(interviewCommand);
-        attributes.addAttribute(FLASH_MESSAGE_KEY_FEEDBACK, FEEDBACK_MESSAGE_TEXT_INTERVIEW_UPDATED);
-        attributes.addAttribute(MODEL_ATTRIBUTE_INTERVIEW,interviewCommand);
-        attributes.addAttribute(PARAMETER_INTERVIEW_ID, updatedInterviewEntity.getId());
+      /*  InterviewCommand updateInterviewCommand = interviewService.getInterviewById(interviewId);
+        updateInterviewCommand.setPosition(interviewCommand.getPosition());
+        updateInterviewCommand.setCity(interviewCommand.getCity());
+        updateInterviewCommand.setCompany(interviewCommand.getCompany());
+        updateInterviewCommand.setTechnology(interviewCommand.getTechnology());
+        updateInterviewCommand.setFeedback(interviewCommand.getFeedback());*/
 
-        return createRedirectViewPath(REQUEST_MAPPING_INTERVIEW_VIEW);
+        InterviewEntity updatedInterviewEntity = interviewService.update(interviewCommand);
+
+        attributes.addAttribute(PARAMETER_INTERVIEW_ID, updatedInterviewEntity.getId());
+        attributes.addAttribute(FLASH_MESSAGE_KEY_FEEDBACK, FEEDBACK_MESSAGE_TEXT_INTERVIEW_UPDATED);
+
+        return createRedirectViewPath(REQUEST_MAPPING_INTERVIEW_UPDATE);
     }
 
     @RequestMapping(value = "/{interviewId}/view", method = RequestMethod.GET)
-    public String  showViewInterviewForm(@PathVariable int interviewId , Model model) {
-         model.addAttribute(interviewService.getInterviewById(interviewId));
+    public String showFormInterviewForm(@PathVariable int interviewId, Model model) {
+        model.addAttribute(MODEL_ATTRIBUTE_INTERVIEW, interviewService.getInterviewById(interviewId));
         return VIEW_INTERVIEW_VIEW;
     }
 
     @RequestMapping(value = "/my", method = RequestMethod.GET)
-    public ModelAndView showInterviewList(@Valid @ModelAttribute PaginateCommand paginateCommand, BindingResult bindResult) {
+    public ModelAndView showFormInterviewListByUser(@Valid @ModelAttribute PaginateCommand paginateCommand, BindingResult bindResult) {
         UserCommand userCommand = userService.getUserByEmail(authenticationUtils.getUserDetails().getUsername());
         Long totalResults = interviewService.getInterviewsCountForUser(userCommand.getId());
         PagingFilter pagingFilter = new PagingFilter(0, RESULTS_ON_PAGE, totalResults.intValue());
@@ -174,6 +197,12 @@ public class InterviewResource {
         redirectViewPath.append("redirect:");
         redirectViewPath.append(requestMapping);
         return redirectViewPath.toString();
+    }
+
+    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="Interview entity not found")  // 409
+    @ExceptionHandler(EntityNotFoundException.class)
+    public void  entityNotFound(Exception exception) {
+               //TODO make a page error
     }
 
 }
