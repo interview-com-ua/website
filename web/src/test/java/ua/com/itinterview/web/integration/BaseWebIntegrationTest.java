@@ -18,18 +18,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ua.com.itinterview.dao.CityDao;
-import ua.com.itinterview.dao.CompanyDao;
-import ua.com.itinterview.dao.InterviewDao;
-import ua.com.itinterview.dao.PositionDao;
-import ua.com.itinterview.dao.TechnologyDao;
-import ua.com.itinterview.dao.UserDao;
-import ua.com.itinterview.entity.CityEntity;
-import ua.com.itinterview.entity.CompanyEntity;
-import ua.com.itinterview.entity.InterviewEntity;
-import ua.com.itinterview.entity.PositionEntity;
-import ua.com.itinterview.entity.TechnologyEntity;
-import ua.com.itinterview.entity.UserEntity;
+import ua.com.itinterview.dao.*;
+import ua.com.itinterview.entity.*;
 import ua.com.itinterview.web.security.AuthenticationUtils;
 
 import javax.servlet.http.Cookie;
@@ -87,7 +77,7 @@ public abstract class BaseWebIntegrationTest extends
     }
 
     protected MockHttpServletRequestBuilder registerUser(){
-        return registerUser(NAME, EMAIL_ANOTHER, PASSWORD, PASSWORD);
+        return registerUser(NAME, EMAIL, PASSWORD, PASSWORD);
     }
 
     protected MockHttpServletRequestBuilder registerUser(String name, String email, String password, String confirmPassword) {
