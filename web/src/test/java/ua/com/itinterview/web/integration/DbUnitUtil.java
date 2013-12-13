@@ -1,6 +1,6 @@
 package ua.com.itinterview.web.integration;
 
-import junit.framework.Assert;
+import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -45,7 +45,7 @@ public class DbUnitUtil{
             System.out.println("actualDataSet: "+Arrays.toString(actualDataSet.getTableNames()));
 
             //assertion error: entries for empty tables are not written to dataset
-            Assert.assertEquals(expectedDataSet.getTableNames(), actualDataSet.getTableNames());
+            Assertion.assertEquals(expectedDataSet, actualDataSet);
         } finally {
             if (jdbcConnection != null) {
                 jdbcConnection.close();
