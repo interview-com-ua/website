@@ -201,6 +201,11 @@
             <artifactId>dbunit</artifactId>
             <version>2.4.9</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.springtestdbunit</groupId>
+            <artifactId>spring-test-dbunit</artifactId>
+            <version>1.0.1</version>
+        </dependency>
     </dependencies>
 
     <properties>

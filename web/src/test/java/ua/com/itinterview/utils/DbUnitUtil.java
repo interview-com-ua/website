@@ -1,6 +1,5 @@
-package ua.com.itinterview.web.integration;
+package ua.com.itinterview.utils;
 
-import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -8,23 +7,24 @@ import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.FlatXmlWriter;
-import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-
+/**
+ * The class is utility class to work with DbUnit from java code.
+ * Look at the test for usage example.
+ */
 public class DbUnitUtil{
 
     private static final String DATA_SET_SRC_FOLDER = "src/test/resources/dataset";
     private static final String HSQLDB_DRIVER = "org.hsqldb.jdbcDriver";
     private static final String HSQLDB_CONN_STR = "jdbc:hsqldb:file:../db/it-interview;shutdown=true;sql.syntax_pgs=true";
 
-    @Test
+   /* @Test
     public void testSaveDataSet()throws Exception{
           Class driverClass = Class.forName(HSQLDB_DRIVER);
         Connection jdbcConnection = null;
@@ -51,7 +51,7 @@ public class DbUnitUtil{
                 jdbcConnection.close();
             }
         }
-    }
+    }*/
 
     public static IDataSet getDataSet(final Connection connection, final String... tableNames) throws SQLException, DatabaseUnitException {
         IDatabaseConnection dbuConnection = null;
