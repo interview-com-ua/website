@@ -1,6 +1,8 @@
 package ua.com.itinterview.web.resource;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
@@ -20,6 +22,11 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     private UserDao userDao;
 
     @Test
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-empty.xml")
+    @ExpectedDatabase(
+            value = "file:src/test/resources/dataset/UserResource/users-empty.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT
+    )
     public void testRegisterUserWithInvalidConfirmPasswordEmail()
             throws Exception {
         mvc.perform(
@@ -32,26 +39,7 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
-    public void testRegisterUser() throws Exception {
-        ResultActions requestActions = mvc.perform(registerUser(NAME, EMAIL, PASSWORD, PASSWORD));
-        String userId = String.valueOf(userDao.getUserByEmail(EMAIL).getId());
-        requestActions.andExpect(model().hasNoErrors())
-                .andExpect(redirectedUrl("/user/" + userId + "/view"))
-                .andExpect(status().isMovedTemporarily());
-
-    }
-
-    @Test
-    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
-    public void testRegisterUserWithEmailAlreadyExists() throws Exception {
-        mvc.perform(
-                registerUser(NAME, EMAIL, PASSWORD, PASSWORD))
-                .andExpect(model().hasErrors())
-                .andExpect(model().errorCount(1))
-                .andExpect(model().attributeHasFieldErrors("userCommand", "email"));
-    }
-
-    @Test
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-empty.xml")
     public void testMoveToRegisterIfAuthenticatedRequired() throws Exception {
         String[] authenticatedRequiredUrls = {"/user/0/view", "/user/0/edit"};
         for (String url : authenticatedRequiredUrls) {
@@ -62,7 +50,32 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
-    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-empty.xml")
+    @ExpectedDatabase(
+            value = "file:src/test/resources/dataset/UserResource/users-initial.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT
+    )
+    public void testRegisterUser() throws Exception {
+        ResultActions requestActions = mvc.perform(registerUser(NAME, EMAIL, PASSWORD, PASSWORD));
+        String userId = String.valueOf(userDao.getUserByEmail(EMAIL).getId());
+        requestActions.andExpect(model().hasNoErrors())
+                .andExpect(redirectedUrl("/user/" + userId + "/view"))
+                .andExpect(status().isMovedTemporarily());
+
+    }
+
+    @Test
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
+    public void testRegisterUserWithEmailAlreadyExists() throws Exception {
+        mvc.perform(
+                registerUser(NAME, EMAIL, PASSWORD, PASSWORD))
+                .andExpect(model().hasErrors())
+                .andExpect(model().errorCount(1))
+                .andExpect(model().attributeHasFieldErrors("userCommand", "email"));
+    }
+
+    @Test
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
     public void testRedirectAfterLogin() throws Exception {
         UserEntity user = userDao.getUserByEmail(EMAIL);
         String userProfileUrl = "/user/" + user.getId() + "/view";
@@ -72,7 +85,7 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
-    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
     public void testRedirectAfterLogout() throws Exception {
         ResultActions actions = mvc.perform(loginUser(EMAIL, PASSWORD));
         mvc.perform(logout(getHttpSession(actions)))
@@ -81,7 +94,7 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
-    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
     public void testReturnToTargetAfterSuccessLogin() throws Exception {
         UserEntity user = userDao.getUserByEmail(EMAIL);
         String userTargetUrl = "http://localhost/user/" + user.getId() + "/edit";
@@ -95,7 +108,7 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
-    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
     public void testEditProfileChangeOnlyName() throws Exception {
         UserEntity user = userDao.getUserByEmail(EMAIL);
         String userSaveProfileUrl = "/user/" + user.getId() + "/save";
@@ -114,7 +127,7 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
-    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
     public void testEditProfileChangeOnlyEmail() throws Exception {
         UserEntity user = userDao.getUserByEmail(EMAIL);
         String userSaveProfileUrl = "/user/" + user.getId() + "/save";
@@ -133,7 +146,7 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
-    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
     public void testEditProfileChangeOnlySex() throws Exception {
         UserEntity user = userDao.getUserByEmail(EMAIL);
         String userSaveProfileUrl = "/user/" + user.getId() + "/save";
@@ -152,7 +165,7 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
-    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
     public void testEditProfileChangeAll() throws Exception {
         UserEntity user = userDao.getUserByEmail(EMAIL);
         String userSaveProfileUrl = "/user/" + user.getId() + "/save";
@@ -171,7 +184,7 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
-    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
     public void testEditProfileInvalidEmail() throws Exception {
         UserEntity user = userDao.getUserByEmail(EMAIL);
         String userSaveProfileUrl = "/user/" + user.getId() + "/save";
@@ -192,7 +205,7 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
-    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
     public void testEditProfileAllWrong() throws Exception {
         UserEntity user = userDao.getUserByEmail(EMAIL);
         String userSaveProfileUrl = "/user/" + user.getId() + "/save";

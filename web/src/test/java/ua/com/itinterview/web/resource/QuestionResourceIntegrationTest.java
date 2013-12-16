@@ -1,6 +1,8 @@
 package ua.com.itinterview.web.resource;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.ResultActions;
@@ -11,10 +13,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
+@DatabaseSetup("file:src/test/resources/dataset/QuestionResource/users-initial.xml")
 public class QuestionResourceIntegrationTest extends BaseWebIntegrationTest {
 
     @Test
-    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
+    @ExpectedDatabase(
+            value = "file:src/test/resources/dataset/QuestionResource/users-initial.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT
+    )
     public void testGetQuestions() throws Exception {
         ResultActions actions = null;
         actions = mvc.perform(loginUser()).andDo(print());
