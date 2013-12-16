@@ -18,7 +18,7 @@ public class QuestionResourceIntegrationTest extends BaseWebIntegrationTest {
     public void testGetQuestions() throws Exception {
         ResultActions actions = null;
         actions = mvc.perform(loginUser()).andDo(print());
-        MockHttpSession session = (MockHttpSession)actions.andReturn().getRequest().getSession();
+        MockHttpSession session = getHttpSession(actions);
         actions = mvc.perform(get("/question/my").session(session));
         actions.andDo(print())
             .andExpect(status().isOk())

@@ -1,8 +1,8 @@
 package ua.com.itinterview.web.resource;
 
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.ResultActions;
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
@@ -12,10 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
 
@@ -45,8 +42,8 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
+    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
     public void testRegisterUserWithEmailAlreadyExists() throws Exception {
-        createUser(NAME, EMAIL, PASSWORD);
         mvc.perform(
                 registerUser(NAME, EMAIL, PASSWORD, PASSWORD))
                 .andExpect(model().hasErrors())
@@ -65,8 +62,9 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
+    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
     public void testRedirectAfterLogin() throws Exception {
-        UserEntity user = createUser(NAME, EMAIL, PASSWORD);
+        UserEntity user = userDao.getUserByEmail(EMAIL);
         String userProfileUrl = "/user/" + user.getId() + "/view";
         mvc.perform(loginUser(EMAIL, PASSWORD))
                 .andExpect(redirectedUrl(userProfileUrl))
@@ -74,8 +72,8 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
+    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
     public void testRedirectAfterLogout() throws Exception {
-        createUser(NAME, EMAIL, PASSWORD);
         ResultActions actions = mvc.perform(loginUser(EMAIL, PASSWORD));
         mvc.perform(logout(getHttpSession(actions)))
                 .andExpect(redirectedUrl("/register"))
@@ -83,8 +81,9 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
+    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
     public void testReturnToTargetAfterSuccessLogin() throws Exception {
-        UserEntity user = createUser(NAME, EMAIL, PASSWORD);
+        UserEntity user = userDao.getUserByEmail(EMAIL);
         String userTargetUrl = "http://localhost/user/" + user.getId() + "/edit";
 
         ResultActions actions = mvc.perform(get(userTargetUrl))
@@ -96,8 +95,9 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
+    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
     public void testEditProfileChangeOnlyName() throws Exception {
-        UserEntity user = createUser(NAME, EMAIL, PASSWORD);
+        UserEntity user = userDao.getUserByEmail(EMAIL);
         String userSaveProfileUrl = "/user/" + user.getId() + "/save";
         String userProfileUrl = "/user/" + user.getId() + "/view";
         ResultActions actions = mvc.perform(loginUser(EMAIL, PASSWORD));
@@ -114,8 +114,9 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
+    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
     public void testEditProfileChangeOnlyEmail() throws Exception {
-        UserEntity user = createUser(NAME, EMAIL, PASSWORD);
+        UserEntity user = userDao.getUserByEmail(EMAIL);
         String userSaveProfileUrl = "/user/" + user.getId() + "/save";
         String userProfileUrl = "/user/" + user.getId() + "/view";
         ResultActions actions = mvc.perform(loginUser(EMAIL, PASSWORD));
@@ -132,8 +133,9 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
+    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
     public void testEditProfileChangeOnlySex() throws Exception {
-        UserEntity user = createUser(NAME, EMAIL, PASSWORD);
+        UserEntity user = userDao.getUserByEmail(EMAIL);
         String userSaveProfileUrl = "/user/" + user.getId() + "/save";
         String userProfileUrl = "/user/" + user.getId() + "/view";
         ResultActions actions = mvc.perform(loginUser(EMAIL, PASSWORD));
@@ -150,8 +152,9 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
+    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
     public void testEditProfileChangeAll() throws Exception {
-        UserEntity user = createUser(NAME, EMAIL, PASSWORD);
+        UserEntity user = userDao.getUserByEmail(EMAIL);
         String userSaveProfileUrl = "/user/" + user.getId() + "/save";
         String userProfileUrl = "/user/" + user.getId() + "/view";
         ResultActions actions = mvc.perform(loginUser(EMAIL, PASSWORD));
@@ -168,8 +171,9 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
+    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
     public void testEditProfileInvalidEmail() throws Exception {
-        UserEntity user = createUser(NAME, EMAIL, PASSWORD);
+        UserEntity user = userDao.getUserByEmail(EMAIL);
         String userSaveProfileUrl = "/user/" + user.getId() + "/save";
         ResultActions actions = mvc.perform(loginUser(EMAIL, PASSWORD));
 
@@ -188,8 +192,9 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     }
 
     @Test
+    @DatabaseSetup("file:./src/test/resources/dataset/initial-users.xml")
     public void testEditProfileAllWrong() throws Exception {
-        UserEntity user = createUser(NAME, EMAIL, PASSWORD);
+        UserEntity user = userDao.getUserByEmail(EMAIL);
         String userSaveProfileUrl = "/user/" + user.getId() + "/save";
         ResultActions actions = mvc.perform(loginUser(EMAIL, PASSWORD));
 
@@ -205,9 +210,5 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
         UserEntity modifiedUser = userDao.getUserByEmail(EMAIL);
         assertEquals(NAME, modifiedUser.getName());
         assertEquals(EMAIL, modifiedUser.getEmail());
-    }
-
-    private MockHttpSession getHttpSession(ResultActions actions) {
-        return (MockHttpSession) actions.andReturn().getRequest().getSession();
     }
 }

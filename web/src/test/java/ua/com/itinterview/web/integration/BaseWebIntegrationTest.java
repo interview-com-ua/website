@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.FilterChainProxy;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
@@ -22,12 +21,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ua.com.itinterview.dao.*;
-import ua.com.itinterview.entity.*;
-import ua.com.itinterview.web.security.AuthenticationUtils;
+import ua.com.itinterview.entity.UserEntity;
 
 import javax.servlet.http.Cookie;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,27 +47,6 @@ public abstract class BaseWebIntegrationTest extends
 
     @Autowired
     private FilterChainProxy springSecurityFilterChain;
-
-    @Autowired
-    private InterviewDao interviewDao;
-
-    @Autowired
-    private UserDao userDao;
-
-    @Autowired
-    private CityDao cityDao;
-
-    @Autowired
-    private CompanyDao companyDao;
-
-    @Autowired
-    private PositionDao positionDao;
-
-    @Autowired
-    private TechnologyDao technologyDao;
-
-    @Autowired
-    private AuthenticationUtils authenticationUtils;
 
     @Before
     public void setUp() {
@@ -112,65 +87,20 @@ public abstract class BaseWebIntegrationTest extends
         return (post("/j_spring_security_logout").session(session));
     }
 
-    @Rollback
-    protected UserEntity createUser() throws Exception {
-        return createUser(NAME, EMAIL, PASSWORD);
+    protected UserEntity createTestUser() throws Exception {
+        return createTestUser(NAME, EMAIL, PASSWORD);
     }
 
-    @Rollback
-    protected UserEntity createUser(String name, String email, String password) throws Exception {
-        UserEntity userToSave = new UserEntity();
-        userToSave.setName(name);
-        userToSave.setEmail(email);
-        userToSave.setPassword(authenticationUtils.getMD5Hash(password));
-        return userDao.save(userToSave);
+    protected UserEntity createTestUser(String name, String email, String password) throws Exception {
+        UserEntity user = new UserEntity();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
+        return user;
     }
 
-    @Rollback
-    protected InterviewEntity createInterview() throws Exception {
-        InterviewEntity interview = new InterviewEntity();
-        interview.setUser(createUser());
-        interview.setCreated(new Date());
-        interview.setCity(createCity());
-        interview.setCompany(createCompany());
-        interview.setFeedback(USER_FEEDBACK);
-        interview.setPosition(createPosition());
-        interview.setTechnology(createTechnology());
-        return interviewDao.save(interview);
-    }
-
-    @Rollback
-    protected PositionEntity createPosition(){
-        PositionEntity position = new PositionEntity();
-        position.setPositionName(POSITION_NAME);
-        position.setPositionGroup(POSITION_GROUP);
-        return positionDao.save(position);
-    }
-
-    @Rollback
-    protected TechnologyEntity createTechnology(){
-        TechnologyEntity technology = new TechnologyEntity();
-        technology.setTechnologyName(TECHNOLOGY_NAME);
-        return technologyDao.save(technology);
-    }
-
-    @Rollback
-    protected CityEntity createCity(){
-        CityEntity city = new CityEntity();
-        city.setCityName(CITY_NAME);
-        return cityDao.save(city);
-    }
-
-    @Rollback
-    protected CompanyEntity createCompany(){
-        CompanyEntity company = new CompanyEntity();
-        company.setCompanyName(COMPANY_NAME);
-        company.setCompanyAddress(COMPANY_ADDRESS);
-        company.setCompanyPhone(COMPANY_PHONE_NUMBER);
-        company.setCompanyLogoUrl(COMPANY_LOGO);
-        company.setCompanyWebPage(COMPANY_WEB_PAGE);
-        company.setType(COMPANY_TYPE);
-        return companyDao.save(company);
+    protected MockHttpSession getHttpSession(ResultActions actions) {
+        return (MockHttpSession) actions.andReturn().getRequest().getSession();
     }
 
     public static Cookie[] initCookies() {

@@ -5,6 +5,6 @@ import org.junit.Ignore;
 import ua.com.itinterview.web.integration.BaseWebIntegrationTest;
 
 @Ignore
-public class SpringSecurityTest extends BaseWebIntegrationTest {
+public class SpringSecurityUnitTest extends BaseWebIntegrationTest {
 
 }

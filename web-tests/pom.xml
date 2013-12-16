@@ -121,11 +121,13 @@
                 <version>2.11</version>
                 <configuration>
                     <includes>
-                        <include>**/*Test.java</include>
-                        <include>**/Test*.java</include>
-                        <include>**/When*.java</include>
                         <include>**/*TestSuite.java</include>
                     </includes>
+                    <excludes>
+                        <exclude>**/*Test.java</exclude>
+                        <exclude>**/Test*.java</exclude>
+                        <exclude>**/When*.java</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
