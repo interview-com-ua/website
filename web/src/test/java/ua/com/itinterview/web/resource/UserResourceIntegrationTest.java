@@ -52,7 +52,7 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
     @Test
     @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-empty.xml")
     @ExpectedDatabase(
-            value = "file:src/test/resources/dataset/UserResource/users-initial.xml",
+            value = "file:src/test/resources/dataset/UserResource/users-testRegisterUser.xml",
             assertionMode = DatabaseAssertionMode.NON_STRICT
     )
     public void testRegisterUser() throws Exception {
@@ -61,7 +61,6 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest{
         requestActions.andExpect(model().hasNoErrors())
                 .andExpect(redirectedUrl("/user/" + userId + "/view"))
                 .andExpect(status().isMovedTemporarily());
-
     }
 
     @Test
