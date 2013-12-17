@@ -145,9 +145,10 @@ public class InterviewResource {
 
     @RequestMapping(value = "/{interviewId}/edit", method = RequestMethod.POST)
     public String updateInterview(@PathVariable("interviewId") Integer interviewId,
-                                  @Valid @ModelAttribute InterviewCommand interviewCommand,
+                                  @Valid @ModelAttribute InterviewCommand formInterviewCommand,
                                   RedirectAttributes attributes,
                                   BindingResult result,Model model) {
+
         if (result.hasErrors()) {
             LOGGER.debug("Update interview form was submitted with binding errors. Rendering form view.");
             model.addAttribute(MODEL_ATTRIBUTE_LIST_CITY, cityService.getCities());
@@ -156,17 +157,18 @@ public class InterviewResource {
             model.addAttribute(MODEL_ATTRIBUTE_LIST_TECHNOLOGY, technologyService.getTechnologyList());
             return VIEW_INTERVIEW_UPDATE;
         }
-      /*  InterviewCommand updateInterviewCommand = interviewService.getInterviewById(interviewId);
-        updateInterviewCommand.setPosition(interviewCommand.getPosition());
-        updateInterviewCommand.setCity(interviewCommand.getCity());
-        updateInterviewCommand.setCompany(interviewCommand.getCompany());
-        updateInterviewCommand.setTechnology(interviewCommand.getTechnology());
-        updateInterviewCommand.setFeedback(interviewCommand.getFeedback());*/
 
-        InterviewEntity updatedInterviewEntity = interviewService.update(interviewCommand);
+        InterviewCommand updateInterviewCommand = interviewService.getInterviewById(interviewId);
+        updateInterviewCommand.setPosition(formInterviewCommand.getPosition());
+        updateInterviewCommand.setCity(formInterviewCommand.getCity());
+        updateInterviewCommand.setCompany(formInterviewCommand.getCompany());
+        updateInterviewCommand.setTechnology(formInterviewCommand.getTechnology());
+        updateInterviewCommand.setFeedback(formInterviewCommand.getFeedback());
+
+        InterviewEntity updatedInterviewEntity = interviewService.update(updateInterviewCommand);
 
         attributes.addAttribute(PARAMETER_INTERVIEW_ID, updatedInterviewEntity.getId());
-        attributes.addAttribute(FLASH_MESSAGE_KEY_FEEDBACK, FEEDBACK_MESSAGE_TEXT_INTERVIEW_UPDATED);
+        attributes.addFlashAttribute(FLASH_MESSAGE_KEY_FEEDBACK, FEEDBACK_MESSAGE_TEXT_INTERVIEW_UPDATED);
 
         return createRedirectViewPath(REQUEST_MAPPING_INTERVIEW_UPDATE);
     }

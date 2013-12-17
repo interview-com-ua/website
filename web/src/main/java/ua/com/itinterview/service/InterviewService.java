@@ -68,7 +68,8 @@ public class InterviewService {
         return new InterviewCommand(interviewEntityDao.getInterviewById(id));
     }
 
-    public InterviewEntity update(InterviewCommand interviewCommand) {
-        return interviewEntityDao.save(new InterviewEntity(interviewCommand));
+    public InterviewEntity update(InterviewCommand inputInterview) {
+        InterviewEntity interviewEntity = new InterviewEntity(inputInterview);
+        return interviewEntityDao.save(interviewEntity);
     }
 }
