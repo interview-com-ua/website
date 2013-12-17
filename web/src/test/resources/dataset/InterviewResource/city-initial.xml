@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    < CITY ID="1" CITYNAME="CITY1"/>
+    < CITY ID="2" CITYNAME="CITY2"/>
+    < CITY ID="3" CITYNAME="CITY3"/>
+    < CITY ID="4" CITYNAME="CITY4"/>
+    < CITY ID="5" CITYNAME="CITY5"/>
+    < CITY ID="6" CITYNAME="CITY6"/>
+    < CITY ID="7" CITYNAME="CITY7"/>
+    < CITY ID="8" CITYNAME="CITY8"/>
+    < CITY ID="9" CITYNAME="CITY9"/>
+</dataset>

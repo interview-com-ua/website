@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <POSITIONS ID="1" POSITIONGROUP="Development" POSITIONNAME="Junior Software Engineer"/>
+    <POSITIONS ID="2" POSITIONGROUP="  Development" POSITIONNAME="Software Engineer"/>
+    <POSITIONS ID="3" POSITIONGROUP="Development" POSITIONNAME="Senior Software Engineer"/>
+    <POSITIONS ID="4" POSITIONGROUP="Development" POSITIONNAME="System Architec" />
+    <POSITIONS ID="5" POSITIONGROUP="Development" POSITIONNAME="Technical Lead"/>
+    <POSITIONS ID="6" POSITIONGROUP="Management" POSITIONNAME="Team Lead"/>
+    <POSITIONS ID="7" POSITIONGROUP="Management" POSITIONNAME="Project Manager" />
+    <POSITIONS ID="8" POSITIONGROUP="Management" POSITIONNAME="Senior Project Manager / Program Manager" />
+    <POSITIONS ID="9" POSITIONGROUP="Management" POSITIONNAME="Director of Engineering / Program Director" />
+    <POSITIONS ID="10" POSITIONGROUP="QA" POSITIONNAME="Junior QA Engineer"/>;
+    <POSITIONS ID="11" POSITIONGROUP="QA" POSITIONNAME="QA Engineer"/>
+    <POSITIONS ID="12" POSITIONGROUP="QA" POSITIONNAME="Senior QA Engineer"/>
+    <POSITIONS ID="13" POSITIONGROUP="QA" POSITIONNAME="QA Tech Lead"/>
+    <POSITIONS ID="14" POSITIONGROUP="QA" POSITIONNAME="DBA / Администратор баз данных"/>
+    <POSITIONS ID="15" POSITIONGROUP="QA" POSITIONNAME="Бизнес-аналитик"/>
+    <POSITIONS ID="16" POSITIONGROUP="QA" POSITIONNAME="Верстальщик" />
+    <POSITIONS ID="17" POSITIONGROUP="QA" POSITIONNAME="Гейм-дизайнер"/>
+    <POSITIONS ID="18" POSITIONGROUP="QA" POSITIONNAME="Дизайнер"/>
+    <POSITIONS ID="19" POSITIONGROUP="QA" POSITIONNAME="Системный администратор"/>
+    <POSITIONS ID="20" POSITIONGROUP="QA" POSITIONNAME="Технический писатель"/>
+    <POSITIONS ID="21" POSITIONGROUP="QA" POSITIONNAME="Support"/>
+    <POSITIONS ID="22" POSITIONGROUP="QA" POSITIONNAME="HR" />;
+
+</dataset>
