@@ -1,4 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE dataset SYSTEM "src/test/resources/dataset/dtd-20131217.dtd">
 <dataset>
   <USERS ID="10" NAME="Name" PASSWORD="5f4dcc3b5aa765d61d8327deb882cf99" EMAIL="email@mail.com"/>
 </dataset>

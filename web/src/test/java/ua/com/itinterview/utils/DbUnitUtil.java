@@ -5,6 +5,7 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatDtdWriter;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.FlatXmlWriter;
 
@@ -20,11 +21,12 @@ import java.util.Arrays;
  */
 public class DbUnitUtil{
 
-    private static final String DATA_SET_SRC_FOLDER = "src/test/resources/dataset";
+    private static final String DATASET_SRC_FOLDER = "src/test/resources/dataset";
     private static final String HSQLDB_DRIVER = "org.hsqldb.jdbcDriver";
     private static final String HSQLDB_CONN_STR = "jdbc:hsqldb:file:../db/it-interview;shutdown=true;sql.syntax_pgs=true";
 
-   /* @Test
+    /*
+    @Test
     public void testSaveDataSet()throws Exception{
           Class driverClass = Class.forName(HSQLDB_DRIVER);
         Connection jdbcConnection = null;
@@ -34,10 +36,11 @@ public class DbUnitUtil{
             String fileName = "expected.xml";
             //create IDataSet and save it
             IDataSet fullDataSet = getDataSet(jdbcConnection);
-            saveDataSet(fullDataSet, DATA_SET_SRC_FOLDER, fileName);
+            saveDataSet(fullDataSet, DATASET_SRC_FOLDER, fileName);
+            saveDtd(fullDataSet, DATASET_SRC_FOLDER,"dtd-20131217.dtd");
 
             //load IDataSet from file
-            IDataSet expectedDataSet = loadDataSet(DATA_SET_SRC_FOLDER, fileName);
+            IDataSet expectedDataSet = loadDataSet(DATASET_SRC_FOLDER, fileName);
             System.out.println("expectedDataSet: "+Arrays.toString(expectedDataSet.getTableNames()));
 
             //create actual IDataSet
@@ -51,7 +54,8 @@ public class DbUnitUtil{
                 jdbcConnection.close();
             }
         }
-    }*/
+    }
+    */
 
     public static IDataSet getDataSet(final Connection connection, final String... tableNames) throws SQLException, DatabaseUnitException {
         IDatabaseConnection dbuConnection = null;
@@ -122,5 +126,28 @@ public class DbUnitUtil{
     public static void saveDataSet(final IDataSet dataSet, final String path, final String fileName) throws DatabaseUnitException {
         File file = new File(path, fileName);
         saveDataSet(dataSet, file);
+    }
+
+    public static void saveDtd(final IDataSet dataSet, final String path, final String fileName) throws DatabaseUnitException {
+        File file = new File(path,fileName);
+        saveDtd(dataSet, file);
+    }
+
+    private static void saveDtd(IDataSet dataSet, File file) throws DatabaseUnitException {
+        try {
+            FlatDtdWriter writer = new FlatDtdWriter(new FileWriter(file));
+            writer.setContentModel(FlatDtdWriter.CHOICE);
+            writer.write(dataSet);
+        } catch (IOException e) {
+            StringBuilder message = new StringBuilder();
+            message.append(e.getClass().getName() + " occurred on write DTD to file ")
+                    .append(file.getAbsoluteFile().getName());
+            throw new DatabaseUnitException(message.toString(), e);
+        } catch (DataSetException e) {
+            StringBuilder message = new StringBuilder();
+            message.append(e.getClass().getName() + " occurred on write DTD to file ")
+                    .append(file.getAbsoluteFile().getName());
+            throw new DatabaseUnitException(message.toString(), e);
+        }
     }
 }
