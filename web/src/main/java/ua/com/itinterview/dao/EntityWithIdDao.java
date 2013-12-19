@@ -37,7 +37,11 @@ public class EntityWithIdDao<T extends EntityWithId> {
     public T save(T entity) {
 	return (T) sessionFactory.getCurrentSession().merge(entity);
     }
-
+    @Transactional
+    @SuppressWarnings("unchecked")
+    public void update (T entity){
+        sessionFactory.getCurrentSession().saveOrUpdate(entity);
+    }
     @Transactional
     @SuppressWarnings("unchecked")
     public T getOneResultByParameter(String fieldName, Object parameter) {

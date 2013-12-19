@@ -1,8 +1,7 @@
 package ua.com.itinterview.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import ua.com.itinterview.dao.InterviewDao;
-import ua.com.itinterview.dao.UserDao;
+import ua.com.itinterview.dao.*;
 import ua.com.itinterview.dao.paging.PagingFilter;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.UserEntity;
@@ -15,13 +14,30 @@ import java.util.List;
 public class InterviewService {
     @Autowired
     InterviewDao interviewEntityDao;
-
     @Autowired
     UserDao userDao;
+    @Autowired
+    CityDao cityDao;
+    @Autowired
+    CompanyDao companyDao;
+    @Autowired
+    PositionDao positionDao;
+    @Autowired
+    TechnologyDao technologyDao;
+
 
     public InterviewEntity addInterview(InterviewCommand inputInterview) {
-        InterviewEntity interviewEntity = new InterviewEntity(inputInterview);
-        return interviewEntityDao.save(interviewEntity);
+
+        InterviewEntity interviewEntity = new InterviewEntity();
+        interviewEntity.setUser(userDao.getEntityById(inputInterview.getUser().getId()));
+        interviewEntity.setCompany(companyDao.getEntityById(inputInterview.getCompany().getId()));
+        interviewEntity.setPosition(positionDao.getEntityById(inputInterview.getPosition().getId()));
+        interviewEntity.setCity(cityDao.getEntityById(inputInterview.getCity().getId()));
+        interviewEntity.setTechnology(technologyDao.getEntityById(inputInterview.getTechnology().getId()));
+        interviewEntity.setFeedback(inputInterview.getFeedback());
+        interviewEntityDao.update(interviewEntity);
+
+        return  interviewEntity;
     }
 
     public List<InterviewCommand> getInterviewList() {
@@ -69,7 +85,19 @@ public class InterviewService {
     }
 
     public InterviewEntity update(InterviewCommand inputInterview) {
-        InterviewEntity interviewEntity = new InterviewEntity(inputInterview);
-        return interviewEntityDao.save(interviewEntity);
+        InterviewEntity interviewEntity = interviewEntityDao.getEntityById(inputInterview.getId());
+        interviewEntity.setId(inputInterview.getId());
+        interviewEntity.setUser(userDao.getEntityById(inputInterview.getUser().getId()));
+        interviewEntity.setCompany(companyDao.getEntityById(inputInterview.getCompany().getId()));
+        interviewEntity.setPosition(positionDao.getEntityById(inputInterview.getPosition().getId()));
+        interviewEntity.setCity(cityDao.getEntityById(inputInterview.getCity().getId()));
+
+        interviewEntity.setTechnology(technologyDao.getEntityById(inputInterview.getTechnology().getId()));
+        interviewEntity.setFeedback(inputInterview.getFeedback());
+
+        interviewEntityDao.update(interviewEntity);
+        System.out.print(interviewEntity.getFeedback());
+        return   interviewEntity;
     }
+
 }

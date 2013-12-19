@@ -40,7 +40,7 @@ public class InterviewResource {
     protected static final String FLASH_MESSAGE_TEXT_INTERVIEW_ADDED = "OK added";
     protected static final String FLASH_MESSAGE_TEXT_INTERVIEW_View = "Interview not found";
 
-    protected static final String FEEDBACK_MESSAGE_TEXT_INTERVIEW_UPDATED = " OK update";
+    protected static final String FEEDBACK_MESSAGE_TEXT_INTERVIEW_UPDATED = "OK update";
 
     protected static final String REQUEST_MAPPING_INTERVIEW_LIST = "/my";
     protected static final String REQUEST_MAPPING_INTERVIEW_VIEW = "/{interviewId}/view";
@@ -170,7 +170,7 @@ public class InterviewResource {
         attributes.addAttribute(PARAMETER_INTERVIEW_ID, updatedInterviewEntity.getId());
         attributes.addFlashAttribute(FLASH_MESSAGE_KEY_FEEDBACK, FEEDBACK_MESSAGE_TEXT_INTERVIEW_UPDATED);
 
-        return createRedirectViewPath(REQUEST_MAPPING_INTERVIEW_UPDATE);
+        return createRedirectViewPath(REQUEST_MAPPING_INTERVIEW_VIEW);
     }
 
     @RequestMapping(value = "/{interviewId}/view", method = RequestMethod.GET)

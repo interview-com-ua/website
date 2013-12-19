@@ -11,7 +11,7 @@ import java.util.Date;
 @SequenceGenerator(name = "sequence", sequenceName = "interview_id", allocationSize = 1)
 public class InterviewEntity extends EntityWithId {
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "userId")
     private UserEntity user;
     @ManyToOne

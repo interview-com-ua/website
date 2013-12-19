@@ -1,6 +1,8 @@
 package ua.com.itinterview.web.resource;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.MutablePropertyValues;
@@ -106,9 +108,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
 
     @Test
     public void testBindingFormFieldsAndNestedObjectsForInterviewCommand() throws Exception {
-
         InterviewCommand expectedInterviewCommand = createNewInterviewCommand();
-
         InterviewCommand actualInterviewCommand = new InterviewCommand();
 
         WebDataBinder binder = new ServletRequestDataBinder(actualInterviewCommand, "interviewCommand");
@@ -137,6 +137,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     }
 
     @Test
+
     public void testAddIncorrectFieldsIntoFormCreateInterviewShouldBeRenderFormViewAndReturnValidationErrorsForFieldInterviewCommand() throws Exception {
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
@@ -159,11 +160,12 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
                 .andExpect(model().attributeExists("listCity"))
                 .andExpect(model().attributeExists("listPosition"))
                 .andDo(print());
-
     }
-
-
   @Test
+  @ExpectedDatabase(
+          value = "file:src/test/resources/dataset/InterviewResource/interview-added.xml",
+          assertionMode = DatabaseAssertionMode.NON_STRICT
+  )
     public void testCreateInterviewShouldBeSaveInterviewAndRenderInterviewView() throws Exception {
          //TODO how get value id interview
         InterviewCommand expectedInterviewCommand = createNewInterviewCommand();
@@ -175,22 +177,22 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
                 .param("technology", String.valueOf(expectedInterviewCommand.getTechnology().getId()))
                 .param("position", String.valueOf(expectedInterviewCommand.getPosition().getId()))
                 .param("feedback", USER_FEEDBACK));
-
         postRequest.andDo(print())
                 .andExpect(status().isMovedTemporarily())
                 .andExpect(view().name("redirect:/{interviewId}/view"))
                 .andExpect(model().attributeExists("interviewId"))
                 .andExpect(flash().attribute("feedbackMessage", "OK added"))
                 .andExpect(model().hasNoErrors());
-
     }
 
 
    @Test
+   @ExpectedDatabase(
+           value = "file:src/test/resources/dataset/InterviewResource/interview-update.xml",
+           assertionMode = DatabaseAssertionMode.NON_STRICT
+   )
     public void testUpdateInterviewShouldBeSaveInterviewAndRenderInterviewView() throws Exception {
-
-       InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(1);
-
+        InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(1);
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
         ResultActions postRequest = mvc.perform(post("/interview/"+expectedInterviewCommand.getId()+"/edit").session(session)
@@ -202,8 +204,8 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
 
         postRequest.andDo(print())
                 .andExpect(status().isMovedTemporarily())
-                .andExpect(view().name("redirect:/{interviewId}/edit"))
-                .andExpect(model().attribute("interviewId", is(expectedInterviewCommand.getId())))
+                .andExpect(view().name("redirect:/{interviewId}/view"))
+                .andExpect(model().attribute("interviewId", is(String.valueOf(expectedInterviewCommand.getId()))))
                 .andExpect(flash().attribute("feedbackMessage", "OK update"))
                 .andExpect(model().hasNoErrors());
 
@@ -211,7 +213,6 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
 
    @Test
     public void testShowFormViewInterviewWhenInterviewFoundShouldBeAddInterviewCommandToModelRenderInterviewView() throws Exception {
-
         InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(1);
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
@@ -233,9 +234,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
 
     @Test
     public void testShowFormEditInterviewWhenInterviewFoundShouldBeAddInterviewCommandIntoModelAndRenderInterviewEdit() throws Exception {
-
         InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(1);
-
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
         mvc.perform(get("/interview/{interviewId}/edit", expectedInterviewCommand.getId()).session(session))
