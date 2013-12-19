@@ -65,7 +65,7 @@ public class InterviewService {
     }
 
     public InterviewCommand getInterviewById(int id) {
-        return new InterviewCommand(interviewEntityDao.getInterviewById(id));
+        return new InterviewCommand(interviewEntityDao.getEntityById(id));
     }
 
     public InterviewEntity update(InterviewCommand inputInterview) {

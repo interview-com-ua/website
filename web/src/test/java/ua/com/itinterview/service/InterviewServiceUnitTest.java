@@ -144,7 +144,7 @@ public class InterviewServiceUnitTest {
     public void testGetInterviewById(){
         InterviewEntity testInterviewEntity= createInterviewEntity();
         InterviewCommand expectedInterviewCommand = new InterviewCommand(testInterviewEntity);
-        expect(interviewDaoMock.getInterviewById(testInterviewEntity.getId())).andReturn(testInterviewEntity);
+        expect(interviewDaoMock.getEntityById(testInterviewEntity.getId())).andReturn(testInterviewEntity);
         replayAllMocks();
         InterviewCommand actualInterviewCommand = interviewService.getInterviewById(testInterviewEntity.getId());
         assertEquals(expectedInterviewCommand,actualInterviewCommand);

@@ -1,16 +1,15 @@
 package ua.com.itinterview.dao;
 
-import static org.hibernate.criterion.Restrictions.eq;
-
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
-
 import ua.com.itinterview.dao.paging.PagingFilter;
 import ua.com.itinterview.entity.InterviewEntity;
 import ua.com.itinterview.entity.UserEntity;
+
+import java.util.List;
+
+import static org.hibernate.criterion.Restrictions.eq;
 
 public class InterviewDao extends EntityWithIdDao<InterviewEntity> {
 
@@ -30,11 +29,6 @@ public class InterviewDao extends EntityWithIdDao<InterviewEntity> {
     @Transactional
     public List<InterviewEntity> getInterviewsByUser(UserEntity user) {
         return getInterviewsByUser(user, null);
-    }
-
-    @Transactional
-    public InterviewEntity getInterviewById(Integer interviewId) {
-        return getEntityById(interviewId);
     }
 
     @Transactional
