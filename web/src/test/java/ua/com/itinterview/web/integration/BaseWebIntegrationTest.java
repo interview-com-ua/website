@@ -1,5 +1,6 @@
 package ua.com.itinterview.web.integration;
 
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
@@ -35,8 +36,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
+        DbUnitTestExecutionListener.class,
         TransactionDbUnitTestExecutionListener.class
-      })
+       })
 public abstract class BaseWebIntegrationTest extends AbstractJUnit4SpringContextTests implements BaseWebIntegrationTestConstants{
 
     protected MockMvc mvc;

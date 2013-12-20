@@ -144,10 +144,11 @@ public class InterviewResource {
     }
 
     @RequestMapping(value = "/{interviewId}/edit", method = RequestMethod.POST)
-    public String updateInterview(@PathVariable("interviewId") Integer interviewId,
-                                  @Valid @ModelAttribute InterviewCommand formInterviewCommand,
+    public String updateInterview( @ModelAttribute("interviewCommand") InterviewCommand formInterviewCommand,
+                                  @PathVariable("interviewId") Integer interviewId,
                                   RedirectAttributes attributes,
-                                  BindingResult result,Model model) {
+                                  BindingResult result,
+                                  Model model) {
 
         if (result.hasErrors()) {
             LOGGER.debug("Update interview form was submitted with binding errors. Rendering form view.");
@@ -157,16 +158,9 @@ public class InterviewResource {
             model.addAttribute(MODEL_ATTRIBUTE_LIST_TECHNOLOGY, technologyService.getTechnologyList());
             return VIEW_INTERVIEW_UPDATE;
         }
-
-        InterviewCommand updateInterviewCommand = interviewService.getInterviewById(interviewId);
-        updateInterviewCommand.setPosition(formInterviewCommand.getPosition());
-        updateInterviewCommand.setCity(formInterviewCommand.getCity());
-        updateInterviewCommand.setCompany(formInterviewCommand.getCompany());
-        updateInterviewCommand.setTechnology(formInterviewCommand.getTechnology());
-        updateInterviewCommand.setFeedback(formInterviewCommand.getFeedback());
-
-        InterviewEntity updatedInterviewEntity = interviewService.update(updateInterviewCommand);
-
+        formInterviewCommand.setId(interviewId);
+        formInterviewCommand.setUser(userService.getUserByEmail(authenticationUtils.getUserDetails().getUsername()));
+        InterviewEntity updatedInterviewEntity = interviewService.update(formInterviewCommand);
         attributes.addAttribute(PARAMETER_INTERVIEW_ID, updatedInterviewEntity.getId());
         attributes.addFlashAttribute(FLASH_MESSAGE_KEY_FEEDBACK, FEEDBACK_MESSAGE_TEXT_INTERVIEW_UPDATED);
 

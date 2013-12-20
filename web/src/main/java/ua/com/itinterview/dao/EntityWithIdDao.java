@@ -39,11 +39,6 @@ public class EntityWithIdDao<T extends EntityWithId> {
     }
     @Transactional
     @SuppressWarnings("unchecked")
-    public void update (T entity){
-        sessionFactory.getCurrentSession().saveOrUpdate(entity);
-    }
-    @Transactional
-    @SuppressWarnings("unchecked")
     public T getOneResultByParameter(String fieldName, Object parameter) {
 	Session session = sessionFactory.getCurrentSession();
 	Criteria criteria = session.createCriteria(clazz);

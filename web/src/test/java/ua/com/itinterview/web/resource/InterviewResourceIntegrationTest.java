@@ -34,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/interview-initial.xml")
 public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
-
     @Autowired
     private UserService userService;
     @Autowired
@@ -48,12 +47,19 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     @Autowired
     private TechnologyService technologyService;
 
-    private final String INVALID_ID = "1000";
+    private final String INVALID_DB_ID = "1000";
+    private final int  INTERVIEW_DB_ID = 1;
     private final String UPDATE_USER_FEEDBACK = "New feedback to interview";
+    private final int CITY_DB_ID =1 ;
+    private final int COMPANY_DB_ID =1 ;
+    private final int POSITION_DB_ID =1 ;
+    private final int TECHNOLOGY_DB_ID =1 ;
+
 
     @Ignore
     @Test
-    public void testShowListInterviewForRegisteredUserShouldBeAddListInterviewAndPagingFilterToModelAndRenderPage() throws Exception {
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-listing-interview.xml")
+    public void testShowListInterviewForRegisteredUser() throws Exception {
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
         mvc.perform(get("/interview/my").session(session))
@@ -66,7 +72,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
 
 
     @Test
-    public void testShowListInterviewForNotRegisteredUserShouldBeRedirectToRegistrationPage() throws Exception {
+    public void testShowListInterviewForNotRegisteredUser() throws Exception {
         mvc.perform(get("/interview/my"))
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("http://localhost/register"))
@@ -75,7 +81,25 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     }
 
     @Test
-    public void testShowFormCreateInterviewForNotRegisteredUserShouldRedirectToRegistrationPage() throws Exception {
+    public void testShowFormViewInterviewForNotRegisteredUser() throws Exception {
+        mvc.perform(post("/interview/{interviewId}/view",INTERVIEW_DB_ID))
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("http://localhost/register"))
+                .andDo(print());
+    }
+
+
+    @Test
+    public void testShowFormEditInterviewForNotRegisteredUser() throws Exception {
+        mvc.perform(post("/interview/{interviewId}/edit",INTERVIEW_DB_ID))
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("http://localhost/register"))
+                .andDo(print());
+    }
+
+
+    @Test
+    public void testShowFormCreateInterviewForNotRegisteredUser() throws Exception {
         mvc.perform(post("/interview/add"))
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("http://localhost/register"))
@@ -83,7 +107,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     }
 
     @Test
-    public void testShowFormCreateInterviewForRegisteredUserShouldBeAddInterviewCommandAndListsValuesFieldsIntoModelAndRenderAddInterview() throws Exception {
+    public void testShowFormCreateInterview() throws Exception {
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
         mvc.perform(get("/interview/add").session(session))
@@ -107,7 +131,80 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     }
 
     @Test
-    public void testBindingFormFieldsAndNestedObjectsForInterviewCommand() throws Exception {
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-listing-interview.xml")
+    public void testShowFormViewInterviewWhenInterviewFound() throws Exception {
+        InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(INTERVIEW_DB_ID);
+        ResultActions actions = mvc.perform(loginUser());
+        MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
+        mvc.perform(get("/interview/{interviewId}/view", expectedInterviewCommand.getId()).session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("view_interview"))
+                .andExpect(forwardedUrl("/WEB-INF/views/view_interview.jsp"))
+                .andExpect(model().attributeExists("interviewCommand"))
+                .andExpect(model().attribute("interviewCommand", hasProperty("user", is(expectedInterviewCommand.getUser()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("company",is(expectedInterviewCommand.getCompany()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("technology", is(expectedInterviewCommand.getTechnology()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("position", is(expectedInterviewCommand.getPosition()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("city", is(expectedInterviewCommand.getCity()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("feedback", is(expectedInterviewCommand.getFeedback()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("created", is(expectedInterviewCommand.getCreated()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("questionCount", is(expectedInterviewCommand.getQuestionCount()))))
+                .andDo(print());
+    }
+
+    @Test
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-listing-interview.xml")
+    public void testShowFormEditInterviewWhenInterviewFound() throws Exception {
+        InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(INTERVIEW_DB_ID);
+        ResultActions actions = mvc.perform(loginUser());
+        MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
+        mvc.perform(get("/interview/{interviewId}/edit", expectedInterviewCommand.getId()).session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("update_interview"))
+                .andExpect(forwardedUrl("/WEB-INF/views/update_interview.jsp"))
+                .andExpect(model().attributeExists("interviewCommand"))
+                .andExpect(model().attribute("interviewCommand", hasProperty("user", is(expectedInterviewCommand.getUser()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("company", is(expectedInterviewCommand.getCompany()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("technology", is(expectedInterviewCommand.getTechnology()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("position", is(expectedInterviewCommand.getPosition()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("city", is(expectedInterviewCommand.getCity()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("feedback", is(expectedInterviewCommand.getFeedback()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("created", is(expectedInterviewCommand.getCreated()))))
+                .andExpect(model().attribute("interviewCommand", hasProperty("questionCount", is(expectedInterviewCommand.getQuestionCount()))))
+                .andExpect(model().attributeExists("listCompany"))
+                .andExpect(model().attributeExists("listTechnology"))
+                .andExpect(model().attributeExists("listCity"))
+                .andExpect(model().attributeExists("listPosition"))
+                .andDo(print());
+    }
+
+    @Test
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-listing-interview.xml")
+    public void testShowFormEditInterviewWhenInterviewNotFound() throws Exception {
+
+        ResultActions actions = mvc.perform(loginUser());
+        MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
+        mvc.perform(get("/interview/{interviewId}/edit", INVALID_DB_ID).session(session))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+
+    @Test
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-listing-interview.xml")
+    public void testShowFormViewInterviewWhenInterviewNotFound() throws Exception {
+
+        ResultActions actions = mvc.perform(loginUser());
+        MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
+        mvc.perform(get("/interview/{interviewId}/view", INVALID_DB_ID).session(session))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+
+    }
+
+
+    @Test
+    public void testBindingNestedObjectsForInterviewCommand() throws Exception {
         InterviewCommand expectedInterviewCommand = createNewInterviewCommand();
         InterviewCommand actualInterviewCommand = new InterviewCommand();
 
@@ -137,15 +234,14 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     }
 
     @Test
-
-    public void testAddIncorrectFieldsIntoFormCreateInterviewShouldBeRenderFormViewAndReturnValidationErrorsForFieldInterviewCommand() throws Exception {
+    public void testValidationIncorrectFieldsIntoFormCreateInterview() throws Exception {
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
         ResultActions postRequest = mvc.perform(post("/interview/add").session(session)
-                .param("city", INVALID_ID)
-                .param("company", INVALID_ID)
-                .param("technology", INVALID_ID)
-                .param("position", INVALID_ID));
+                .param("city", INVALID_DB_ID)
+                .param("company", INVALID_DB_ID)
+                .param("technology", INVALID_DB_ID)
+                .param("position", INVALID_DB_ID));
         //  .param("feedback", "testFeedback"));    validation null feedback
         postRequest.andExpect(status().isOk())
                 .andExpect(view().name("add_interview"))
@@ -161,12 +257,42 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
                 .andExpect(model().attributeExists("listPosition"))
                 .andDo(print());
     }
+
+    @Test
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-updating-interview.xml")
+    public void testValidationIncorrectFieldsIntoFormEditInterview() throws Exception {
+        InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(INTERVIEW_DB_ID);
+        ResultActions actions = mvc.perform(loginUser());
+        MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
+        ResultActions postRequest = mvc.perform(post("/interview/"+expectedInterviewCommand.getId() +"/edit").session(session)
+                .param("city", "1")
+                .param("company", "1000")
+                .param("technology", String.valueOf(expectedInterviewCommand.getTechnology().getId()))
+                .param("position", String.valueOf(expectedInterviewCommand.getPosition().getId()))
+                .param("feedback", UPDATE_USER_FEEDBACK));
+      postRequest
+               /*.andExpect(status().isOk())
+                .andExpect(view().name("update_interview"))
+                .andExpect(forwardedUrl("/WEB-INF/views/update_interview.jsp"))
+                .andExpect(model().attributeHasFieldErrors("interviewCommand", "city"))
+                .andExpect(model().attributeHasFieldErrors("interviewCommand", "company"))
+                .andExpect(model().attributeHasFieldErrors("interviewCommand", "technology"))
+                .andExpect(model().attributeHasFieldErrors("interviewCommand", "position"))
+                .andExpect(model().attributeHasFieldErrors("interviewCommand", "feedback"))
+                .andExpect(model().attributeExists("listCompany"))
+                .andExpect(model().attributeExists("listTechnology"))
+                .andExpect(model().attributeExists("listCity"))
+                .andExpect(model().attributeExists("listPosition"))    */
+                .andDo(print());
+    }
+
   @Test
+  @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-adding-interview.xml")
   @ExpectedDatabase(
-          value = "file:src/test/resources/dataset/InterviewResource/interview-added.xml",
+         value = "file:src/test/resources/dataset/InterviewResource/before-adding-interview.xml",
           assertionMode = DatabaseAssertionMode.NON_STRICT
   )
-    public void testCreateInterviewShouldBeSaveInterviewAndRenderInterviewView() throws Exception {
+    public void testCreateInterview() throws Exception {
          //TODO how get value id interview
         InterviewCommand expectedInterviewCommand = createNewInterviewCommand();
         ResultActions actions = mvc.perform(loginUser());
@@ -187,15 +313,16 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
 
 
    @Test
+   @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-updating-interview.xml")
    @ExpectedDatabase(
-           value = "file:src/test/resources/dataset/InterviewResource/interview-update.xml",
-           assertionMode = DatabaseAssertionMode.NON_STRICT
+         value = "file:src/test/resources/dataset/InterviewResource/before-updating-interview.xml",
+         assertionMode = DatabaseAssertionMode.NON_STRICT
    )
-    public void testUpdateInterviewShouldBeSaveInterviewAndRenderInterviewView() throws Exception {
-        InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(1);
+    public void testUpdateInterview() throws Exception {
+        InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(INTERVIEW_DB_ID);
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
-        ResultActions postRequest = mvc.perform(post("/interview/"+expectedInterviewCommand.getId()+"/edit").session(session)
+        ResultActions postRequest = mvc.perform(post("/interview/"+expectedInterviewCommand.getId() +"/edit").session(session)
                 .param("city", String.valueOf(expectedInterviewCommand.getCity().getId()))
                 .param("company", String.valueOf(expectedInterviewCommand.getCompany().getId()))
                 .param("technology", String.valueOf(expectedInterviewCommand.getTechnology().getId()))
@@ -211,85 +338,16 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
 
     }
 
-   @Test
-    public void testShowFormViewInterviewWhenInterviewFoundShouldBeAddInterviewCommandToModelRenderInterviewView() throws Exception {
-        InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(1);
-        ResultActions actions = mvc.perform(loginUser());
-        MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
-        mvc.perform(get("/interview/{interviewId}/view", expectedInterviewCommand.getId()).session(session))
-                .andExpect(status().isOk())
-                .andExpect(view().name("view_interview"))
-                .andExpect(forwardedUrl("/WEB-INF/views/view_interview.jsp"))
-                .andExpect(model().attributeExists("interviewCommand"))
-                .andExpect(model().attribute("interviewCommand", hasProperty("user", is(expectedInterviewCommand.getUser()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("company",is(expectedInterviewCommand.getCompany()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("technology", is(expectedInterviewCommand.getTechnology()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("position", is(expectedInterviewCommand.getPosition()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("city", is(expectedInterviewCommand.getCity()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("feedback", is(expectedInterviewCommand.getFeedback()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("created", is(expectedInterviewCommand.getCreated()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("questionCount", is(expectedInterviewCommand.getQuestionCount()))))
-                .andDo(print());
-    }
-
-    @Test
-    public void testShowFormEditInterviewWhenInterviewFoundShouldBeAddInterviewCommandIntoModelAndRenderInterviewEdit() throws Exception {
-        InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(1);
-        ResultActions actions = mvc.perform(loginUser());
-        MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
-        mvc.perform(get("/interview/{interviewId}/edit", expectedInterviewCommand.getId()).session(session))
-                .andExpect(status().isOk())
-                .andExpect(view().name("update_interview"))
-                .andExpect(forwardedUrl("/WEB-INF/views/update_interview.jsp"))
-                .andExpect(model().attributeExists("interviewCommand"))
-                .andExpect(model().attribute("interviewCommand", hasProperty("user", is(expectedInterviewCommand.getUser()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("company", is(expectedInterviewCommand.getCompany()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("technology", is(expectedInterviewCommand.getTechnology()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("position", is(expectedInterviewCommand.getPosition()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("city", is(expectedInterviewCommand.getCity()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("feedback", is(expectedInterviewCommand.getFeedback()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("created", is(expectedInterviewCommand.getCreated()))))
-                .andExpect(model().attribute("interviewCommand", hasProperty("questionCount", is(expectedInterviewCommand.getQuestionCount()))))
-                .andExpect(model().attributeExists("listCompany"))
-                .andExpect(model().attributeExists("listTechnology"))
-                .andExpect(model().attributeExists("listCity"))
-                .andExpect(model().attributeExists("listPosition"))
-                .andDo(print());
-    }
-
-    @Test
-    public void testShowFormUpdateInterviewWhenInterviewNotFoundShouldBeRender404View() throws Exception {
-
-        ResultActions actions = mvc.perform(loginUser());
-        MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
-        mvc.perform(get("/interview/{interviewId}/edit", INVALID_ID).session(session))
-                .andExpect(status().isNotFound())
-                .andDo(print());
-    }
-
-
-
-
-    @Test
-    public void testShowFormViewInterviewWhenInterviewNotFoundShouldBeRender404View() throws Exception {
-
-        ResultActions actions = mvc.perform(loginUser());
-        MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
-        mvc.perform(get("/interview/{interviewId}/view", INVALID_ID).session(session))
-                .andExpect(status().isNotFound())
-                .andDo(print());
-
-    }
 
    private InterviewCommand createNewInterviewCommand() throws Exception {
         InterviewCommand interview = new InterviewCommand();
         interview.setUser(userService.getUserByEmail(EMAIL));
         interview.setCreated(new Date());
-        interview.setCity(cityService.getCityById(1));
-        interview.setCompany(companyService.getCompanyById(1));
+        interview.setCity(cityService.getCityById(CITY_DB_ID));
+        interview.setCompany(companyService.getCompanyById(COMPANY_DB_ID));
         interview.setFeedback(USER_FEEDBACK);
-        interview.setPosition(positionService.getPositionById(1));
-        interview.setTechnology(technologyService.getTechnologyById(1));
+        interview.setPosition(positionService.getPositionById(POSITION_DB_ID));
+        interview.setTechnology(technologyService.getTechnologyById(TECHNOLOGY_DB_ID));
         return interview;
     }
 
