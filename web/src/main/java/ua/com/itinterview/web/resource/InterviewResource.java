@@ -42,9 +42,9 @@ public class InterviewResource {
 
     protected static final String FEEDBACK_MESSAGE_TEXT_INTERVIEW_UPDATED = "OK update";
 
-    protected static final String REQUEST_MAPPING_INTERVIEW_LIST = "/my";
-    protected static final String REQUEST_MAPPING_INTERVIEW_VIEW = "/{interviewId}/view";
-    protected static final String REQUEST_MAPPING_INTERVIEW_UPDATE = "/{interviewId}/edit";
+    protected static final String REQUEST_MAPPING_INTERVIEW_LIST    = "/my";
+    protected static final String REQUEST_MAPPING_INTERVIEW_VIEW    =  "/{interviewId}/view";
+    protected static final String REQUEST_MAPPING_INTERVIEW_UPDATE  = "/{interviewId}/edit";
 
     protected static final String VIEW_INTERVIEW_ADD = "add_interview";
     protected static final String VIEW_INTERVIEW_LIST = "show_personal_interview_list";
@@ -139,15 +139,15 @@ public class InterviewResource {
         model.addAttribute(MODEL_ATTRIBUTE_LIST_COMPANY, companyService.getCompanyList());
         model.addAttribute(MODEL_ATTRIBUTE_LIST_POSITION, positionService.getPositionList());
         model.addAttribute(MODEL_ATTRIBUTE_LIST_TECHNOLOGY, technologyService.getTechnologyList());
-        model.addAttribute(MODEL_ATTRIBUTE_INTERVIEW,  interviewService.getInterviewById(interviewId));
+        model.addAttribute(MODEL_ATTRIBUTE_INTERVIEW, interviewService.getInterviewById(interviewId));
         return VIEW_INTERVIEW_UPDATE;
     }
 
     @RequestMapping(value = "/{interviewId}/edit", method = RequestMethod.POST)
-    public String updateInterview( @ModelAttribute("interviewCommand") InterviewCommand formInterviewCommand,
+    public String updateInterview(@Valid @ModelAttribute("interviewCommand") InterviewCommand formInterviewCommand,
+                                  BindingResult result,
                                   @PathVariable("interviewId") Integer interviewId,
                                   RedirectAttributes attributes,
-                                  BindingResult result,
                                   Model model) {
 
         if (result.hasErrors()) {
@@ -190,15 +190,15 @@ public class InterviewResource {
 
     private String createRedirectViewPath(String requestMapping) {
         StringBuilder redirectViewPath = new StringBuilder();
-        redirectViewPath.append("redirect:");
+        redirectViewPath.append("redirect:/interview");
         redirectViewPath.append(requestMapping);
         return redirectViewPath.toString();
     }
 
-    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="Interview entity not found")  // 409
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Interview entity not found")  // 409
     @ExceptionHandler(EntityNotFoundException.class)
-    public void  entityNotFound(Exception exception) {
-               //TODO make a page error
+    public void entityNotFound(Exception exception) {
+        //TODO make a page error
     }
 
 }

@@ -5,8 +5,7 @@ import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import ua.com.itinterview.dao.InterviewDao;
-import ua.com.itinterview.dao.UserDao;
+import ua.com.itinterview.dao.*;
 import ua.com.itinterview.dao.paging.PagingFilter;
 import ua.com.itinterview.entity.*;
 import ua.com.itinterview.web.command.*;
@@ -32,16 +31,30 @@ public class InterviewServiceUnitTest {
 
     private UserEntity user;
     private InterviewService interviewService;
+    private CityDao cityDaoMock;
+    private CompanyDao companyDaoMock;
+    private PositionDao positionDaoMock;
+    private TechnologyDao technologyDaoMock;
     private InterviewDao interviewDaoMock;
-    private UserDao userDao;
+    private UserDao userDaoMock;
 
     @Before
     public void createMocks() {
         interviewDaoMock = EasyMock.createMock(InterviewDao.class);
+        cityDaoMock=EasyMock.createMock(CityDao.class);
+        companyDaoMock=EasyMock.createMock(CompanyDao.class);
+        positionDaoMock=EasyMock.createMock(PositionDao.class);
+        technologyDaoMock=EasyMock.createMock(TechnologyDao.class);
+        userDaoMock = EasyMock.createMock(UserDao.class);
+
         interviewService = new InterviewService();
+
         interviewService.interviewEntityDao = interviewDaoMock;
-        userDao = EasyMock.createMock(UserDao.class);
-        interviewService.userDao = userDao;
+        interviewService.cityDao=cityDaoMock;
+        interviewService.companyDao=companyDaoMock;
+        interviewService.positionDao=positionDaoMock;
+        interviewService.technologyDao=technologyDaoMock;
+        interviewService.userDao = userDaoMock;
     }
 
     @After
@@ -57,10 +70,24 @@ public class InterviewServiceUnitTest {
     public void testAddInterview() {
         InterviewCommand interviewCommand = createInterviewCommand();
         InterviewEntity interviewEntity = new InterviewEntity(interviewCommand);
-        EasyMock.expect(interviewDaoMock.save(interviewEntity)).andReturn(
-                interviewEntity);
+
+        EasyMock.expect(cityDaoMock.getEntityById(interviewEntity.getCity().getId()))
+                .andReturn(interviewEntity.getCity());
+        EasyMock.expect(companyDaoMock.getEntityById(interviewEntity.getCompany().getId()))
+                .andReturn(interviewEntity.getCompany());
+        EasyMock.expect(positionDaoMock.getEntityById(interviewEntity.getPosition().getId()))
+                .andReturn(interviewEntity.getPosition());
+        EasyMock.expect(technologyDaoMock.getEntityById(interviewEntity.getTechnology().getId()))
+                .andReturn(interviewEntity.getTechnology());
+        EasyMock.expect(userDaoMock.getEntityById(interviewEntity.getUser().getId()))
+                .andReturn(interviewEntity.getUser());
+
+        EasyMock.expect(interviewDaoMock.save(isA(InterviewEntity.class)))
+                .andReturn(interviewEntity);
+
         replayAllMocks();
-        interviewService.addInterview(interviewCommand);
+
+        assertEquals(interviewEntity,interviewService.addInterview(interviewCommand));
         verifyAll();
     }
 
@@ -151,14 +178,28 @@ public class InterviewServiceUnitTest {
         verifyAll();
     }
     @Test
-    public void testUpdateInterviewWithExist(){
+    public void testUpdateInterview(){
         InterviewCommand interviewCommand = createInterviewCommand();
-        interviewCommand.setId(INTERVIEW_ID_TWO);
-        interviewCommand.setFeedback(INTERVIEW_FEEDBACK_TWO);
         InterviewEntity interviewEntity = new InterviewEntity(interviewCommand);
-        EasyMock.expect(interviewDaoMock.save(new InterviewEntity(interviewCommand)))
+
+        EasyMock.expect(interviewDaoMock.getEntityById(interviewCommand.getId()))
+                .andReturn(interviewEntity);
+        EasyMock.expect(cityDaoMock.getEntityById(interviewEntity.getCity().getId()))
+                .andReturn(interviewEntity.getCity());
+        EasyMock.expect(companyDaoMock.getEntityById(interviewEntity.getCompany().getId()))
+                .andReturn(interviewEntity.getCompany());
+        EasyMock.expect(positionDaoMock.getEntityById(interviewEntity.getPosition().getId()))
+                .andReturn(interviewEntity.getPosition());
+        EasyMock.expect(technologyDaoMock.getEntityById(interviewEntity.getTechnology().getId()))
+                .andReturn(interviewEntity.getTechnology());
+        EasyMock.expect(userDaoMock.getEntityById(interviewEntity.getUser().getId()))
+                .andReturn(interviewEntity.getUser());
+
+        EasyMock.expect(interviewDaoMock.save(interviewEntity))
                 .andReturn(interviewEntity);
         replayAllMocks();
+        interviewCommand.setFeedback(INTERVIEW_FEEDBACK_TWO);
+
         assertEquals(interviewEntity, interviewService.update(interviewCommand));
         verifyAll();
     }

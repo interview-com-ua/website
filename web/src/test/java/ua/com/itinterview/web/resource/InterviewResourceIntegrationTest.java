@@ -264,14 +264,14 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
         InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(INTERVIEW_DB_ID);
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
-        ResultActions postRequest = mvc.perform(post("/interview/"+expectedInterviewCommand.getId() +"/edit").session(session)
-                .param("city", "1")
-                .param("company", "1000")
-                .param("technology", String.valueOf(expectedInterviewCommand.getTechnology().getId()))
-                .param("position", String.valueOf(expectedInterviewCommand.getPosition().getId()))
-                .param("feedback", UPDATE_USER_FEEDBACK));
+        ResultActions postRequest = mvc.perform(post("/interview/" + expectedInterviewCommand.getId() + "/edit").session(session)
+                .param("city", INVALID_DB_ID)
+                .param("company", INVALID_DB_ID)
+                .param("technology", INVALID_DB_ID)
+                .param("position", INVALID_DB_ID));
+            //    .param("feedback", "testFeedback"));  validation null feedback
       postRequest
-               /*.andExpect(status().isOk())
+               .andExpect(status().isOk())
                 .andExpect(view().name("update_interview"))
                 .andExpect(forwardedUrl("/WEB-INF/views/update_interview.jsp"))
                 .andExpect(model().attributeHasFieldErrors("interviewCommand", "city"))
@@ -282,7 +282,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
                 .andExpect(model().attributeExists("listCompany"))
                 .andExpect(model().attributeExists("listTechnology"))
                 .andExpect(model().attributeExists("listCity"))
-                .andExpect(model().attributeExists("listPosition"))    */
+                .andExpect(model().attributeExists("listPosition"))
                 .andDo(print());
     }
 
@@ -305,7 +305,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
                 .param("feedback", USER_FEEDBACK));
         postRequest.andDo(print())
                 .andExpect(status().isMovedTemporarily())
-                .andExpect(view().name("redirect:/{interviewId}/view"))
+                .andExpect(view().name("redirect:/interview/{interviewId}/view"))
                 .andExpect(model().attributeExists("interviewId"))
                 .andExpect(flash().attribute("feedbackMessage", "OK added"))
                 .andExpect(model().hasNoErrors());
@@ -331,7 +331,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
 
         postRequest.andDo(print())
                 .andExpect(status().isMovedTemporarily())
-                .andExpect(view().name("redirect:/{interviewId}/view"))
+                .andExpect(view().name("redirect:/interview/{interviewId}/view"))
                 .andExpect(model().attribute("interviewId", is(String.valueOf(expectedInterviewCommand.getId()))))
                 .andExpect(flash().attribute("feedbackMessage", "OK update"))
                 .andExpect(model().hasNoErrors());

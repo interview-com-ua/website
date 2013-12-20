@@ -34,9 +34,7 @@ public class InterviewService {
         interviewEntity.setCity(cityDao.getEntityById(inputInterview.getCity().getId()));
         interviewEntity.setTechnology(technologyDao.getEntityById(inputInterview.getTechnology().getId()));
         interviewEntity.setFeedback(inputInterview.getFeedback());
-        interviewEntityDao.save(interviewEntity);
-
-        return  interviewEntity;
+        return  interviewEntityDao.save(interviewEntity);
     }
 
     public List<InterviewCommand> getInterviewList() {
@@ -85,19 +83,13 @@ public class InterviewService {
 
     public InterviewEntity update(InterviewCommand inputInterview) {
         InterviewEntity interviewEntity = interviewEntityDao.getEntityById(inputInterview.getId());
-
         interviewEntity.setUser(userDao.getEntityById(inputInterview.getUser().getId()));
-
         interviewEntity.setCompany(companyDao.getEntityById(inputInterview.getCompany().getId()));
         interviewEntity.setPosition(positionDao.getEntityById(inputInterview.getPosition().getId()));
         interviewEntity.setCity(cityDao.getEntityById(inputInterview.getCity().getId()));
-
         interviewEntity.setTechnology(technologyDao.getEntityById(inputInterview.getTechnology().getId()));
         interviewEntity.setFeedback(inputInterview.getFeedback());
-
-        interviewEntityDao.save(interviewEntity);
-
-        return   interviewEntity;
+        return   interviewEntityDao.save(interviewEntity);
     }
 
 }
