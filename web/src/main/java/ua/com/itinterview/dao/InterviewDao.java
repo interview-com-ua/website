@@ -11,27 +11,24 @@ import java.util.List;
 
 import static org.hibernate.criterion.Restrictions.eq;
 
+@Transactional
 public class InterviewDao extends EntityWithIdDao<InterviewEntity> {
 
     @SuppressWarnings("unchecked")
-    @Transactional
     public List<InterviewEntity> getInterviewsByUser(UserEntity user, PagingFilter filter) {
         Criteria criteria = createCriteria(user);
         if (filter == null) return criteria.list();
         return getResultWithPaginator(criteria, filter);
     }
 
-    @Transactional
     public Long getInterviewsCountByUser(UserEntity user) {
         return getCount(createCriteria(user));
     }
 
-    @Transactional
     public List<InterviewEntity> getInterviewsByUser(UserEntity user) {
         return getInterviewsByUser(user, null);
     }
 
-    @Transactional
     private Criteria createCriteria(UserEntity user) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria(InterviewEntity.class);
