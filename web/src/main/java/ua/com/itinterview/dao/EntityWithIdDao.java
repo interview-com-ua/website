@@ -35,7 +35,10 @@ public class EntityWithIdDao<T extends EntityWithId> {
     @SuppressWarnings("unchecked")
     @Transactional
     public T save(T entity) {
-	return (T) sessionFactory.getCurrentSession().merge(entity);
+        Session session=sessionFactory.getCurrentSession();
+        T obj = (T) session.merge(entity);
+        session.flush();
+        return obj;
     }
     @Transactional
     @SuppressWarnings("unchecked")

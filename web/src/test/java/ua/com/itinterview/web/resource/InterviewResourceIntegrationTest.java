@@ -8,7 +8,10 @@ import org.junit.Test;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.WebDataBinder;
 import ua.com.itinterview.service.*;
@@ -32,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * User: kuznetsov d.v.
  * Date: 14.11.13
  */
+
 @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/interview-initial.xml")
 public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     @Autowired
@@ -55,10 +59,9 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     private final int POSITION_DB_ID =1 ;
     private final int TECHNOLOGY_DB_ID =1 ;
 
-
     @Ignore
     @Test
-    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-listing-interview.xml")
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/interview-list.xml")
     public void testShowListInterviewForRegisteredUser() throws Exception {
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
@@ -131,7 +134,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     }
 
     @Test
-    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-listing-interview.xml")
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/interview-list.xml")
     public void testShowFormViewInterviewWhenInterviewFound() throws Exception {
         InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(INTERVIEW_DB_ID);
         ResultActions actions = mvc.perform(loginUser());
@@ -153,7 +156,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     }
 
     @Test
-    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-listing-interview.xml")
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/interview-list.xml")
     public void testShowFormEditInterviewWhenInterviewFound() throws Exception {
         InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(INTERVIEW_DB_ID);
         ResultActions actions = mvc.perform(loginUser());
@@ -179,7 +182,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     }
 
     @Test
-    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-listing-interview.xml")
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/interview-list.xml")
     public void testShowFormEditInterviewWhenInterviewNotFound() throws Exception {
 
         ResultActions actions = mvc.perform(loginUser());
@@ -191,7 +194,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
 
 
     @Test
-    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-listing-interview.xml")
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/interview-list.xml")
     public void testShowFormViewInterviewWhenInterviewNotFound() throws Exception {
 
         ResultActions actions = mvc.perform(loginUser());
@@ -286,14 +289,15 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
                 .andDo(print());
     }
 
-  @Test
-  @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-adding-interview.xml")
-  @ExpectedDatabase(
-         value = "file:src/test/resources/dataset/InterviewResource/before-adding-interview.xml",
-          assertionMode = DatabaseAssertionMode.NON_STRICT
-  )
+
+
+    @Test
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-adding-interview.xml")
+    @ExpectedDatabase(
+            value = "file:src/test/resources/dataset/InterviewResource/before-adding-interview.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT
+    )
     public void testCreateInterview() throws Exception {
-         //TODO how get value id interview
         InterviewCommand expectedInterviewCommand = createNewInterviewCommand();
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
@@ -312,12 +316,12 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     }
 
 
-   @Test
-   @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-updating-interview.xml")
-   @ExpectedDatabase(
-         value = "file:src/test/resources/dataset/InterviewResource/before-updating-interview.xml",
-         assertionMode = DatabaseAssertionMode.NON_STRICT
-   )
+    @Test
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/after-updating-interview.xml")
+    @ExpectedDatabase(
+            value = "file:src/test/resources/dataset/InterviewResource/before-updating-interview.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT
+    )
     public void testUpdateInterview() throws Exception {
         InterviewCommand expectedInterviewCommand  = interviewService.getInterviewById(INTERVIEW_DB_ID);
         ResultActions actions = mvc.perform(loginUser());
@@ -339,7 +343,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     }
 
 
-   private InterviewCommand createNewInterviewCommand() throws Exception {
+    private InterviewCommand createNewInterviewCommand() throws Exception {
         InterviewCommand interview = new InterviewCommand();
         interview.setUser(userService.getUserByEmail(EMAIL));
         interview.setCreated(new Date());
@@ -350,6 +354,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
         interview.setTechnology(technologyService.getTechnologyById(TECHNOLOGY_DB_ID));
         return interview;
     }
+
 
 
 }
