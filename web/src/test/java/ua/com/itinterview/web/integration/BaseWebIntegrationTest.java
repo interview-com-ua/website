@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         DependencyInjectionTestExecutionListener.class,
         TransactionDbUnitTestExecutionListener.class
        })
-public abstract class BaseWebIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests implements BaseWebIntegrationTestConstants{
+public abstract class BaseWebIntegrationTest implements BaseWebIntegrationTestConstants{
 
     protected MockMvc mvc;
 

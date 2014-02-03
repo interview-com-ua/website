@@ -37,7 +37,6 @@ public class EntityWithIdDao<T extends EntityWithId> {
     public T save(T entity) {
         Session session=sessionFactory.getCurrentSession();
         T obj = (T) session.merge(entity);
-        session.flush();
         return obj;
     }
     @Transactional
