@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Date: 14.11.13
  */
 
-@DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/interview-initial.xml")
+
 public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     @Autowired
     private UserService userService;
