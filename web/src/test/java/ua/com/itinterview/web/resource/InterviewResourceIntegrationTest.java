@@ -110,6 +110,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     }
 
     @Test
+    @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/interview-list.xml")
     public void testShowFormCreateInterview() throws Exception {
         ResultActions actions = mvc.perform(loginUser());
         MockHttpSession session = (MockHttpSession) actions.andReturn().getRequest().getSession();
@@ -118,9 +119,13 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
                 .andExpect(view().name("add_interview"))
                 .andExpect(forwardedUrl("/WEB-INF/views/add_interview.jsp"))
                 .andExpect(model().attributeExists("listCompany"))
+                .andExpect(model().attribute("listCompany",hasSize(equalTo(3))))
                 .andExpect(model().attributeExists("listTechnology"))
+                .andExpect(model().attribute("listTechnology",hasSize(equalTo(3))))
                 .andExpect(model().attributeExists("listCity"))
+                .andExpect(model().attribute("listCity",hasSize(equalTo(3))))
                 .andExpect(model().attributeExists("listPosition"))
+                .andExpect(model().attribute("listPosition",hasSize(equalTo(3))))
                 .andExpect(model().attribute("interviewCommand", hasProperty("id", nullValue())))
                 .andExpect(model().attribute("interviewCommand", hasProperty("user", nullValue())))
                 .andExpect(model().attribute("interviewCommand", hasProperty("company", nullValue())))
