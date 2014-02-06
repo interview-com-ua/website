@@ -18,14 +18,12 @@
                 <form:form action="${ formAction }" method="${ formMethod }"commandName="interviewCommand" class="jNice">
                     <fieldset>
                         <legend>${ pageTitle }</legend>
-                               <label>${interviewCommand.city.cityName}</label>
-                               <label>${interviewCommand.position.name}</label>
-                               <label>${interviewCommand.company.name}</label>
-                               <label>${interviewCommand.technology.name}</label>
-                               <label>${interviewCommand.feedback}</label>
-                        <div>
-                             <input type="submit"  value="${formSubmit }" />
-                        </div>
+                           <div> Компания: ${interviewCommand.company.name}    </div>
+                           <div> Город : ${interviewCommand.city.cityName}     </div>
+                           <div> Позиция ${interviewCommand.position.name}     </div>
+                           <div> Технология : ${interviewCommand.technology.name}  </div>
+                           <div> Отзыв : ${interviewCommand.feedback}  </div>
+                       <input type="submit"  value="${formSubmit }" />
                     </fieldset>
                 </form:form>
             </div>

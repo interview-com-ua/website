@@ -10,36 +10,38 @@
 		<c:set var="formSubmit" value="Зарегистрировать" />
 
 <%@ include file="header.jsp" %>
-
- <!-- main -->
-  <c:if test="${feedbackMessage != null}">
-       <div>${feedbackMessage}</div>
-  </c:if>
+<!-- main -->
         <div id="main">
             <!--TODO css class  -->
             <div class="registration_form">
                 <form:form action="${ formAction }" method="${formMethod}" commandName="interviewCommand" class="jNice">
                     <fieldset>
                         <legend>${ pageTitle }</legend>
-                           <form:select path="city" >
-                               <form:options items="${listCity}" itemValue="id" itemLabel="cityName"/>
-                               <form:errors path="city" cssClass="color: #ff0000" />
-                           </form:select>
-                           <form:select path="position">
-                                <form:options items="${listPosition}" itemValue="id" itemLabel="name"/>
-                                <form:errors path="position" cssClass="color: #ff0000" />
-                           </form:select>
-                           <form:select path="company">
-                                <form:options items="${listCompany}" itemValue="id" itemLabel="name"/>
-                                <form:errors path="company" cssClass="color: #ff0000" />
-                           </form:select>
-                           <form:select path="technology">
-                                <form:options items="${listTechnology}" itemValue="id" itemLabel="name"/>
-                                <form:errors path="technology" cssClass="color: #ff0000" />
-                           </form:select>
 
-                           <form:textarea cols="40" rows="15" path="feedback" />
-                                <form:errors path="feedback" cssClass="color: #ff0000" />
+                          Город :
+                           <form:select path="city">
+                               <form:options items="${listCity}" itemValue="id" itemLabel="cityName"/>
+                           </form:select>
+                           <form:errors path="city" cssClass="color: #ff0000" />
+                           Позиция :
+                           <form:select path="position">
+                               <form:options items="${listPosition}" itemValue="id" itemLabel="name"/>
+                           </form:select>
+                           <form:errors path="position" cssClass="color: #ff0000" />
+                           Компания :
+                           <form:select path="company">
+                               <form:options items="${listCompany}" itemValue="id" itemLabel="name"/>
+                           </form:select>
+                           <form:errors path="company" cssClass="color: #ff0000" />
+                           Технология :
+                           <form:select path="technology" >
+                                <form:options items="${listTechnology}" itemValue="id" itemLabel="name"/>
+                           </form:select>
+                           <form:errors path="technology" cssClass="color: #ff0000" />
+                           Отзыв :
+                           <form:errors path="feedback" cssClass="color: #ff0000" />
+                           <form:textarea cols="40" rows="15" path="feedback" placeholder="Отзыв" />
+
                           <div>
                              <input type="submit"  value="${formSubmit }" />
                            </div>

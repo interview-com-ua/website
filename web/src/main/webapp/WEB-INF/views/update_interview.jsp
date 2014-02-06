@@ -12,41 +12,35 @@
 <%@ include file="header.jsp" %>
 
  <!-- main -->
-  <c:if test="${feedbackMessage != null}">
-       <div>${feedbackMessage}</div>
-  </c:if>
-        <div id="main">
+       <div id="main">
             <!--TODO css class  -->
             <div class="registration_form">
                 <form:form action="${ formAction }" method="${formMethod}" commandName="interviewCommand" class="jNice">
                     <fieldset>
                         <legend>${ pageTitle }</legend>
-
-                           <label>${interviewCommand.city.cityName}</label>
+                          Текущее значение : ${interviewCommand.city.cityName}
                            <form:select path="city" >
                                <form:options items="${listCity}" itemValue="id" itemLabel="cityName"/>
-                               <form:errors path="city" cssClass="color: #ff0000" />
                            </form:select>
-                           <label>${interviewCommand.position.name}</label>
+                           <form:errors path="city" cssClass="color: #ff0000" />
+                           Текущее значение : ${interviewCommand.position.name}
                            <form:select path="position">
                                 <form:options items="${listPosition}" itemValue="id" itemLabel="name"/>
-                                <form:errors path="position" cssClass="color: #ff0000" />
                            </form:select>
-                           <label>${interviewCommand.company.name}</label>
+                           <form:errors path="position" cssClass="color: #ff0000" />
+                           Текущее значение : ${interviewCommand.company.name}
                            <form:select path="company">
                                 <form:options items="${listCompany}" itemValue="id" itemLabel="name"/>
-                                <form:errors path="company" cssClass="color: #ff0000" />
                            </form:select>
-                           <label>${interviewCommand.technology.name}</label>
+                           <form:errors path="company" cssClass="color: #ff0000" />
+                           Текущее значение : ${interviewCommand.technology.name}
                            <form:select path="technology">
                                 <form:options items="${listTechnology}" itemValue="id" itemLabel="name"/>
-                                <form:errors path="technology" cssClass="color: #ff0000" />
                            </form:select>
-
-                            <label>${interviewCommand.feedback}</label>
+                           <form:errors path="technology" cssClass="color: #ff0000" />
+                           <form:errors path="feedback" cssClass="color: #ff0000" />
                            <form:textarea cols="40" rows="15" path="feedback" />
-                                <form:errors path="feedback" cssClass="color: #ff0000" />
-                          <div>
+                         <div>
                              <input type="submit"  value="${formSubmit }" />
                            </div>
                     </fieldset>
