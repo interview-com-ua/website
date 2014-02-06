@@ -42,18 +42,21 @@
             </ul>
         </div>
         <!--  end listing -->
-        <c:choose>
-                <c:when test="${interview.questionCount > 0}">
-                    <jsp:include page="paginator.jsp"/>
-                </c:when>
-                <c:otherwise>
-                    У вас пока нет собеседований. Нажмите "Добавить собеседование".
-                </c:otherwise>
-            </c:choose>
+
     </c:forEach>
 
-    <c:set scope="page" var="linkMask" value="${pageContext.request.contextPath}/interview/my?page=" />
-
+     <c:choose>
+        <c:when test="${pagingFilter.itemsTotal == 0}">
+           У вас пока нет собеседований. Нажмите "Добавить собеседование".
+        </c:when>
+           <c:otherwise>
+               <c:choose>
+                       <c:when test="${pagingFilter.itemsTotal > pagingFilter.itemsPerPage}">
+                          <jsp:include page="paginator.jsp"/>
+                       </c:when>
+                </c:choose>
+           </c:otherwise>
+      </c:choose>
 </div>
 <!-- end main -->
 <%@ include file="footer.jsp" %>

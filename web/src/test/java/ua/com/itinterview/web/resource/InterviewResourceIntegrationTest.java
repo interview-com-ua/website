@@ -59,7 +59,7 @@ public class InterviewResourceIntegrationTest extends BaseWebIntegrationTest {
     private final int POSITION_DB_ID =1 ;
     private final int TECHNOLOGY_DB_ID =1 ;
 
-    @Ignore
+
     @Test
     @DatabaseSetup(value = "file:src/test/resources/dataset/InterviewResource/interview-list.xml")
     public void testShowListInterviewForRegisteredUser() throws Exception {
