@@ -45,7 +45,9 @@
 
     </c:forEach>
 
-     <c:choose>
+<c:set scope="request" var="linkMask" value="${pageContext.request.contextPath}/interview/my?page=" />
+
+    <c:choose>
         <c:when test="${pagingFilter.itemsTotal == 0}">
            У вас пока нет собеседований. Нажмите "Добавить собеседование".
         </c:when>

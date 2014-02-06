@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!-- paginator -->
-<c:set scope="page" var="linkMask" value="${pageContext.request.contextPath}/interview/my?page=" />
 <div class="paginator">
     <ul>
         <c:if test="${pagingFilter.currentPage != 0}">
