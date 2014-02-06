@@ -1,20 +1,16 @@
 package ua.com.itinterview.service;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import ua.com.itinterview.dao.CityDao;
 import ua.com.itinterview.entity.CityEntity;
 import ua.com.itinterview.web.command.CityCommand;
+
+import java.util.Arrays;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 public class CityServiceUnitTest {
 
@@ -25,22 +21,22 @@ public class CityServiceUnitTest {
 
     @Before
     public void setUpMocks() {
-	cityDaoMock = createMock(CityDao.class);
-	cityService = new CityService();
-	cityService.cityDao = cityDaoMock;
+        cityDaoMock = createMock(CityDao.class);
+        cityService = new CityService();
+        cityService.cityDao = cityDaoMock;
 
     }
 
     private void replayAllMocks() {
-	replay(cityDaoMock);
+        replay(cityDaoMock);
     }
 
     @Test
     public void testConvertFromEntityToCommand() {
-	replayAllMocks();
-	CityCommand expectedCommand = createCityCommand();
-	CityEntity cityEntity = createCityEntity(CITY_ID, CITY_NAME);
-	assertEquals(expectedCommand, new CityCommand(cityEntity));
+        replayAllMocks();
+        CityCommand expectedCommand = createCityCommand();
+        CityEntity cityEntity = createCityEntity(CITY_ID, CITY_NAME);
+        assertEquals(expectedCommand, new CityCommand(cityEntity));
     }
 
     @Test
@@ -53,35 +49,42 @@ public class CityServiceUnitTest {
 
     @Test
     public void testGetAllCities() {
-	CityEntity kiev = createCityEntity(2, "Kiev");
-	CityEntity moscow = createCityEntity(3, "Moskow");
+        CityEntity kiev = createCityEntity(2, "Kiev");
+        CityEntity moscow = createCityEntity(3, "Moskow");
+        expect(cityDaoMock.getAll()).andReturn(Arrays.asList(kiev, moscow));
+        replayAllMocks();
+        assertEquals(
+                Arrays.asList(new CityCommand(kiev), new CityCommand(moscow)),
+                cityService.getCities());
 
-	expect(cityDaoMock.getAll()).andReturn(Arrays.asList(kiev, moscow));
+    }
 
-	replayAllMocks();
-	assertEquals(
-		Arrays.asList(new CityCommand(kiev), new CityCommand(moscow)),
-		cityService.getCities());
-
+    @Test
+    public void testGetCityById() {
+        CityEntity testCity = createCityEntity(CITY_ID, CITY_NAME);
+        CityCommand expectedCityCommand = new CityCommand(testCity);
+        expect(cityDaoMock.getEntityById(testCity.getId())).andReturn(testCity);
+        replayAllMocks();
+        assertEquals(expectedCityCommand, cityService.getCityById(testCity.getId()));
     }
 
     private CityCommand createCityCommand() {
-	CityCommand city = new CityCommand();
-	city.setCityName(CITY_NAME);
-	city.setId(CITY_ID);
-	return city;
+        CityCommand city = new CityCommand();
+        city.setCityName(CITY_NAME);
+        city.setId(CITY_ID);
+        return city;
     }
 
     private CityEntity createCityEntity(int id, String cityName) {
-	CityEntity entity = new CityEntity();
-	entity.setCityName(cityName);
-	entity.setId(id);
-	return entity;
+        CityEntity entity = new CityEntity();
+        entity.setCityName(cityName);
+        entity.setId(id);
+        return entity;
     }
 
     @After
     public void verifyAllMocks() {
-	verify(cityDaoMock);
+        verify(cityDaoMock);
     }
 
 }

@@ -1,13 +1,12 @@
 package ua.com.itinterview.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import ua.com.itinterview.dao.PositionDao;
 import ua.com.itinterview.entity.PositionEntity;
 import ua.com.itinterview.web.command.PositionCommand;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PositionService {
 
@@ -30,4 +29,7 @@ public class PositionService {
 	return positions;
     }
 
+    public PositionCommand getPositionById(int id) {
+        return new PositionCommand(positionDao.getEntityById(id));
+    }
 }

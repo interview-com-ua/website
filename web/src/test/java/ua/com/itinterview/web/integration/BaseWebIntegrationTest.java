@@ -12,9 +12,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -34,11 +37,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ContextConfiguration({"classpath:test-web-context.xml"})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
-        TransactionDbUnitTestExecutionListener.class,
-        DbUnitTestExecutionListener.class
-})
-public abstract class BaseWebIntegrationTest extends
-        AbstractTransactionalJUnit4SpringContextTests implements BaseWebIntegrationTestConstants{
+        TransactionDbUnitTestExecutionListener.class
+       })
+public abstract class BaseWebIntegrationTest implements BaseWebIntegrationTestConstants{
 
     protected MockMvc mvc;
 

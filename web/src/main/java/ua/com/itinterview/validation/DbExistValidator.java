@@ -23,6 +23,7 @@ public class DbExistValidator implements ConstraintValidator<DbExist, Object> {
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
+        if (value == null) return false;
         entityWithIdDao.setClazz(clazz);
         Integer objectId = null;
         try {

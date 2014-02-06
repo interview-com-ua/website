@@ -1,13 +1,12 @@
 package ua.com.itinterview.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import ua.com.itinterview.dao.TechnologyDao;
 import ua.com.itinterview.entity.TechnologyEntity;
 import ua.com.itinterview.web.command.TechnologyCommand;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TechnologyService {
 
@@ -18,6 +17,9 @@ public class TechnologyService {
 	return convertToTechnologyCommandList(technologyDao.getAllOrderedBy("technologyName", 0));
     }
 
+    public TechnologyCommand getTechnologyById(int idTechnology){
+      return new TechnologyCommand(technologyDao.getEntityById(idTechnology));
+    }
     private List<TechnologyCommand> convertToTechnologyCommandList(
 	    List<TechnologyEntity> entities) {
 

@@ -1,18 +1,17 @@
 package ua.com.itinterview.service;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import ua.com.itinterview.dao.PositionDao;
 import ua.com.itinterview.entity.PositionEntity;
 import ua.com.itinterview.web.command.PositionCommand;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class PositionServiceUnitTest {
 
@@ -112,6 +111,17 @@ public class PositionServiceUnitTest {
 	replayMocks();
 	assertEquals(convertToCommandList(positions),
 		positionService.getPositionList());
+    }
+
+    @Test
+    public void testGetPositionById(){
+        PositionEntity testPositionEntity = createTestPositionEntity();
+        PositionCommand expectedPositionCommand = new PositionCommand(testPositionEntity);
+
+        EasyMock.expect(positionDao.getEntityById(testPositionEntity.getId())).andReturn(testPositionEntity);
+        replayMocks();
+        assertEquals(expectedPositionCommand,positionService.getPositionById(testPositionEntity.getId()));
+
     }
 
 }

@@ -2,36 +2,56 @@ package ua.com.itinterview.web.resource;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ua.com.itinterview.dao.InterviewDao;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.com.itinterview.dao.paging.PagingFilter;
-import ua.com.itinterview.service.InterviewService;
-import ua.com.itinterview.service.QuestionService;
-import ua.com.itinterview.service.UserService;
-import ua.com.itinterview.web.command.InterviewCommand;
-import ua.com.itinterview.web.command.PaginateCommand;
-import ua.com.itinterview.web.command.QuestionCommand;
-import ua.com.itinterview.web.command.UserCommand;
+import ua.com.itinterview.entity.InterviewEntity;
+import ua.com.itinterview.service.*;
+import ua.com.itinterview.web.command.*;
+import ua.com.itinterview.web.resource.propertyeditor.CityCommandPropertyEditor;
+import ua.com.itinterview.web.resource.propertyeditor.CompanyCommandPropertyEditor;
+import ua.com.itinterview.web.resource.propertyeditor.PositionCommandPropertyEditor;
+import ua.com.itinterview.web.resource.propertyeditor.TechnologyCommandPropertyEditor;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
 import ua.com.itinterview.web.security.AuthenticationUtils;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/interview")
 public class InterviewResource {
+    protected static final String FLASH_MESSAGE_KEY_ERROR = "errorMessage";
+    protected static final String FLASH_MESSAGE_KEY_FEEDBACK = "feedbackMessage";
+    protected static final String PARAMETER_INTERVIEW_ID = "interviewId";
+    protected static final String MODEL_ATTRIBUTE_INTERVIEW = "interviewCommand";
+    protected static final String MODEL_ATTRIBUTE_LIST_COMPANY = "listCompany";
+    protected static final String MODEL_ATTRIBUTE_LIST_TECHNOLOGY = "listTechnology";
+    protected static final String MODEL_ATTRIBUTE_LIST_CITY = "listCity";
+    protected static final String MODEL_ATTRIBUTE_LIST_POSITION = "listPosition";
+
+    protected static final String FLASH_MESSAGE_TEXT_INTERVIEW_ADDED = "OK added";
+    protected static final String FLASH_MESSAGE_TEXT_INTERVIEW_View = "Interview not found";
+
+    protected static final String FEEDBACK_MESSAGE_TEXT_INTERVIEW_UPDATED = "OK update";
+
+    protected static final String REQUEST_MAPPING_INTERVIEW_LIST    = "/my";
+    protected static final String REQUEST_MAPPING_INTERVIEW_VIEW    =  "/{interviewId}/view";
+    protected static final String REQUEST_MAPPING_INTERVIEW_UPDATE  = "/{interviewId}/edit";
+
+    protected static final String VIEW_INTERVIEW_ADD = "add_interview";
+    protected static final String VIEW_INTERVIEW_LIST = "show_personal_interview_list";
+    protected static final String VIEW_INTERVIEW_UPDATE = "update_interview";
+    protected static final String VIEW_INTERVIEW_VIEW = "view_interview";
     private final static Logger LOGGER = Logger.getLogger(InterviewResource.class);
     private final static Integer RESULTS_ON_PAGE = 10;
-
     @Autowired
     private QuestionService questionService;
     @Autowired
@@ -39,9 +59,23 @@ public class InterviewResource {
     @Autowired
     private UserService userService;
     @Autowired
-    private InterviewDao interviewEntityDao;
-    @Autowired
     private AuthenticationUtils authenticationUtils;
+    @Autowired
+    private CityService cityService;
+    @Autowired
+    private PositionService positionService;
+    @Autowired
+    private TechnologyService technologyService;
+    @Autowired
+    private CompanyService companyService;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(TechnologyCommand.class, "technology", new TechnologyCommandPropertyEditor(technologyService));
+        binder.registerCustomEditor(CityCommand.class, "city", new CityCommandPropertyEditor(cityService));
+        binder.registerCustomEditor(PositionCommand.class, "position", new PositionCommandPropertyEditor(positionService));
+        binder.registerCustomEditor(CompanyCommand.class, "company", new CompanyCommandPropertyEditor(companyService));
+    }
 
     @RequestMapping(value = "/{interviewId}/question_list", method = RequestMethod.GET)
     public ModelAndView showQuestionListFoeInterview(
@@ -71,85 +105,80 @@ public class InterviewResource {
                 + "/view");
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ModelAndView addInterview(
-            @Valid @ModelAttribute InterviewCommand interviewCommand,
-            BindingResult bindResult) {
-        /*if (bindResult.hasErrors()) {
-            ModelAndView view = new ModelAndView("add_interview");
-            view.addObject(interviewCommand);
-            view.addObject("SUCCESS_MESSAGE", "You have errors");
-            return view;
-        }
-        UserEntity user = new UserEntity();
-        user.setEmail("email@com");
-        user.setPassword("password");
-        user = userDao.save(user);
-        interviewCommand.setUser(user);
-        interviewCommand.setCreated(new Date());
-        InterviewEntity interview = interviewService
-                .addInterview(interviewCommand);
-        Integer id = interview.getId();
-        ModelAndView view = new ModelAndView("add_interview");
-        view.addObject(interviewCommand);
-        view.addObject("SUCCESS_MESSAGE",
-                "Interview saved successfully with id=" + id);
-        return view;*/
-        return new ModelAndView();
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String showFormCreateInterview(Model model) {
+        model.addAttribute(MODEL_ATTRIBUTE_INTERVIEW, new InterviewCommand());
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_CITY, cityService.getCities());
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_COMPANY, companyService.getCompanyList());
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_POSITION, positionService.getPositionList());
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_TECHNOLOGY, technologyService.getTechnologyList());
+        return VIEW_INTERVIEW_ADD;
+
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public String getAddInterview(Map<String, Object> map,
-                                  HttpServletRequest request) {
-        map.put("interviewCommand", new InterviewCommand());
-        map.put("mode", ModeView.CREATE);
-        return "interview";
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String createInterview(@Valid @ModelAttribute("interviewCommand") InterviewCommand interviewCommand, BindingResult result, RedirectAttributes attributes, Model model) {
+        if (result.hasErrors()) {
+            LOGGER.debug("Add interview form was submitted with binding errors. Rendering form view.");
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_CITY, cityService.getCities());
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_COMPANY, companyService.getCompanyList());
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_POSITION, positionService.getPositionList());
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_TECHNOLOGY, technologyService.getTechnologyList());
+            return VIEW_INTERVIEW_ADD;
+        }
+        interviewCommand.setUser(userService.getUserByEmail(authenticationUtils.getUserDetails().getUsername()));
+        InterviewEntity savedInterviewEntity = interviewService.addInterview(interviewCommand);
+        attributes.addFlashAttribute(FLASH_MESSAGE_KEY_FEEDBACK, FLASH_MESSAGE_TEXT_INTERVIEW_ADDED);
+        attributes.addAttribute(PARAMETER_INTERVIEW_ID, savedInterviewEntity.getId());
+        return createRedirectViewPath(REQUEST_MAPPING_INTERVIEW_VIEW);
     }
 
     @RequestMapping(value = "/{interviewId}/edit", method = RequestMethod.GET)
-    public String getEditInterview(
-            @PathVariable("interviewId") Integer interviewId,
-            Map<String, Object> map, HttpServletRequest request) {
-        map.put("interviewCommand", createInterviewCommand());
-        map.put("mode", ModeView.EDIT);
-        return "interview";
+    public String showFormUpdateInterview(@PathVariable("interviewId") Integer interviewId, Model model) {
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_CITY, cityService.getCities());
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_COMPANY, companyService.getCompanyList());
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_POSITION, positionService.getPositionList());
+        model.addAttribute(MODEL_ATTRIBUTE_LIST_TECHNOLOGY, technologyService.getTechnologyList());
+        model.addAttribute(MODEL_ATTRIBUTE_INTERVIEW, interviewService.getInterviewById(interviewId));
+        return VIEW_INTERVIEW_UPDATE;
     }
 
     @RequestMapping(value = "/{interviewId}/edit", method = RequestMethod.POST)
-    public String saveInterview(
-            @PathVariable("interviewId") Integer interviewId,
-            @ModelAttribute InterviewCommand interviewCommand,
-            Map<String, Object> map, HttpServletRequest request,
-            BindingResult bindResult) {
-        if (bindResult.hasErrors()) {
-            map.put("interviewCommand", interviewCommand);
-            map.put("mode", ModeView.EDIT);
-            return "interview";
+    public String updateInterview(@Valid @ModelAttribute("interviewCommand") InterviewCommand formInterviewCommand,
+                                  BindingResult result,
+                                  @PathVariable("interviewId") Integer interviewId,
+                                  RedirectAttributes attributes,
+                                  Model model) {
+
+        if (result.hasErrors()) {
+            LOGGER.debug("Update interview form was submitted with binding errors. Rendering form view.");
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_CITY, cityService.getCities());
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_COMPANY, companyService.getCompanyList());
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_POSITION, positionService.getPositionList());
+            model.addAttribute(MODEL_ATTRIBUTE_LIST_TECHNOLOGY, technologyService.getTechnologyList());
+            return VIEW_INTERVIEW_UPDATE;
         }
-        return "redirect:/interview/" + interviewId + "/view";
+        formInterviewCommand.setId(interviewId);
+        formInterviewCommand.setUser(userService.getUserByEmail(authenticationUtils.getUserDetails().getUsername()));
+        InterviewEntity updatedInterviewEntity = interviewService.update(formInterviewCommand);
+        attributes.addAttribute(PARAMETER_INTERVIEW_ID, updatedInterviewEntity.getId());
+        attributes.addFlashAttribute(FLASH_MESSAGE_KEY_FEEDBACK, FEEDBACK_MESSAGE_TEXT_INTERVIEW_UPDATED);
+
+        return createRedirectViewPath(REQUEST_MAPPING_INTERVIEW_VIEW);
     }
 
     @RequestMapping(value = "/{interviewId}/view", method = RequestMethod.GET)
-    public String getViewInterview(@PathVariable int interviewId,
-                                   Map<String, Object> map, HttpServletRequest request) {
-        map.put("interviewCommand", createInterviewCommand());
-        map.put("mode", ModeView.VIEW);
-        return "interview";
-    }
-
-    private InterviewCommand createInterviewCommand() {
-        InterviewCommand interviewCommand = new InterviewCommand();
-        interviewCommand.setId(1);
-        interviewCommand.setFeedback("some feedback");
-        return interviewCommand;
+    public String showFormInterviewForm(@PathVariable int interviewId, Model model) {
+        model.addAttribute(MODEL_ATTRIBUTE_INTERVIEW, interviewService.getInterviewById(interviewId));
+        return VIEW_INTERVIEW_VIEW;
     }
 
     @RequestMapping(value = "/my", method = RequestMethod.GET)
-    public ModelAndView showInterviewList(@Valid @ModelAttribute PaginateCommand paginateCommand, BindingResult bindResult) {
+    public ModelAndView showFormInterviewListByUser(@Valid @ModelAttribute PaginateCommand paginateCommand, BindingResult bindResult) {
         UserCommand userCommand = userService.getUserByEmail(authenticationUtils.getUserDetails().getUsername());
         Long totalResults = interviewService.getInterviewsCountForUser(userCommand.getId());
         PagingFilter pagingFilter = new PagingFilter(0, RESULTS_ON_PAGE, totalResults.intValue());
-        if (paginateCommand != null && !bindResult.hasErrors()){
+        if (paginateCommand != null && !bindResult.hasErrors()) {
             pagingFilter.setCurrentPage(paginateCommand.getPage());
         }
         List<InterviewCommand> interviewList = interviewService.getUserInterviewList(userCommand.getId(), pagingFilter);
@@ -158,4 +187,18 @@ public class InterviewResource {
         modelAndView.addObject("pagingFilter", pagingFilter);
         return modelAndView;
     }
+
+    private String createRedirectViewPath(String requestMapping) {
+        StringBuilder redirectViewPath = new StringBuilder();
+        redirectViewPath.append("redirect:/interview");
+        redirectViewPath.append(requestMapping);
+        return redirectViewPath.toString();
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Interview entity not found")  // 409
+    @ExceptionHandler(EntityNotFoundException.class)
+    public void entityNotFound(Exception exception) {
+        //TODO make a page error
+    }
+
 }

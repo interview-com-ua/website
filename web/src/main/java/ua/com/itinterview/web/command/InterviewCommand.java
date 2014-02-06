@@ -11,6 +11,7 @@ public class InterviewCommand {
 
     private Integer id;
     private UserCommand user;
+
     @DbExist(dbEntity = CompanyEntity.class, message = "{dbexist.company}")
     private CompanyCommand company;
     @DbExist(dbEntity = TechnologyEntity.class, message = "{dbexist.technology}")

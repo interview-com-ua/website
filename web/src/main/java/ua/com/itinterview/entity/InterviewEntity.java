@@ -1,24 +1,17 @@
 package ua.com.itinterview.entity;
 
-import java.util.Date;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Formula;
 import ua.com.itinterview.web.command.InterviewCommand;
-import ua.com.itinterview.web.command.UserCommand;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "interview")
 @SequenceGenerator(name = "sequence", sequenceName = "interview_id", allocationSize = 1)
 public class InterviewEntity extends EntityWithId {
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "userId")
     private UserEntity user;
     @ManyToOne
@@ -117,6 +110,10 @@ public class InterviewEntity extends EntityWithId {
         this.questionCount = questionCount;
     }
 
+    @PrePersist
+    public void prePersist() {
+        created = new Date();
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

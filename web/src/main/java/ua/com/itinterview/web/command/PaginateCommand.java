@@ -3,7 +3,7 @@ package ua.com.itinterview.web.command;
 import org.hibernate.validator.constraints.Range;
 
 public class PaginateCommand {
-    @Range(min = 1)
+
     private int page;
 
     public int getPage() {

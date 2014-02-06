@@ -1,19 +1,13 @@
 package ua.com.itinterview.dao;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import ua.com.itinterview.entity.*;
 
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import ua.com.itinterview.entity.CityEntity;
-import ua.com.itinterview.entity.CompanyEntity;
-import ua.com.itinterview.entity.InterviewEntity;
-import ua.com.itinterview.entity.PositionEntity;
-import ua.com.itinterview.entity.TechnologyEntity;
-import ua.com.itinterview.entity.UserEntity;
+import static org.junit.Assert.assertEquals;
 
 public class InterviewDaoIntegrationTest extends
 	BaseEntityWithIdDaoIntegrationTest<InterviewEntity> {
@@ -79,7 +73,7 @@ public class InterviewDaoIntegrationTest extends
 	Integer id = interDao.getInterviewsByUser(interviewAuthor).get(0)
 		.getId();
 	System.out.println("ID NUMBER OF INTERVIEW : " + id);
-	InterviewEntity expected = interDao.getInterviewById(id);
+	InterviewEntity expected = interDao.getEntityById(id);
 	assertEquals(interviewAuthor, expected.getUser());
     }
 

@@ -1,18 +1,17 @@
 package ua.com.itinterview.service;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import ua.com.itinterview.dao.CompanyDao;
 import ua.com.itinterview.entity.CompanyEntity;
 import ua.com.itinterview.web.command.CompanyCommand;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class CompanyServiceUnitTest {
 
@@ -22,7 +21,6 @@ public class CompanyServiceUnitTest {
     private static final String COMPANY_LOGO_URL = "company logo url";
     private static final String COMPANY_ADDRESS = "company address";
     private static final String COMPANY_WEB_PAGE = "company webpage";
-
     private CompanyService companyService;
     private CompanyDao companyDao;
 
@@ -124,4 +122,12 @@ public class CompanyServiceUnitTest {
                 companyService.getCompanyList());
     }
 
+    @Test
+    public void testGetCompanyById() {
+        CompanyEntity testCompanyEntity = createTestCompanyEntity();
+        CompanyCommand expectedCompanyCommand = new CompanyCommand(testCompanyEntity);
+        EasyMock.expect(companyDao.getEntityById(testCompanyEntity.getId())).andReturn(testCompanyEntity);
+        replayMocks();
+        assertEquals(expectedCompanyCommand, companyService.getCompanyById(testCompanyEntity.getId()));
+    }
 }

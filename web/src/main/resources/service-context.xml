@@ -13,6 +13,6 @@
     <bean id="companyService" class="ua.com.itinterview.service.CompanyService"/>
     <bean id="positionService" class="ua.com.itinterview.service.PositionService"/>
     <bean id="technologyService" class="ua.com.itinterview.service.TechnologyService"/>
-    
+    <bean id="cityService" class="ua.com.itinterview.service.CityService"/>
     <bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" scope="prototype"/>
 </beans>

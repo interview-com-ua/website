@@ -1,13 +1,12 @@
 package ua.com.itinterview.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import ua.com.itinterview.dao.CompanyDao;
 import ua.com.itinterview.entity.CompanyEntity;
 import ua.com.itinterview.web.command.CompanyCommand;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CompanyService {
 
@@ -30,4 +29,7 @@ public class CompanyService {
 	return companies;
     }
 
+    public CompanyCommand getCompanyById(int id) {
+        return new CompanyCommand(companyDao.getEntityById(id));
+    }
 }
