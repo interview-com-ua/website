@@ -15,7 +15,7 @@
             <!--TODO css class  -->
             <div class="registration_form">
                 <form:form action="${ formAction }" method="${formMethod}" commandName="interviewCommand" class="jNice">
-                    <fieldset>
+                    <fieldset  id="reg_data">
                         <legend>${ pageTitle }</legend>
 
                           Город :
@@ -43,7 +43,7 @@
                            <form:textarea cols="40" rows="15" path="feedback" placeholder="Отзыв" />
 
                           <div>
-                             <input type="submit"  value="${formSubmit }" />
+                             <input id="add_interview" type="submit"  value="${formSubmit }" />
                            </div>
                     </fieldset>
                 </form:form>

@@ -33,7 +33,7 @@
 		<sonar.language>java</sonar.language>
 		<sonar.host.url>http://home.stokito.name:9000/</sonar.host.url>
 
-        <selenium.version>2.31.0</selenium.version>
+        <selenium.version>2.39.0</selenium.version>
 		<hsqldb.version>2.2.8</hsqldb.version>
 		<postgres.version>9.1-901.jdbc4</postgres.version>
 		<jetty.version>9.0.0.v20130308</jetty.version>
