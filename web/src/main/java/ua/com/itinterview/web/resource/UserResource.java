@@ -20,7 +20,8 @@ import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
-public class UserResource extends ValidatedResource {
+public class UserResource extends ValidatedResource
+{
 
     @Autowired
     UserService userService;
@@ -28,64 +29,72 @@ public class UserResource extends ValidatedResource {
     AuthenticationUtils authenticationUtils;
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public ModelAndView getSignupUserPage() {
-	return goToSignupPageWithCommand(new UserCommand(), ModeView.CREATE);
+    public ModelAndView getSignupUserPage()
+    {
+        return goToSignupPageWithCommand(new UserCommand(), ModeView.CREATE);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ModelAndView createUser(
-	    @Valid @ModelAttribute UserCommand userCommand,
-	    BindingResult bindResult, HttpServletRequest request) {
-	if (bindResult.hasErrors()) {
-	    return goToSignupPageWithCommand(userCommand, ModeView.CREATE);
-	}
-	UserCommand newUserCommand = userService.createUser(userCommand);
-	authenticationUtils.loginUser(userCommand.getEmail(), userCommand.getPassword(), request);
-	return new ModelAndView("redirect:/user/" + newUserCommand.getId()
-		+ "/view");
+            @Valid @ModelAttribute UserCommand userCommand,
+            BindingResult bindResult, HttpServletRequest request)
+    {
+        if (bindResult.hasErrors())
+        {
+            return goToSignupPageWithCommand(userCommand, ModeView.CREATE);
+        }
+        UserCommand newUserCommand = userService.createUser(userCommand);
+        authenticationUtils.loginUser(userCommand.getEmail(), userCommand.getPassword(), request);
+        return new ModelAndView("redirect:/user/" + newUserCommand.getId()
+                + "/view");
 
     }
 
     @PreAuthorize("#userId == principal.info.id")
     @RequestMapping(value = "/user/{id}/view", method = RequestMethod.GET)
     public String getViewUser(@PathVariable("id") Integer userId,
-	    Map<String, Object> map) {
-	UserCommand userCommand = userService.getUserById(userId);
-	map.put("userCommand", userCommand);
-	return "profile_page";
+                              Map<String, Object> map)
+    {
+        UserCommand userCommand = userService.getUserById(userId);
+        map.put("userCommand", userCommand);
+        return "profile_page";
     }
 
     @PreAuthorize("#userId == principal.info.id")
     @RequestMapping(value = "/user/{id}/edit", method = RequestMethod.GET)
     public String getEditUser(@PathVariable("id") Integer userId,
-	    Map<String, Object> map) {
-	UserEditProfileCommand userEditProfileCommand = new UserEditProfileCommand(
-		userService.getUserById(userId));
-	map.put("userEditProfileCommand", userEditProfileCommand);
-	return "profile_page";
+                              Map<String, Object> map)
+    {
+        UserEditProfileCommand userEditProfileCommand = new UserEditProfileCommand(
+                userService.getUserById(userId));
+        map.put("userEditProfileCommand", userEditProfileCommand);
+        return "profile_page";
     }
 
     @RequestMapping(value = "/user/{id}/save", method = RequestMethod.POST)
     public String saveUser(
-	    @PathVariable("id") int userId,
-	    @Valid @ModelAttribute UserEditProfileCommand userEditProfileCommand,
-	    BindingResult bindResult, HttpServletRequest request,
-	    Map<String, Object> map) {
-	if (bindResult.hasErrors()) {
-	    map.put("UserEditProfileCommand", userEditProfileCommand);
-	    return "profile_page";
-	}
+            @PathVariable("id") int userId,
+            @Valid @ModelAttribute UserEditProfileCommand userEditProfileCommand,
+            BindingResult bindResult, HttpServletRequest request,
+            Map<String, Object> map)
+    {
+        if (bindResult.hasErrors())
+        {
+            map.put("UserEditProfileCommand", userEditProfileCommand);
+            return "profile_page";
+        }
 
-	userService.updateUser(userId, userEditProfileCommand);
-	return "redirect:/user/" + userId + "/view";
+        userService.updateUser(userId, userEditProfileCommand);
+        return "redirect:/user/" + userId + "/view";
     }
 
     private ModelAndView goToSignupPageWithCommand(UserCommand userCommand,
-	    ModeView modeView) {
-	ModelAndView view = new ModelAndView("signup");
-	view.addObject(userCommand);
-	view.addObject("mode", modeView);
-	return view;
+                                                   ModeView modeView)
+    {
+        ModelAndView view = new ModelAndView("signup");
+        view.addObject(userCommand);
+        view.addObject("mode", modeView);
+        return view;
     }
 
 }
