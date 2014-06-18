@@ -232,7 +232,8 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest
                 .andExpect(model().hasErrors())
                 .andExpect(model().attributeErrorCount("userEditProfileCommand", 2))
                 .andExpect(model().attributeHasFieldErrors("userEditProfileCommand", "name", "email"))
-                .andExpect(status().isOk()).andDo(print());
+                .andExpect(status().isOk())
+                .andDo(print());
 
         UserEntity modifiedUser = userDao.getUserByEmail(EMAIL);
         assertEquals(NAME, modifiedUser.getName());
