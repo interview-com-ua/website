@@ -2,6 +2,7 @@ package ua.com.itinterview.web.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -9,7 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import ua.com.itinterview.dao.UserDao;
+import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.service.UserService;
+import ua.com.itinterview.web.command.ChangePasswordCommand;
 import ua.com.itinterview.web.command.UserCommand;
 import ua.com.itinterview.web.command.UserEditProfileCommand;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
@@ -27,6 +31,10 @@ public class UserResource extends ValidatedResource
     UserService userService;
     @Autowired
     AuthenticationUtils authenticationUtils;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView getSignupUserPage()
@@ -35,9 +43,8 @@ public class UserResource extends ValidatedResource
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView createUser(
-            @Valid @ModelAttribute UserCommand userCommand,
-            BindingResult bindResult, HttpServletRequest request)
+    public ModelAndView createUser(@Valid @ModelAttribute UserCommand userCommand,
+                                   BindingResult bindResult, HttpServletRequest request)
     {
         if (bindResult.hasErrors())
         {
@@ -72,11 +79,8 @@ public class UserResource extends ValidatedResource
     }
 
     @RequestMapping(value = "/user/{id}/save", method = RequestMethod.POST)
-    public String saveUser(
-            @PathVariable("id") int userId,
-            @Valid @ModelAttribute UserEditProfileCommand userEditProfileCommand,
-            BindingResult bindResult, HttpServletRequest request,
-            Map<String, Object> map)
+    public String saveUser(@PathVariable("id") int userId, @Valid @ModelAttribute UserEditProfileCommand userEditProfileCommand,
+                           BindingResult bindResult, HttpServletRequest request, Map<String, Object> map)
     {
         if (bindResult.hasErrors())
         {
@@ -85,6 +89,16 @@ public class UserResource extends ValidatedResource
         }
 
         userService.updateUser(userId, userEditProfileCommand);
+        return "redirect:/user/" + userId + "/view";
+    }
+
+    @RequestMapping(value = "/user/{id}/change_password", method = RequestMethod.POST)
+    public String changePassword(@PathVariable("id") int userId, @ModelAttribute ChangePasswordCommand
+            changePasswordCommand){
+        UserEntity userEntity = userDao.getEntityById(userId);
+        userEntity.setPassword(passwordEncoder.encodePassword(changePasswordCommand.getNewPassword(), ""));
+        userDao.save(userEntity);
+
         return "redirect:/user/" + userId + "/view";
     }
 
