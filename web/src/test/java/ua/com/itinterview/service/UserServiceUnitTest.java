@@ -3,7 +3,9 @@ package ua.com.itinterview.service;
 import org.easymock.Capture;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
@@ -12,6 +14,7 @@ import ua.com.itinterview.web.command.UserCommand;
 import ua.com.itinterview.web.command.UserEditProfileCommand;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 
 import static org.easymock.EasyMock.*;
 import static org.hamcrest.core.Is.is;
@@ -34,6 +37,9 @@ public class UserServiceUnitTest
     private UserDao userDaoMock;
     private UserService userService;
     private PasswordEncoder passwordEncoder;
+
+    @Rule
+    public ExpectedException ex = ExpectedException.none();
 
     @Before
     public void createMocks()
@@ -215,17 +221,41 @@ public class UserServiceUnitTest
     @Test
     public void shouldUpdatePassword() throws Exception
     {
-        UserEntity entity = new UserEntity();
+        UserEntity entity = createUserEntity("oldPwd");
         Integer userId = 10;
         ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand("oldPwd", "newPwd", "");
 
         expect(userDaoMock.getEntityById(userId)).andReturn(entity);
         expect(userDaoMock.save(entity)).andReturn(entity);
         expect(passwordEncoder.encodePassword("newPwd", "")).andReturn("encodedPassword");
+        expect(passwordEncoder.encodePassword("oldPwd", "")).andReturn("oldPwd");
         replayAllMocks();
 
         userService.updatePassword(userId, changePasswordCommand);
         assertThat(entity.getPassword(), is("encodedPassword"));
+    }
+
+    private UserEntity createUserEntity(String password)
+    {
+        UserEntity entity = new UserEntity();
+        entity.setPassword(password);
+        return entity;
+    }
+
+    @Test
+    public void expectValidationExceptionWhenOldPasswordInvalid() throws Exception
+    {
+        UserEntity entity = createUserEntity("pwd");
+
+        Integer userId = 10;
+        ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand("oldPwd", "newPwd", "");
+
+        expect(userDaoMock.getEntityById(userId)).andReturn(entity);
+        expect(passwordEncoder.encodePassword("oldPwd", "")).andReturn("encodedOldPassword");
+        replayAllMocks();
+
+        ex.expect(ValidationException.class);
+        userService.updatePassword(userId, changePasswordCommand);
     }
 
     @After
