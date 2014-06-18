@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
+import ua.com.itinterview.web.command.ChangePasswordCommand;
 import ua.com.itinterview.web.command.UserCommand;
 import ua.com.itinterview.web.command.UserEditProfileCommand;
 
@@ -49,5 +50,12 @@ public class UserService {
 
     public void deleteAll() {
         userDao.deleteAll();
+    }
+
+    public UserCommand updatePassword(int userId, ChangePasswordCommand changePasswordCommand)
+    {
+        UserEntity userEntity = userDao.getEntityById(userId);
+        userEntity.setPassword(passwordEncoder.encodePassword(changePasswordCommand.getNewPassword(), ""));
+        return new UserCommand(userDao.save(userEntity));
     }
 }

@@ -95,10 +95,8 @@ public class UserResource extends ValidatedResource
     @RequestMapping(value = "/user/{id}/change_password", method = RequestMethod.POST)
     public String changePassword(@PathVariable("id") int userId, @ModelAttribute ChangePasswordCommand
             changePasswordCommand){
-        UserEntity userEntity = userDao.getEntityById(userId);
-        userEntity.setPassword(passwordEncoder.encodePassword(changePasswordCommand.getNewPassword(), ""));
-        userDao.save(userEntity);
 
+        userService.updatePassword(userId, changePasswordCommand);
         return "redirect:/user/" + userId + "/view";
     }
 

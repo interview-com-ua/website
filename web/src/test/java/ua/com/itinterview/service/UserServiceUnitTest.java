@@ -7,13 +7,16 @@ import org.junit.Test;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
+import ua.com.itinterview.web.command.ChangePasswordCommand;
 import ua.com.itinterview.web.command.UserCommand;
 import ua.com.itinterview.web.command.UserEditProfileCommand;
 
 import javax.persistence.EntityNotFoundException;
 
 import static org.easymock.EasyMock.*;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class UserServiceUnitTest
 {
@@ -207,6 +210,22 @@ public class UserServiceUnitTest
         expect(userDaoMock.getUserByEmail(FAKE_USER_NAME)).andThrow(new EntityNotFoundException());
         replayAllMocks();
         userService.getUserByEmail(FAKE_USER_NAME);
+    }
+
+    @Test
+    public void shouldUpdatePassword() throws Exception
+    {
+        UserEntity entity = new UserEntity();
+        Integer userId = 10;
+        ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand("oldPwd", "newPwd", "");
+
+        expect(userDaoMock.getEntityById(userId)).andReturn(entity);
+        expect(userDaoMock.save(entity)).andReturn(entity);
+        expect(passwordEncoder.encodePassword("newPwd", "")).andReturn("encodedPassword");
+        replayAllMocks();
+
+        userService.updatePassword(userId, changePasswordCommand);
+        assertThat(entity.getPassword(), is("encodedPassword"));
     }
 
     @After
