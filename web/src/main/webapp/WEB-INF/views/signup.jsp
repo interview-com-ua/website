@@ -57,8 +57,8 @@
 						<c:if test="${mode != Modes.MODE_VIEW}">
 							<form:errors path="password" cssStyle="color: #ff0000" />
 							<form:password class="text_inp pass_inp" placeholder="Пароль" path="password" />
-							<form:errors path="confirmPassword" cssStyle="color: #ff0000" />
-							<form:password class="text_inp" placeholder="Пароль еще раз" path="confirmPassword" />
+							<form:errors path="newPassword" cssStyle="color: #ff0000" />
+							<form:password class="text_inp" placeholder="Пароль еще раз" path="newPassword" />
 						</c:if>
 			       		  <input type='submit' value='${submitValue}' />
 			           </fieldset>

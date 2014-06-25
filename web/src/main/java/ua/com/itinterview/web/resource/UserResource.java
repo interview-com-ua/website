@@ -93,7 +93,7 @@ public class UserResource extends ValidatedResource
     }
 
     @RequestMapping(value = "/user/{id}/change_password", method = RequestMethod.POST)
-    public String changePassword(@PathVariable("id") int userId, @ModelAttribute ChangePasswordCommand
+    public String changePassword(@PathVariable("id") int userId, @Valid @ModelAttribute ChangePasswordCommand
             changePasswordCommand){
 
         userService.updatePassword(userId, changePasswordCommand);
