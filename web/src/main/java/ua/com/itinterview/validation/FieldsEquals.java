@@ -13,7 +13,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = FieldsEqualsValidator.class)
 public @interface FieldsEquals {
 
-    String message() default "Fields are not equals";
+    String message() default "{field.equals}";
 
     Class<?>[] groups() default {};
 
