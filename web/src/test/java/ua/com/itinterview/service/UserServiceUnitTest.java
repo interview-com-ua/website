@@ -228,7 +228,6 @@ public class UserServiceUnitTest
         expect(userDaoMock.getEntityById(userId)).andReturn(entity);
         expect(userDaoMock.save(entity)).andReturn(entity);
         expect(passwordEncoder.encodePassword("newPwd", "")).andReturn("encodedPassword");
-        expect(passwordEncoder.encodePassword("oldPwd", "")).andReturn("oldPwd");
         replayAllMocks();
 
         userService.updatePassword(userId, changePasswordCommand);
@@ -240,22 +239,6 @@ public class UserServiceUnitTest
         UserEntity entity = new UserEntity();
         entity.setPassword(password);
         return entity;
-    }
-
-    @Test
-    public void expectValidationExceptionWhenOldPasswordInvalid() throws Exception
-    {
-        UserEntity entity = createUserEntity("pwd");
-
-        Integer userId = 10;
-        ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand("oldPwd", "newPwd", "");
-
-        expect(userDaoMock.getEntityById(userId)).andReturn(entity);
-        expect(passwordEncoder.encodePassword("oldPwd", "")).andReturn("encodedOldPassword");
-        replayAllMocks();
-
-        ex.expect(ValidationException.class);
-        userService.updatePassword(userId, changePasswordCommand);
     }
 
     @After

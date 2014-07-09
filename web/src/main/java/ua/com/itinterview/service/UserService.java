@@ -57,11 +57,6 @@ public class UserService {
     public UserCommand updatePassword(int userId, ChangePasswordCommand changePasswordCommand)
     {
         UserEntity userEntity = userDao.getEntityById(userId);
-        String encodedOldPassword = passwordEncoder.encodePassword(changePasswordCommand.getOldPassword(), "");
-        if (!encodedOldPassword.equals(userEntity.getPassword()))
-        {
-            throw new ValidationException();
-        }
         userEntity.setPassword(passwordEncoder.encodePassword(changePasswordCommand.getNewPassword(), ""));
         return new UserCommand(userDao.save(userEntity));
     }
