@@ -11,6 +11,7 @@ public interface BaseWebIntegrationTestConstants {
     String NAME_ANOTHER = "Name2";
     String EMAIL = "email@mail.com";
     String EMAIL_ANOTHER = "email2@mail.com";
+    String USER_ID = "10";
     String PASSWORD = "password";
     String PASSWORD_ANOTHER = "password2";
     String INVALID_EMAIL = "invalid_email";

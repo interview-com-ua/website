@@ -5,7 +5,9 @@ import org.hibernate.validator.util.ReflectionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import ua.com.itinterview.dao.UserDao;
+import ua.com.itinterview.entity.UserEntity;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -29,7 +31,8 @@ public class CompareOldPasswordValidator implements
     private static final Logger LOGGER = Logger
             .getLogger(CompareOldPasswordValidator.class);
 
-    @Override public void initialize(CompareOldPassword constraintAnnotations) {
+    @Override
+    public void initialize(CompareOldPassword constraintAnnotations) {
         errorKey = constraintAnnotations.errorKey();
         errorMessage = constraintAnnotations.message();
 
@@ -37,23 +40,22 @@ public class CompareOldPasswordValidator implements
         oldPasswordPropertyName = constraintAnnotations.oldPassword();
     }
 
-    @Override public boolean isValid(Object value, ConstraintValidatorContext context) {
+    @Override
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
         boolean valid = false;
         try {
-            Object userId = getPropertyFromBean(value, userIdPropertyName);
-            Object enteredOldPassword = getPropertyFromBean(value, oldPasswordPropertyName);
-
-            String oldPassword = null;
-            if(userId instanceof Integer) {
-                oldPassword = passwordEncoder.encodePassword(userDao.getEntityById((Integer) userId).getPassword(), "");
+            int userId = (Integer) getPropertyFromBean(value, userIdPropertyName);
+            String enteredOldPassword = (String) getPropertyFromBean(value, oldPasswordPropertyName);
+            if (enteredOldPassword == null) {
+                enteredOldPassword = "";
             }
+            UserEntity userEntity = userDao.getEntityById(userId);
 
-            if (oldPassword != null) {
-                valid = oldPassword.equals(enteredOldPassword);
-            } else {
-                valid = enteredOldPassword == null;
-            }
+            String oldPassword = passwordEncoder.encodePassword(enteredOldPassword, "");
+            valid = oldPassword.equals(userEntity.getPassword());
 
+        } catch (EntityNotFoundException e) {
+            valid = false;
         } catch (IllegalArgumentException e) {
             LOGGER.error("Invalid argument or property name", e);
             throw new RuntimeException(e);

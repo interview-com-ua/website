@@ -242,6 +242,26 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest
 
     @Test
     @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
+    public void shouldReturnErrorKeysWhenOldPasswordIsNotCorrect() throws Exception {
+        ResultActions actions = mvc.perform(loginUser(EMAIL, PASSWORD));
+        String changePasswordUrl = "/user/" + USER_ID + "/change_password";
+        String oldPassword = "invalidPassword";
+        String newPassword = "newPassword";
+        mvc.perform(post(changePasswordUrl).session(getHttpSession(actions)).
+                param("userId", USER_ID).
+                param("oldPassword", oldPassword).
+                param("newPassword", newPassword).
+                param("confirmPassword", newPassword)).
+                andDo(print()).
+                andExpect(view().name("profile_page")).
+                andExpect(status().isOk()).
+                andExpect(model().hasErrors()).
+                andExpect(model().attributeErrorCount("userChangePasswordCommand", 1)).
+                andExpect(model().attributeHasFieldErrors("userChangePasswordCommand", "oldPassword"));
+    }
+
+    @Test
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
     @ExpectedDatabase(value = "file:src/test/resources/dataset/UserResource/user-after-password-changed.xml",
             assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void shouldChangePassword() throws Exception
@@ -253,12 +273,14 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest
         String newPassword = "newPassword";
         String userProfileUrl = "/user/" + user.getId() + "/view";
         mvc.perform(post(changePasswordUrl).session(getHttpSession(actions)).
+                param("userId", user.getId() + "").
                 param("oldPassword", PASSWORD).
                 param("newPassword", newPassword).
                 param("confirmPassword", newPassword)).
-                andExpect(redirectedUrl(userProfileUrl)).
                 andExpect(status().isMovedTemporarily()).
-                andExpect(model().hasNoErrors());
+                andExpect(redirectedUrl(userProfileUrl)).
+                andExpect(model().hasNoErrors()).
+                andDo(print());
 
         mvc.perform(loginUser(EMAIL, newPassword))
                 .andExpect(redirectedUrl(userProfileUrl))
@@ -268,4 +290,6 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest
                 .andExpect(redirectedUrl("/register?login_error=1"))
                 .andExpect(status().isMovedTemporarily());
     }
+
+
 }
