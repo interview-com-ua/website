@@ -223,7 +223,7 @@ public class UserServiceUnitTest
     {
         UserEntity entity = createUserEntity("oldPwd");
         Integer userId = 10;
-        ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand("oldPwd", "newPwd", "");
+        ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand(userId, "oldPwd", "newPwd", "");
 
         expect(userDaoMock.getEntityById(userId)).andReturn(entity);
         expect(userDaoMock.save(entity)).andReturn(entity);
