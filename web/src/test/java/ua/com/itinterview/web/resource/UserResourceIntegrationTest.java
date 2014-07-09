@@ -256,8 +256,8 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest
                 andExpect(view().name("profile_page")).
                 andExpect(status().isOk()).
                 andExpect(model().hasErrors()).
-                andExpect(model().attributeErrorCount("userChangePasswordCommand", 1)).
-                andExpect(model().attributeHasFieldErrors("userChangePasswordCommand", "oldPassword"));
+                andExpect(model().attributeErrorCount("changePasswordCommand", 1)).
+                andExpect(model().attributeHasFieldErrors("changePasswordCommand", "oldPassword"));
     }
 
     @Test
