@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  * Time: 6:42 PM
  */
 //@FieldsNotEquals(firstField = "oldPassword", secondField = "newPassword", errorKey = "newPassword", message = "{new.password}")
-//@FieldsEquals(firstField = "newPassword", secondField = "confirmPassword", errorKey = "confirmPassword", message = "{confirm.password}")
+@FieldsEquals(firstField = "newPassword", secondField = "confirmPassword", errorKey = "confirmPassword", message = "{confirm.password}")
 @CompareOldPassword(userId = "userId", oldPassword = "oldPassword", errorKey = "oldPassword")
 public class ChangePasswordCommand {
 
