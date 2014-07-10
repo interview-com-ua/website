@@ -295,4 +295,22 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest {
                 andExpect(model().attributeHasFieldErrors("changePasswordCommand", "confirmPassword"));
     }
 
+    @Test
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
+    public void shouldReturnErrorKeysWhenNewPasswordEqualsOldPassword() throws Exception {
+        String changePasswordUrl = "/user/" + USER_ID + "/change_password";
+
+        ResultActions actions = mvc.perform(loginUser(EMAIL, PASSWORD));
+        String newPassword = PASSWORD;
+        mvc.perform(post(changePasswordUrl).session(getHttpSession(actions)).
+                param("userId", USER_ID).
+                param("oldPassword", PASSWORD).
+                param("newPassword", newPassword).
+                param("confirmPassword", newPassword)).
+                andExpect(view().name("profile_page")).
+                andExpect(status().isOk()).
+                andExpect(model().hasErrors()).
+                andExpect(model().attributeErrorCount("changePasswordCommand", 1)).
+                andExpect(model().attributeHasFieldErrors("changePasswordCommand", "newPassword"));
+    }
 }
