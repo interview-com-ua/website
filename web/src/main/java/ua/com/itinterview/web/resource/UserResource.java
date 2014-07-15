@@ -92,13 +92,14 @@ public class UserResource extends ValidatedResource
         return "redirect:/user/" + userId + "/view";
     }
 
+    @PreAuthorize("#userId == principal.info.id")
     @RequestMapping(value = "/user/{id}/change_password", method = RequestMethod.POST)
-    public String changePassword(@PathVariable("id") int userId, @Valid @ModelAttribute ChangePasswordCommand
+    public String changePassword(@PathVariable("id") Integer userId, @Valid @ModelAttribute ChangePasswordCommand
             changePasswordCommand, BindingResult bindResult, Map<String, Object> map){
 
         if (bindResult.hasErrors())
         {
-            map.put("userChangePasswordCommand", changePasswordCommand);
+            map.put("changePasswordCommand", changePasswordCommand);
             return "profile_page";
         }
         userService.updatePassword(userId, changePasswordCommand);

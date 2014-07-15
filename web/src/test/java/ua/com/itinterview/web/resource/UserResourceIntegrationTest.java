@@ -313,4 +313,21 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest {
                 andExpect(model().attributeErrorCount("changePasswordCommand", 1)).
                 andExpect(model().attributeHasFieldErrors("changePasswordCommand", "newPassword"));
     }
+
+    @Test
+    @DatabaseSetup("file:src/test/resources/dataset/UserResource/users-initial.xml")
+    public void shouldReturnForbiddenStatusWhenUserTryChangeNotHisPassword() throws Exception {
+        ResultActions actions = mvc.perform(loginUser(EMAIL, PASSWORD));
+        String fakeUserId = "11";
+        String changePasswordUrl = "/user/" + fakeUserId + "/change_password";
+        String newPassword = "newPassword2";
+        mvc.perform(post(changePasswordUrl).session(getHttpSession(actions)).
+                param("userId", fakeUserId).
+                param("oldPassword", PASSWORD).
+                param("newPassword", newPassword).
+                param("confirmPassword", newPassword)).
+                andExpect(view().name("profile_page")).
+                andExpect(status().isForbidden());
+
+    }
 }
