@@ -2,12 +2,14 @@ package ua.com.itinterview.webtest;
 
 import org.junit.After;
 import org.junit.Before;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import ua.com.itinterview.webtest.conf.SeleniumWrapper;
+
+import java.util.concurrent.TimeUnit;
 
 @ContextConfiguration(value = {"classpath:selenium-context.xml"})
 public class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTests
@@ -17,7 +19,7 @@ public class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTests
 
     protected RemoteWebDriver driver;
 
-    private String host;
+    private String host = "localhost";
 
     @Value("${httpPort}")
     private String httpPort;
@@ -28,13 +30,16 @@ public class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTests
     @Before
     public void setUp()
     {
+        driver = new FirefoxDriver();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
         driver.manage().deleteAllCookies();
     }
 
     @After
     public void quitBrowser()
     {
-        driver.quit();
+//        driver.quit();
     }
 
     protected void pause(int secconds)
@@ -54,7 +59,7 @@ public class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTests
                 .append(contextPath).append(relativePath).toString();
     }
 
-    @Autowired
+    //    @Autowired
     public void setSeleniumWrapper(SeleniumWrapper wrapper)
     {
         this.driver = wrapper.getDriver();
