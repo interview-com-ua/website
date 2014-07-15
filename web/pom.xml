@@ -196,7 +196,11 @@
             <artifactId>selenium-ie-driver</artifactId>
             <version>${selenium.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-remote-driver</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
@@ -221,8 +225,7 @@
         <db.dir>${project.build.directory}/db</db.dir>
         <sonar.language>java</sonar.language>
         <sonar.host.url>http://home.stokito.name:9000/</sonar.host.url>
-
-        <selenium.version>2.31.0</selenium.version>
+        <selenium.version>2.42.0</selenium.version>
         <hsqldb.version>2.2.8</hsqldb.version>
         <postgres.version>9.1-901.jdbc4</postgres.version>
         <jetty.version>9.0.0.v20130308</jetty.version>

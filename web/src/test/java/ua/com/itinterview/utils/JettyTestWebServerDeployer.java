@@ -3,7 +3,8 @@ package ua.com.itinterview.utils;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
-public class JettyTestWebServerDeployer {
+public class JettyTestWebServerDeployer
+{
 
     private static final int DEFAULT_PORT = 8080;
 
@@ -13,24 +14,31 @@ public class JettyTestWebServerDeployer {
     private int port;
     private String contextPath;
 
-    public JettyTestWebServerDeployer() {
+    public JettyTestWebServerDeployer()
+    {
         this(DEFAULT_PORT, DEFAULT_CONTEXT_PATH);
     }
 
-    public JettyTestWebServerDeployer(int port) {
+    public JettyTestWebServerDeployer(int port)
+    {
         this(port, DEFAULT_CONTEXT_PATH);
     }
 
-    public JettyTestWebServerDeployer(int port, String contextPath) {
+    public JettyTestWebServerDeployer(int port, String contextPath)
+    {
         this.port = port;
         this.contextPath = contextPath;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         int port;
-        if(args.length > 0) {
+        if (args.length > 0)
+        {
             port = Integer.parseInt(args[0]);
-        } else {
+        }
+        else
+        {
             port = DEFAULT_PORT;
         }
 
@@ -38,41 +46,50 @@ public class JettyTestWebServerDeployer {
         jettyTestServer.start();
     }
 
-    public void start() {
-	server = new Server(port);
-	WebAppContext context = new WebAppContext();
-	context.setDescriptor("src/main/webapp/WEB-INF/web.xml");
-	context.setResourceBase("src/main/webapp");
-	context.setContextPath(contextPath);
-	context.setParentLoaderPriority(true);
+    public void start()
+    {
+        server = new Server(port);
+        WebAppContext context = new WebAppContext();
+        context.setDescriptor("src/main/webapp/WEB-INF/web.xml");
+        context.setResourceBase("src/main/webapp");
+        context.setContextPath(contextPath);
+        context.setParentLoaderPriority(true);
 
-	server.setHandler(context);
+        server.setHandler(context);
 
-	try {
-	    server.start();
-	} catch (Exception e) {
-	    throw new RuntimeException(e);
-	}
+        try
+        {
+            server.start();
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void stop() throws Exception {
-	server.stop();
+    public void stop() throws Exception
+    {
+        server.stop();
     }
 
-    public Server getServer() {
-	return server;
+    public Server getServer()
+    {
+        return server;
     }
 
-    public void setServer(Server server) {
-	this.server = server;
+    public void setServer(Server server)
+    {
+        this.server = server;
     }
 
-    public int getPort() {
-	return port;
+    public int getPort()
+    {
+        return port;
     }
 
-    public void setPort(int port) {
-	this.port = port;
+    public void setPort(int port)
+    {
+        this.port = port;
     }
 
 }

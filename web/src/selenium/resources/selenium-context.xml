@@ -15,8 +15,7 @@
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations" value="classpath:web.properties"/>
     </bean>
-    
-    <bean id="seleniumWrapper" class="ua.com.itinterview.webtest.SeleniumWrapper"
+    <bean id="seleniumWrapper" class="ua.com.itinterview.webtest.conf.SeleniumWrapper"
           init-method="start" destroy-method="stop"/>
     
 </beans>

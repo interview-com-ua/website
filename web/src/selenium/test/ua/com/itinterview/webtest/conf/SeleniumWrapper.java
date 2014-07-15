@@ -1,4 +1,5 @@
-package ua.com.itinterview.webtest;
+package ua.com.itinterview.webtest.conf;
+
 
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
