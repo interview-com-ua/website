@@ -2,15 +2,11 @@ package ua.com.itinterview.webtest;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import ua.com.itinterview.webtest.pages.FeedbackOnSignupPage;
 
-public class FeedbackTest extends BaseSeleniumWebTest {
+public class FeedbackTest extends BaseSeleniumWebTest
+{
 
     public static final int WAITING_SEC = 10;
     public static final String ERROR_EMPTY_EMAIL = "may not be empty";
@@ -20,14 +16,16 @@ public class FeedbackTest extends BaseSeleniumWebTest {
     private FeedbackOnSignupPage feedbackOnSignupPage;
 
     @Before
-    public void setUpFeedbackPage() {
+    public void setUpFeedbackPage()
+    {
         feedbackOnSignupPage = new FeedbackOnSignupPage(driver);
         driver.get(constructUrl("/register"));
         feedbackOnSignupPage.feedbackLink.waitingForVisible(WAITING_SEC);
     }
 
     @Test
-    public void checkWindowFeedbackShowHideWhenClickWithHiddenError() {
+    public void checkWindowFeedbackShowHideWhenClickWithHiddenError()
+    {
         showWindowFeedback();
 
         Assert.assertTrue(feedbackOnSignupPage.feedbackEmailError.hidden());
@@ -37,7 +35,8 @@ public class FeedbackTest extends BaseSeleniumWebTest {
     }
 
     @Test
-    public void errorWhenDoNotFillEmailAndFeedbackText() {
+    public void errorWhenDoNotFillEmailAndFeedbackText()
+    {
         showWindowFeedback();
 
         feedbackOnSignupPage.feedbackEmail.clear();
@@ -52,7 +51,8 @@ public class FeedbackTest extends BaseSeleniumWebTest {
     }
 
     @Test
-    public void errorWhenEnterIncorrectEmail() {
+    public void errorWhenEnterIncorrectEmail()
+    {
         //Given
         showWindowFeedback();
 
@@ -68,13 +68,15 @@ public class FeedbackTest extends BaseSeleniumWebTest {
         feedbackOnSignupPage.feedbackEmailError.waitingForText(ERROR_INCORRECT_EMAIL, WAITING_SEC);
     }
 
-    private void showWindowFeedback() {
+    private void showWindowFeedback()
+    {
         feedbackOnSignupPage.feedbackLink.click();
         feedbackOnSignupPage.feedbackEmail.waitingForVisible(WAITING_SEC);
         feedbackOnSignupPage.feedbackText.waitingForVisible(WAITING_SEC);
     }
 
-    private void hideWindowFeedback() {
+    private void hideWindowFeedback()
+    {
         feedbackOnSignupPage.feedbackLink.click();
         feedbackOnSignupPage.feedbackEmail.waitingForInvisible(WAITING_SEC);
         feedbackOnSignupPage.feedbackText.waitingForInvisible(WAITING_SEC);

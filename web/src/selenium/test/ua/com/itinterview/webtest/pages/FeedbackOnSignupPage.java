@@ -3,9 +3,10 @@ package ua.com.itinterview.webtest.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class FeedbackOnSignupPage {
+public class FeedbackOnSignupPage
+{
 
-    public  ProxyWebElement feedbackLink;
+    public ProxyWebElement feedbackLink;
 
     public ProxyWebElement feedbackTextError;
     public ProxyWebElement feedbackText;
@@ -15,7 +16,8 @@ public class FeedbackOnSignupPage {
 
     public ProxyWebElement feedbackSubmit;
 
-    public FeedbackOnSignupPage(WebDriver driver) {
+    public FeedbackOnSignupPage(WebDriver driver)
+    {
         feedbackLink = new ProxyWebElement(driver, By.className("feedback_link"));
 
         feedbackTextError = new ProxyWebElement(driver, "ftext_error");

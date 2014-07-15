@@ -2,7 +2,8 @@ package ua.com.itinterview.webtest.pages;
 
 import org.openqa.selenium.WebDriver;
 
-public class UserProfilePage {
+public class UserProfilePage
+{
 
     public ProxyWebElement userName;
 
@@ -10,10 +11,11 @@ public class UserProfilePage {
 
     public ProxyWebElement name;
 
-    public UserProfilePage(WebDriver driver) {
-	userName = new ProxyWebElement(driver, "userName");
-	email = new ProxyWebElement(driver, "email");
-	name = new ProxyWebElement(driver, "name");
+    public UserProfilePage(WebDriver driver)
+    {
+        userName = new ProxyWebElement(driver, "userName");
+        email = new ProxyWebElement(driver, "email");
+        name = new ProxyWebElement(driver, "name");
 
     }
 
