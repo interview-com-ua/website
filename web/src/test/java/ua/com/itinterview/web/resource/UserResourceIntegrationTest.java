@@ -326,8 +326,9 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest {
                 param("oldPassword", PASSWORD).
                 param("newPassword", newPassword).
                 param("confirmPassword", newPassword)).
-                andExpect(view().name("profile_page")).
-                andExpect(status().isForbidden());
+                andExpect(status().isFound()).
+                andExpect(redirectedUrl("/user/" + USER_ID + "/view"));
+
 
     }
 }
