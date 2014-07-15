@@ -8,7 +8,7 @@ public class JettyTestWebServerDeployer
 
     private static final int DEFAULT_PORT = 8080;
 
-    private static final String DEFAULT_CONTEXT_PATH = "/it-interview";
+    private static final String DEFAULT_CONTEXT_PATH = "/interview-it";
 
     private Server server;
     private int port;
