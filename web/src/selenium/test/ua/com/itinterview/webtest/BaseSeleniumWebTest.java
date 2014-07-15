@@ -39,7 +39,7 @@ public class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTests
     @After
     public void quitBrowser()
     {
-//        driver.quit();
+        driver.quit();
     }
 
     protected void pause(int secconds)
