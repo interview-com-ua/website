@@ -8,46 +8,40 @@
 		http://www.springframework.org/schema/tx 
        	http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
         http://www.springframework.org/schema/context 
-        http://www.springframework.org/schema/context/spring-context-3.1.xsd       	
-		http://www.springframework.org/schema/aop 
-        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
-
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd">
     <context:property-placeholder location="classpath:persistence.properties" order="0"/>
-
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="ua.com.itinterview.entity"/>
         <property name="hibernateProperties">
-            <value>
-                hibernate.dialect=${database.hibernate.dialect}
-                hibernate.show_sql=true
-                hibernate.format_sql=true
-            </value>
+            <props>
+                <prop key="hibernate.dialect">${database.hibernate.dialect}</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+            </props>
+            <!--<value>--><!--hibernate.dialect=${database.hibernate.dialect} hibernate.show_sql=true hibernate.format_sql=true--><!--</value>-->
         </property>
     </bean>
-
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${database.driverClassName}"/>
         <property name="url" value="${database.url}"/>
         <property name="username" value="${database.userName}"/>
         <property name="password" value="${database.password}"/>
     </bean>
-    
     <!--  Dao beans -->
-    <bean id="entityWithIdDao" class="ua.com.itinterview.dao.EntityWithIdDao" />
-    <bean id="userDao" class="ua.com.itinterview.dao.UserDao" />
-    <bean id="companyDao" class="ua.com.itinterview.dao.CompanyDao" />
-    <bean id="questionDao" class="ua.com.itinterview.dao.QuestionDao" />
-	<bean id="interviewDao" class="ua.com.itinterview.dao.InterviewDao" />
-	<bean id="commentDao" class="ua.com.itinterview.dao.CommentDao" />
-	<bean id="positionDao" class="ua.com.itinterview.dao.PositionDao" />
-	<bean id="feedbackDao" class="ua.com.itinterview.dao.FeedbackDao" />
-	<bean id="technologyDao" class="ua.com.itinterview.dao.TechnologyDao"/>
-	<bean id="cityDao" class="ua.com.itinterview.dao.CityDao"/>
+    <bean id="entityWithIdDao" class="ua.com.itinterview.dao.EntityWithIdDao"/>
+    <bean id="userDao" class="ua.com.itinterview.dao.UserDao"/>
+    <bean id="companyDao" class="ua.com.itinterview.dao.CompanyDao"/>
+    <bean id="questionDao" class="ua.com.itinterview.dao.QuestionDao"/>
+    <bean id="interviewDao" class="ua.com.itinterview.dao.InterviewDao"/>
+    <bean id="commentDao" class="ua.com.itinterview.dao.CommentDao"/>
+    <bean id="positionDao" class="ua.com.itinterview.dao.PositionDao"/>
+    <bean id="feedbackDao" class="ua.com.itinterview.dao.FeedbackDao"/>
+    <bean id="technologyDao" class="ua.com.itinterview.dao.TechnologyDao"/>
+    <bean id="cityDao" class="ua.com.itinterview.dao.CityDao"/>
 </beans>
 

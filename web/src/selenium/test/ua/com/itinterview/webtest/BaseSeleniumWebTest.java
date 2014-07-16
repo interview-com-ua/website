@@ -13,7 +13,7 @@ import ua.com.itinterview.webtest.pages.SignupPage;
 import java.util.concurrent.TimeUnit;
 
 @ContextConfiguration(value = {"classpath:selenium-context.xml"})
-public class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTests
+public abstract class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTests
 {
 
     private static final long MILIS_IN_SECCOND = 1000;
