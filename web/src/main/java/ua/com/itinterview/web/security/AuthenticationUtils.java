@@ -1,6 +1,5 @@
 package ua.com.itinterview.web.security;
 
-import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,54 +10,63 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
-public class AuthenticationUtils {
+public class AuthenticationUtils
+{
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public Authentication loginUser(String email, String password, HttpServletRequest request) {
+    public Authentication loginUser(String email, String password, HttpServletRequest request)
+    {
         Authentication authentication = null;
         authentication = tryToAuthenticate(email, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return authentication;
     }
 
-    private Authentication tryToAuthenticate(String email, String password) {
+    private Authentication tryToAuthenticate(String email, String password)
+    {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 email, password);
         Authentication auth = authenticationManager.authenticate(token);
         return auth;
     }
 
-    public UserDetails getUserDetails() {
+    public UserDetails getUserDetails()
+    {
         Authentication authentication = SecurityContextHolder.getContext()
                 .getAuthentication();
         if (authentication != null
-                && !(authentication instanceof AnonymousAuthenticationToken)) {
+                && !(authentication instanceof AnonymousAuthenticationToken))
+        {
             return (UserDetails) authentication.getPrincipal();
         }
         return null;
     }
 
-    public boolean hasRoles(String[] roles) {
-        for (String role : roles) {
-            if (!hasRole(role)) {
+    public boolean hasRoles(String[] roles)
+    {
+        for (String role : roles)
+        {
+            if (!hasRole(role))
+            {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean hasRole(String role) {
+    public boolean hasRole(String role)
+    {
         Authentication authentication = SecurityContextHolder.getContext()
                 .getAuthentication();
-        if (authentication != null) {
-            for (GrantedAuthority authority : authentication.getAuthorities()) {
-                if (authority.getAuthority().equals(role)) {
+        if (authentication != null)
+        {
+            for (GrantedAuthority authority : authentication.getAuthorities())
+            {
+                if (authority.getAuthority().equals(role))
+                {
                     return true;
                 }
             }
@@ -66,11 +74,4 @@ public class AuthenticationUtils {
         return false;
     }
 
-    public String getMD5Hash(String value) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        byte[] bytesOfMessage = value.getBytes("UTF-8");
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] thedigest = md.digest(bytesOfMessage);
-
-        return (new String(Hex.encodeHex(thedigest)));
-    }
 }
