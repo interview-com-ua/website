@@ -40,8 +40,9 @@
                         <dt>Имя пользователя:</dt>
                         <c:choose>
                             <c:when test="${userCommand != null}">
-                                <dd><a href="${pageContext.request.contextPath}/user/${userCommand.id}/edit" class="edit_link">
-                                        ${userCommand.name}
+                                <dd><a id="name" href="${pageContext.request.contextPath}/user/${userCommand.id}/edit"
+                                       class="edit_link">
+                                ${userCommand.name}
                                 </a></dd>
                             </c:when>
                             <c:when test="${userEditProfileCommand != null}">
@@ -56,8 +57,9 @@
                         <dt>Email:</dt>
                         <c:choose>
                             <c:when test="${userCommand != null}">
-                                <dd><a href="${pageContext.request.contextPath}/user/${userCommand.id}/edit" class="edit_link">
-                                   ${userCommand.email}
+                                <dd><a id="email" href="${pageContext.request.contextPath}/user/${userCommand.id}/edit"
+                                       class="edit_link">
+                                ${userCommand.email}
                                 </a></dd>
                             </c:when>
                             <c:when test="${userEditProfileCommand != null}">

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import ua.com.itinterview.webtest.conf.SeleniumWrapper;
+import ua.com.itinterview.webtest.pages.SignupPage;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,6 +27,7 @@ public class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTests
 
     @Value("${contextPath}")
     private String contextPath;
+    private SignupPage signupPage;
 
     @Before
     public void setUp()
@@ -34,6 +36,8 @@ public class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTests
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         driver.manage().deleteAllCookies();
+
+        signupPage = new SignupPage(driver);
     }
 
     @After
@@ -65,5 +69,11 @@ public class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTests
         this.driver = wrapper.getDriver();
         this.host = wrapper.getHost();
     }
+
+    protected void open(String url)
+    {
+        driver.get(constructUrl(url));
+    }
+
 
 }
