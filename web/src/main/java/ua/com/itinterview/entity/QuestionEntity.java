@@ -1,14 +1,9 @@
 package ua.com.itinterview.entity;
 
-import java.util.Date;
-
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 import ua.com.itinterview.web.command.QuestionCommand;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "interview_question")
@@ -19,8 +14,11 @@ public class QuestionEntity extends EntityWithId {
     @JoinColumn(name = "interviewid")
     private InterviewEntity interview;
     private String title;
+    @Column(columnDefinition = "clob")
     private String question;
+    @Column(columnDefinition = "clob")
     private String answer;
+    @Temporal(TemporalType.DATE)
     private Date created;
 
     public QuestionEntity() {

@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.io.File;
-import java.io.PrintWriter;
 import java.sql.Connection;
 
 /**
@@ -30,7 +29,7 @@ public class LiquiBaseInitializer
     private String parentRootDir = PROJECT_ROOT_DIR_NAME;
     private String rootDirName = "/web";
     private String changesPath = "/src/main/resources/sql/liquibase/sql-changes.xml";
-    private String context = "interview-it";
+    private String context = "";
 
     public void insertInitialDatabase() throws Exception
     {
@@ -48,7 +47,7 @@ public class LiquiBaseInitializer
         File sqlChanges = new File(baseDir, changesPath);
         liquibase = new Liquibase(sqlChanges.getAbsolutePath(), new FileSystemResourceAccessor(baseDir.getAbsolutePath()), database);
         liquibase.setChangeLogParameter("db.schema", dbSchema);
-        liquibase.update(context, new PrintWriter(System.out));
+        liquibase.update(context);
     }
 
     public void setDataSource(DataSource dataSource)

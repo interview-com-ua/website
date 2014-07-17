@@ -21,6 +21,8 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${database.hibernate.dialect}</prop>
+                <prop key="hibernate.default_schema">${database.schemaNames}</prop>
+                <prop key="hibernate.hbm2ddl.auto">validate</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
             </props>

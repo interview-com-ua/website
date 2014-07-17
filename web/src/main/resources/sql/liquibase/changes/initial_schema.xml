@@ -1,6 +1,235 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd"
-                   objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    <changeSet author="viktor (generated)" id="1405597613727-1">
+        <createSequence sequenceName="CITY_ID"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-2">
+        <createSequence sequenceName="COMMENTS_ID"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-3">
+        <createSequence sequenceName="COMPANY_ID"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-4">
+        <createSequence sequenceName="FEEDBACKS_ID"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-5">
+        <createSequence sequenceName="INTERVIEW_ID"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-6">
+        <createSequence sequenceName="INTERVIEW_QUESTION_ID"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-7">
+        <createSequence sequenceName="POSITIONS_ID"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-8">
+        <createSequence sequenceName="TECHNOLOGIES_ID"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-9">
+        <createSequence sequenceName="USERS_ID"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-10">
+        <createTable tableName="CITY">
+            <column name="ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CITYNAME" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-11">
+        <createTable tableName="COMMENTS">
+            <column name="ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="QUESTION_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RATE" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AUTHORNAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL" type="VARCHAR(255)"/>
+            <column name="COMMENTTEXT" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERPICURL" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-12">
+        <createTable tableName="COMPANY">
+            <column name="ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COMPANYNAME" type="VARCHAR(255)"/>
+            <column name="COMPANYPHONE" type="VARCHAR(255)"/>
+            <column name="COMPANYLOGOURL" type="VARCHAR(255)"/>
+            <column name="COMPANYADDRESS" type="VARCHAR(255)"/>
+            <column name="COMPANYWEBPAGE" type="VARCHAR(255)"/>
+            <column name="COMPANYTYPE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-13">
+        <createTable tableName="DBMAINTAIN_SCRIPTS">
+            <column name="FILE_NAME" type="VARCHAR(150)"/>
+            <column name="FILE_LAST_MODIFIED_AT" type="BIGINT"/>
+            <column name="CHECKSUM" type="VARCHAR(50)"/>
+            <column name="EXECUTED_AT" type="VARCHAR(20)"/>
+            <column name="SUCCEEDED" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-14">
+        <createTable tableName="FEEDBACKS">
+            <column name="ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATETIME" type="TIMESTAMP"/>
+            <column name="CHECKED" type="BOOLEAN"/>
+            <column name="FEEDBACKTEXT" type="CLOB"/>
+            <column name="EMAIL" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-15">
+        <createTable tableName="INTERVIEW">
+            <column name="ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FEEDBACK" type="VARCHAR(255)"/>
+            <column name="CREATED" type="TIMESTAMP"/>
+            <column name="CITY_ID" type="INT"/>
+            <column name="POSITION_ID" type="INT"/>
+            <column name="TECHNOLOGY_ID" type="INT"/>
+            <column name="COMPANY_ID" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-16">
+        <createTable tableName="INTERVIEW_QUESTION">
+            <column name="ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERID" type="INT"/>
+            <column name="INTERVIEWID" type="INT"/>
+            <column name="QUESTION" type="CLOB"/>
+            <column name="CREATED" type="date"/>
+            <column name="TITLE" type="VARCHAR(100)"/>
+            <column name="ANSWER" type="CLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-17">
+        <createTable tableName="POSITIONS">
+            <column name="ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="POSITIONGROUP" type="VARCHAR(255)"/>
+            <column name="POSITIONNAME" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-18">
+        <createTable tableName="TECHNOLOGIES">
+            <column name="ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TECHNOLOGYNAME" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-19">
+        <createTable tableName="USERS">
+            <column name="ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="PASSWORD" type="VARCHAR(64)"/>
+            <column name="EMAIL" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-20">
+        <addPrimaryKey columnNames="ID" constraintName="SYS_PK_10027" tableName="USERS"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-21">
+        <addPrimaryKey columnNames="ID" constraintName="SYS_PK_10031" tableName="COMMENTS"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-22">
+        <addPrimaryKey columnNames="ID" constraintName="SYS_PK_10038" tableName="INTERVIEW"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-23">
+        <addPrimaryKey columnNames="ID" constraintName="SYS_PK_10042" tableName="INTERVIEW_QUESTION"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-24">
+        <addPrimaryKey columnNames="ID" constraintName="SYS_PK_10045" tableName="FEEDBACKS"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-25">
+        <addPrimaryKey columnNames="ID" constraintName="SYS_PK_10048" tableName="POSITIONS"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-26">
+        <addPrimaryKey columnNames="ID" constraintName="SYS_PK_10051" tableName="TECHNOLOGIES"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-27">
+        <addPrimaryKey columnNames="ID" constraintName="SYS_PK_10054" tableName="COMPANY"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-28">
+        <addPrimaryKey columnNames="ID" constraintName="SYS_PK_10057" tableName="CITY"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-29">
+        <addForeignKeyConstraint baseColumnNames="QUESTION_ID" baseTableName="COMMENTS"
+                                 constraintName="COMMENTS_QUESTION_FK" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID"
+                                 referencedTableName="INTERVIEW_QUESTION"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-30">
+        <addForeignKeyConstraint baseColumnNames="CITY_ID" baseTableName="INTERVIEW" constraintName="INTERVIEW_CITY_ID"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="CITY"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-31">
+        <addForeignKeyConstraint baseColumnNames="COMPANY_ID" baseTableName="INTERVIEW"
+                                 constraintName="INTERVIEW_COMPANY_ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID"
+                                 referencedTableName="COMPANY"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-32">
+        <addForeignKeyConstraint baseColumnNames="POSITION_ID" baseTableName="INTERVIEW"
+                                 constraintName="INTERVIEW_POSITION_ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID"
+                                 referencedTableName="POSITIONS"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-33">
+        <addForeignKeyConstraint baseColumnNames="TECHNOLOGY_ID" baseTableName="INTERVIEW"
+                                 constraintName="INTERVIEW_TECHNOLOGY_ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID"
+                                 referencedTableName="TECHNOLOGIES"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-34">
+        <addUniqueConstraint columnNames="EMAIL" constraintName="UNIQUE_EMAIL" deferrable="false" disabled="false"
+                             initiallyDeferred="false" tableName="USERS"/>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-35">
+        <createIndex indexName="SYS_IDX_10069" tableName="COMMENTS" unique="false">
+            <column name="QUESTION_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-36">
+        <createIndex indexName="SYS_IDX_10071" tableName="INTERVIEW" unique="false">
+            <column name="CITY_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-37">
+        <createIndex indexName="SYS_IDX_10073" tableName="INTERVIEW" unique="false">
+            <column name="POSITION_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-38">
+        <createIndex indexName="SYS_IDX_10075" tableName="INTERVIEW" unique="false">
+            <column name="TECHNOLOGY_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="viktor (generated)" id="1405597613727-39">
+        <createIndex indexName="SYS_IDX_10077" tableName="INTERVIEW" unique="false">
+            <column name="COMPANY_ID"/>
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>
