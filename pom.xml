@@ -23,7 +23,7 @@
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdk>1.6</jdk>
+        <jdk>1.7</jdk>
         <db.dir>${project.build.directory}/db</db.dir>
         <sonar.language>java</sonar.language>
         <sonar.host.url>http://home.stokito.name:9000/</sonar.host.url>

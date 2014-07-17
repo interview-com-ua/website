@@ -167,7 +167,7 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-server</artifactId>
             <version>${selenium.version}</version>
-            <scope>tets</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -225,7 +225,7 @@
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdk>1.6</jdk>
+        <jdk>1.7</jdk>
         <db.dir>${project.build.directory}/db</db.dir>
         <sonar.language>java</sonar.language>
         <sonar.host.url>http://home.stokito.name:9000/</sonar.host.url>
@@ -266,6 +266,7 @@
                     <optimize>true</optimize>
                     <verbose>true</verbose>
                     <debug>true</debug>
+                    <executable>${JAVA_7_HOME}/bin/javac</executable>
                     <fork>true</fork>
                 </configuration>
             </plugin>
@@ -276,71 +277,6 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.dbmaintain</groupId>
-                <artifactId>dbmaintain-maven-plugin</artifactId>
-                <version>2.4</version>
-                <executions>
-                    <execution>
-                        <id>db-test</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>updateDatabase</goal>
-                        </goals>
-                        <!--TODO: eliminate code duplicate (see persistence.properties)-->
-                        <configuration>
-                            <!--<configFile>src/test/resources/persistence.properties</configFile>-->
-                            <databases>
-                                <database>
-                                    <driverClassName>org.hsqldb.jdbcDriver</driverClassName>
-                                    <userName>sa</userName>
-                                    <password/>
-                                    <dialect>hsqldb</dialect>
-                                    <url>jdbc:hsqldb:file:${basedir}/../db/it-interview;shutdown=true;sql.syntax_pgs=true</url>
-                                    <schemaNames>PUBLIC</schemaNames>
-                                </database>
-                            </databases>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>db-deploy</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>updateDatabase</goal>
-                        </goals>
-                        <configuration>
-                            <!--<configFile>src/main/resources/persistence.properties</configFile>-->
-                            <databases>
-                                <database>
-                                    <driverClassName>org.hsqldb.jdbcDriver</driverClassName>
-                                    <userName>sa</userName>
-                                    <password/>
-                                    <dialect>hsqldb</dialect>
-                                    <url>jdbc:hsqldb:file:${basedir}/../db/it-interview;shutdown=true;sql.syntax_pgs=true</url>
-                                    <schemaNames>PUBLIC</schemaNames>
-                                </database>
-                            </databases>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <scriptLocations>${basedir}/src/main/sql</scriptLocations>
-                    <autoCreateDbMaintainScriptsTable>true</autoCreateDbMaintainScriptsTable>
-                    <fromScratchEnabled>true</fromScratchEnabled>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.hsqldb</groupId>
-                        <artifactId>hsqldb</artifactId>
-                        <version>${hsqldb.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>postgresql</groupId>
-                        <artifactId>postgresql</artifactId>
-                        <version>${postgres.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
@@ -366,10 +302,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.16</version>
                 <configuration>
+                    <jvm>${JAVA_7_HOME}/bin/java</jvm>
                     <includes>
                         <include>**/*.java</include>
                     </includes>
-                    <argLine>-XX:MaxPermSize=256m -XX:PermSize=256m</argLine>
                 </configuration>
             </plugin>
         </plugins>
