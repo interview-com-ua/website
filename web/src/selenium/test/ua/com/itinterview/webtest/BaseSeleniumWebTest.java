@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import ua.com.itinterview.webtest.conf.SeleniumWrapper;
+import ua.com.itinterview.webtest.pages.LoginPage;
 import ua.com.itinterview.webtest.pages.SignupPage;
+import ua.com.itinterview.webtest.pages.UserProfilePage;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,6 +19,9 @@ public abstract class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTes
 {
 
     private static final long MILIS_IN_SECCOND = 1000;
+    public static final String DEFAULT_EMAIL = "default.user@email.com";
+    public static final String DEFAULT_NAME = "Username";
+    public static final String DEFAULT_PASSWORD = "password";
 
     protected RemoteWebDriver driver;
 
@@ -38,12 +43,18 @@ public abstract class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTes
         driver.manage().deleteAllCookies();
 
         signupPage = new SignupPage(driver);
+        registerDefaultUser();
+    }
+
+    private void registerDefaultUser()
+    {
+        registerUser(DEFAULT_EMAIL, DEFAULT_NAME, DEFAULT_PASSWORD);
     }
 
     @After
     public void quitBrowser()
     {
-        driver.quit();
+//        driver.quit();
     }
 
     protected void pause(int secconds)
@@ -79,6 +90,18 @@ public abstract class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTes
     {
         registerUser(email, name, password, password);
     }
+
+    protected UserProfilePage login(String email, String password)
+    {
+        open("/register");
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.password.sendKeys(password);
+        loginPage.userName.sendKeys(email);
+        loginPage.submitButton.click();
+
+        return new UserProfilePage(driver);
+    }
+
 
     protected void registerUser(String email, String name, String password, String confirmPassword)
     {
