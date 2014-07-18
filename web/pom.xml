@@ -226,7 +226,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk>1.7</jdk>
-        <db.dir>${project.build.directory}/db</db.dir>
+        <db.dir>${project.build.outputDirectory}/db</db.dir>
         <sonar.language>java</sonar.language>
         <sonar.host.url>http://home.stokito.name:9000/</sonar.host.url>
         <selenium.version>2.42.0</selenium.version>
@@ -236,6 +236,12 @@
         <spring.version>3.2.0.RELEASE</spring.version>
         <spring.security.version>3.1.3.RELEASE</spring.security.version>
         <liquibase.version>3.0.6</liquibase.version>
+        <db.driver>org.hsqldb.jdbcDriver</db.driver>
+        <db.url>jdbc:hsqldb:file:${basedir}/../db/it-interview;shutdown=true;sql.syntax_pgs=true</db.url>
+        <db.username>sa</db.username>
+        <db.password></db.password>
+        <db.schema>PUBLIC</db.schema>
+        <db.liquibase.context></db.liquibase.context>
     </properties>
     <profiles>
         <profile>
@@ -306,6 +312,25 @@
                     <includes>
                         <include>**/*.java</include>
                     </includes>
+                </configuration>
+            </plugin>
+            <!--LiquiBase-->
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <changeLogFile>src/main/resources/sql/liquibase/sql-changes.xml</changeLogFile>
+                    <driver>${db.driver}</driver>
+                    <url>${db.url}</url>
+                    <username>${db.username}</username>
+                    <password>${db.password}</password>
+                    <defaultSchemaName>${db.schema}</defaultSchemaName>
+                    <outputDefaultSchema>true</outputDefaultSchema>
+                    <contexts>${db.liquibase.context}</contexts>
+                    <systemProperties>
+                        <db.schema>${db.schema}</db.schema>
+                    </systemProperties>
                 </configuration>
             </plugin>
         </plugins>

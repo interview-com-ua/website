@@ -32,7 +32,7 @@ public class SignupUserTest extends BaseSeleniumWebTest
         signupPage.submitButton.click();
 
         assertThat(driver.getCurrentUrl(), containsString("/user/"));
-        assertThat(driver.getCurrentUrl(), containsString("/view/"));
+        assertThat(driver.getCurrentUrl(), containsString("/view"));
         userProfilePage.name.textIs("Name");
         userProfilePage.email.textIs("testUser@domain.com");
     }

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 public class UserCommand {
 
     private int id;
-    @Email
+    @Email(message = "{invalid.email}")
     @NotEmpty(message = "{empty.email}")
     @Length(max = 255)
     @UniqueEmail
