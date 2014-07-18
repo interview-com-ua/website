@@ -11,25 +11,18 @@ import static org.junit.Assert.assertThat;
 public class SignupUserTest extends BaseSeleniumWebTest
 {
 
-    private SignupPage signupPage;
     private UserProfilePage userProfilePage;
 
     @Before
     public void setUpLoginPage()
     {
-        signupPage = new SignupPage(driver);
         userProfilePage = new UserProfilePage(driver);
     }
 
     @Test
     public void testSignUpUserSuccessfullyAndLogin()
     {
-        open("/register");
-        signupPage.email.sendKeys("testUser@domain.com");
-        signupPage.name.sendKeys("Name");
-        signupPage.password.sendKeys("password1");
-        signupPage.confirmPassword.sendKeys("password1");
-        signupPage.submitButton.click();
+        registerUser("testUser@domain.com", "Name", "password1");
 
         assertThat(driver.getCurrentUrl(), containsString("/user/"));
         assertThat(driver.getCurrentUrl(), containsString("/view"));
@@ -40,12 +33,10 @@ public class SignupUserTest extends BaseSeleniumWebTest
     @Test
     public void testSignUpUserWithBadDataAndGetErrorMEssages()
     {
-        open("/register");
-        signupPage.email.sendKeys("invalid_email");
-        signupPage.name.sendKeys("");
-        signupPage.password.sendKeys("password1");
-        signupPage.confirmPassword.sendKeys("password2");
-        signupPage.submitButton.click();
+        registerUser("invalid_email", "", "password1", "password2");
+
+        SignupPage signupPage = getSignupPage();
+
         signupPage.emailError.textIs("Неправильный формат email");
         signupPage.nameError.textIs("Укажите непустое имя");
         signupPage.confirmPasswordError

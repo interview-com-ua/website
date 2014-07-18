@@ -75,5 +75,23 @@ public abstract class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTes
         driver.get(constructUrl(url));
     }
 
+    protected void registerUser(String email, String name, String password)
+    {
+        registerUser(email, name, password, password);
+    }
 
+    protected void registerUser(String email, String name, String password, String confirmPassword)
+    {
+        open("/register");
+        signupPage.email.sendKeys(email);
+        signupPage.name.sendKeys(name);
+        signupPage.password.sendKeys(password);
+        signupPage.confirmPassword.sendKeys(confirmPassword);
+        signupPage.submitButton.click();
+    }
+
+    public SignupPage getSignupPage()
+    {
+        return signupPage;
+    }
 }
