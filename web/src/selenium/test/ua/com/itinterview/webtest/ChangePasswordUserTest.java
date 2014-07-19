@@ -17,9 +17,9 @@ public class ChangePasswordUserTest extends BaseSeleniumWebTest
     private UserProfilePage userProfilePage = new UserProfilePage(driver);
 
     @Test
-    public void shouldChagePassword() throws Exception
+    public void shouldChangePassword() throws Exception
     {
-        registerUser("change.password.user@email.com", "change.password.user.name", "password");
+        registerUser("change.password.user1@email.com", "change.password.user.name", "password");
         changePassword("password", "newPassword");
         UserProfilePage profilePage = login("change.password.user@email.com", "newPassword");
         assertThat(profilePage.name.getText(), is("change.password.user.name"));

@@ -43,7 +43,7 @@ public abstract class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTes
         driver.manage().deleteAllCookies();
 
         signupPage = new SignupPage(driver);
-        registerDefaultUser();
+//        registerDefaultUser();
     }
 
     private void registerDefaultUser()

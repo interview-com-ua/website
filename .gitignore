@@ -4,6 +4,7 @@
 .project
 /.settings/
 /db/
+/db/**
 999_*.sql
 chromedriver.log
 *.class

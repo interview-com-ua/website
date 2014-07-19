@@ -75,18 +75,20 @@
                     </c:if>
                 </fieldset>
             </form:form>
-            <form:form action="${pageContext.request.contextPath}/user/${userCommand.id}/save" method="post"
-                                              commandName="${formCommandName}" class="jNice">
+            <form:form action="${pageContext.request.contextPath}/user/${userCommand.id}/change_password" method="post"
+                       commandName="changePasswordCommand" class="jNice">
                 <fieldset class="pass_data">
                     <dl>
                         <dt><input type="checkbox" name="change_pass"/></dt>
                         <dd>Изменить пароль</dd>
                     </dl>
                     <div class="edit_block change_pass">
-                        <input type="text" class="text_inp" placeholder="Старый пароль"/><br>
-                        <input type="text" class="text_inp" placeholder="Новый пароль"/><br>
-                        <input type="text" class="text_inp" placeholder="Новый пароль"/>
-                        <button>Отправить</button>
+                        <form:input path="userId" type="hidden" value="${userCommand.id}"/>
+                        <form:input path="oldPassword" type="password" class="text_inp"
+                                    placeholder="Старый пароль"/><br>
+                        <form:input path="newPassword" type="password" class="text_inp" placeholder="Новый пароль"/><br>
+                        <form:input path="confirmPassword" type="password" class="text_inp" placeholder="Новый пароль"/>
+                        <button type="submit" id="submitPasswordBtn">Отправить</button>
                     </div>
                 </fieldset>
             </form:form>

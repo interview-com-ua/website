@@ -21,7 +21,7 @@ public class UserProfilePage
         oldPassword = new ProxyWebElement(driver, "oldPassword");
         newPassword = new ProxyWebElement(driver, "newPassword");
         confirmPassword = new ProxyWebElement(driver, "confirmPassword");
-        changePasswordButton = new ProxyWebElement(driver, "submitPassword");
+        changePasswordButton = new ProxyWebElement(driver, "submitPasswordBtn");
     }
 
 }

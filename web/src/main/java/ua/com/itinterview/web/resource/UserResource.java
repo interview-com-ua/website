@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import ua.com.itinterview.dao.UserDao;
-import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.service.UserService;
 import ua.com.itinterview.web.command.ChangePasswordCommand;
 import ua.com.itinterview.web.command.UserCommand;
@@ -60,10 +60,11 @@ public class UserResource extends ValidatedResource
     @PreAuthorize("#userId == principal.info.id")
     @RequestMapping(value = "/user/{id}/view", method = RequestMethod.GET)
     public String getViewUser(@PathVariable("id") Integer userId,
-                              Map<String, Object> map)
+                              Model model)
     {
         UserCommand userCommand = userService.getUserById(userId);
-        map.put("userCommand", userCommand);
+        model.addAttribute("userCommand", userCommand);
+        model.addAttribute("changePasswordCommand", new ChangePasswordCommand());
         return "profile_page";
     }
 
