@@ -7,6 +7,7 @@ Also, possible to prepare to the interview, repeating questions as a flash cards
 Maven settings
 ==============
 Add next code to maven settings (usual ~/.m2/settings.xml)
+`<code>`
     <profiles>
         <profile>
             <id>compiler</id>
@@ -15,7 +16,7 @@ Add next code to maven settings (usual ~/.m2/settings.xml)
             </properties>
         </profile>
     </profiles>
-
     <activeProfiles>
         <activeProfile>compiler</activeProfile>
     </activeProfiles>
+`<code>`
