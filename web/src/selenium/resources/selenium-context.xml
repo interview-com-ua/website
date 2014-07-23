@@ -19,7 +19,7 @@
         <property name="username" value="${database.userName}"/>
         <property name="password" value="${database.password}"/>
     </bean>
-    <bean id="liquiBaseInitializer" class="ua.com.itinterview.utils.LiquiBaseInitializerTemp"
+    <bean id="liquiBaseInitializer" class="ua.com.itinterview.utils.LiquiBaseInitializer"
           init-method="insertInitialDatabase">
         <property name="dataSource" ref="dataSource"/>
         <property name="dbSchema" value="${database.schemaNames}"/>

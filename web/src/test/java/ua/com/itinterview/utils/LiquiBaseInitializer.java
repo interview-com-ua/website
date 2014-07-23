@@ -18,10 +18,10 @@ import java.sql.Connection;
  * Date: 11/27/13
  * Time: 8:03 AM
  */
-public class LiquiBaseInitializerTemp
+public class LiquiBaseInitializer
 {
     private static final String PROJECT_ROOT_DIR_NAME = "interview-it";
-    private static Logger logger = LoggerFactory.getLogger(LiquiBaseInitializerTemp.class);
+    private static Logger logger = LoggerFactory.getLogger(LiquiBaseInitializer.class);
 
     private DataSource dataSource;
     private String dbSchema;
