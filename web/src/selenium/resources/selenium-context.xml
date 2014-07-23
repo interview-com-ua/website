@@ -7,8 +7,8 @@
     <bean id="jettyTestWebServer"
           class="ua.com.itinterview.utils.JettyTestWebServerDeployer" depends-on="liquiBaseInitializer"
           init-method="start" destroy-method="stop">
-          <constructor-arg value="${httpPort}"/>
-          <constructor-arg value="${contextPath}"/>
+        <constructor-arg value="${httpPort}"/>
+        <constructor-arg value="${contextPath}"/>
     </bean>
     <context:property-placeholder location="classpath:web.properties,selenium-persistence.properties" order="0"/>
     <bean id="seleniumWrapper" class="ua.com.itinterview.webtest.conf.SeleniumWrapper"
@@ -19,7 +19,7 @@
         <property name="username" value="${database.userName}"/>
         <property name="password" value="${database.password}"/>
     </bean>
-    <bean id="liquiBaseInitializer" class="ua.com.itinterview.utils.LiquiBaseInitializer"
+    <bean id="liquiBaseInitializer" class="ua.com.itinterview.utils.LiquiBaseInitializerTemp"
           init-method="insertInitialDatabase">
         <property name="dataSource" ref="dataSource"/>
         <property name="dbSchema" value="${database.schemaNames}"/>
