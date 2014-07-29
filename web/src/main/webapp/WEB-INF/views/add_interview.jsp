@@ -43,7 +43,7 @@
                            <form:textarea cols="40" rows="15" path="feedback" placeholder="Отзыв" />
 
                           <div>
-                             <input type="submit"  value="${formSubmit }" />
+                             <input id="save_interview" type="submit"  value="${formSubmit }" />
                            </div>
                     </fieldset>
                 </form:form>

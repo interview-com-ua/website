@@ -46,7 +46,7 @@ public abstract class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTes
 //        registerDefaultUser();
     }
 
-    private void registerDefaultUser()
+    protected void registerDefaultUser()
     {
         registerUser(DEFAULT_EMAIL, DEFAULT_NAME, DEFAULT_PASSWORD);
     }
