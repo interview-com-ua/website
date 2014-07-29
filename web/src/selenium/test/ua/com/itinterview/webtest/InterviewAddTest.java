@@ -55,7 +55,7 @@ public class InterviewAddTest extends BaseSeleniumWebTest {
     public void testAddInterviewWithNoFeedback(){
         login(DEFAULT_EMAIL,DEFAULT_PASSWORD);
         open("/interview/add");
-        userAddInterviewPage.selectPosition.selectByText("");
+        userAddInterviewPage.selectPosition.selectByText(POSITION);
         userAddInterviewPage.selectTechnology.selectByText(TECHNOLOGY);
         userAddInterviewPage.selectCompany.selectByText(COMPANY);
         userAddInterviewPage.selectCity.selectByText(CITY);
