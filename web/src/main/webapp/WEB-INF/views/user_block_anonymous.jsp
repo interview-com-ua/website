@@ -45,7 +45,7 @@
                         </div>
                     </div>
 
-                    <input type="submit" class="enter_but" value="Вход"/>
+                    <input id="loginBtn" type="submit" class="enter_but" value="Вход"/>
                 </form>
             </div>
             <!-- end login form -->
