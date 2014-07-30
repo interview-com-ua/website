@@ -10,6 +10,7 @@ import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.entity.UserEntity;
 import ua.com.itinterview.web.integration.BaseWebIntegrationTest;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -348,5 +349,36 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest
                 param("confirmPassword", newPassword)).
                 andExpect(status().isFound()).
                 andExpect(redirectedUrl("/user/" + USER_ID + "/view"));
+    }
+
+    @Test
+    public void shouldResetPassword() throws Exception {
+
+        mvc.perform(post("/reset_password").
+                param("email", EMAIL)).
+                andDo(print()).
+                andExpect(view().name("reset_password_info")).
+                andExpect(status().isOk());
+
+        String hash = "111111";
+        mvc.perform(get("/confirm_reset_password/" + hash)).
+                andDo(print()).
+                andExpect(view().name("confirm_reset_password")).
+                andExpect(status().isOk()).
+                andExpect(model().attribute("hash", is(hash)));
+
+        String resetPassword = "reset_password";
+        mvc.perform(post("/confirm_reset_password").
+                param("password", resetPassword).
+                param("confirmPassword", resetPassword)).
+                andDo(print()).
+                andExpect(view().name("confirm_reset_password_success")).
+                andExpect(status().isOk());
+
+        UserEntity user = userDao.getUserByEmail(EMAIL);
+        String userProfileUrl = "/user/" + user.getId() + "/view";
+        mvc.perform(loginUser(EMAIL, resetPassword))
+                .andExpect(redirectedUrl(userProfileUrl))
+                .andExpect(status().isMovedTemporarily());
     }
 }

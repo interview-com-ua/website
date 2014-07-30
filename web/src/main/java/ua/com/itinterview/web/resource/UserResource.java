@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.com.itinterview.dao.UserDao;
 import ua.com.itinterview.service.UserService;
 import ua.com.itinterview.web.command.ChangePasswordCommand;
+import ua.com.itinterview.web.command.ResetPasswordCommand;
 import ua.com.itinterview.web.command.UserCommand;
 import ua.com.itinterview.web.command.UserEditProfileCommand;
 import ua.com.itinterview.web.resource.viewpages.ModeView;
@@ -116,4 +117,27 @@ public class UserResource extends ValidatedResource
         return view;
     }
 
+    @RequestMapping(value = "/reset_password", method = RequestMethod.POST)
+    public String resetPassword(@ModelAttribute String email){
+        return "reset_password_info";
+    }
+
+    @RequestMapping(value = "/confirm_reset_password/{hash}")
+    public String getConfirmResetPassword(@PathVariable String hash, Model model){
+        model.addAttribute("hash", hash);
+        return "confirm_reset_password";
+    }
+
+    @RequestMapping(value = "/confirm_reset_password", method = RequestMethod.POST)
+    public String confirmResetPassword(@ModelAttribute ResetPasswordCommand resetPasswordCommand){
+
+        ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand();
+        changePasswordCommand.setOldPassword("password");
+        changePasswordCommand.setNewPassword(resetPasswordCommand.getPassword());
+        changePasswordCommand.setConfirmPassword(resetPasswordCommand.getConfirmPassword());
+
+        int userId = 10;
+        userService.updatePassword(userId, changePasswordCommand);
+        return "confirm_reset_password_success";
+    }
 }
