@@ -10,15 +10,12 @@
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
     <context:property-placeholder location="classpath:test-persistence.properties" order="0"/>
     <import resource="context.xml"/>
-
     <context:component-scan base-package="ua.com.itinterview.web.resource"/>
-
     <mvc:annotation-driven/>
-
     <bean id="liquiBaseInitializer" class="ua.com.itinterview.utils.LiquiBaseInitializer"
           init-method="insertInitialDatabase">
         <property name="dataSource" ref="dataSource"/>
         <property name="dbSchema" value="${database.schemaNames}"/>
     </bean>
-
+    <bean id="dbUnitutils" class="ua.com.itinterview.utils.DbUnitUtil" init-method="exportTestDtdSchema"/>
 </beans>
