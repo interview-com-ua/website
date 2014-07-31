@@ -390,4 +390,16 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest
                 andExpect(view().name("confirm_reset_password")).
                 andExpect(status().isNotFound());
     }
+
+    @Test
+    @ExpectedDatabase(
+            value = "file:src/test/resources/dataset/UserResource/reset-password-hash.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT
+    )
+    public void shouldSaveHashToDatabase() throws Exception {
+
+        mvc.perform(post("/reset_password").
+                param("email", EMAIL)).
+                andDo(print());
+    }
 }

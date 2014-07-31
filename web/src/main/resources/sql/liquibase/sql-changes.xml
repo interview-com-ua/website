@@ -2,4 +2,5 @@
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
     <include file="changes/initial_schema.xml" relativeToChangelogFile="true"/>
+    <include file="changes/add_table_reset_passwords.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
