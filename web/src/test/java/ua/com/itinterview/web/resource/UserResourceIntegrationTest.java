@@ -381,4 +381,13 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest
                 .andExpect(redirectedUrl(userProfileUrl))
                 .andExpect(status().isMovedTemporarily());
     }
+
+    @Test
+    public void expectNotFoundWhenInvalidHash() throws Exception {
+        String hash = "invalidHash";
+        mvc.perform(get("/confirm_reset_password/" + hash)).
+                andDo(print()).
+                andExpect(view().name("confirm_reset_password")).
+                andExpect(status().isNotFound());
+    }
 }

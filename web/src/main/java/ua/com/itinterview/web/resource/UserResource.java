@@ -21,6 +21,7 @@ import ua.com.itinterview.web.resource.viewpages.ModeView;
 import ua.com.itinterview.web.security.AuthenticationUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -122,9 +123,11 @@ public class UserResource extends ValidatedResource
         return "reset_password_info";
     }
 
-    @RequestMapping(value = "/confirm_reset_password/{hash}")
-    public String getConfirmResetPassword(@PathVariable String hash, Model model){
+    @RequestMapping(value = "/confirm_reset_password/{hash}", method = RequestMethod.GET)
+    public String getConfirmResetPassword(@PathVariable String hash, Model model, HttpServletResponse response){
         model.addAttribute("hash", hash);
+        if (!hash.equals("111111"))
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         return "confirm_reset_password";
     }
 
