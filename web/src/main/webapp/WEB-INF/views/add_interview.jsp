@@ -12,12 +12,10 @@
 <%@ include file="header.jsp" %>
 <!-- main -->
         <div id="main">
-            <!--TODO css class  -->
             <div class="registration_form">
                 <form:form action="${ formAction }" method="${formMethod}" commandName="interviewCommand" class="jNice">
                     <fieldset>
                         <legend>${ pageTitle }</legend>
-
                           Город :
                            <form:select path="city">
                                <form:options items="${listCity}" itemValue="id" itemLabel="cityName"/>
@@ -41,9 +39,8 @@
                            Отзыв :
                            <form:errors path="feedback" cssClass="color: #ff0000" />
                            <form:textarea cols="40" rows="15" path="feedback" placeholder="Отзыв" />
-
-                          <div>
-                             <input id="save_interview" type="submit"  value="${formSubmit }" />
+                           <div>
+                             <input id="btnSaveInterview" type="submit"  value="${formSubmit }" />
                            </div>
                     </fieldset>
                 </form:form>
