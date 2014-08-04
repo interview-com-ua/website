@@ -15,4 +15,5 @@
     <bean id="technologyService" class="ua.com.itinterview.service.TechnologyService"/>
     <bean id="cityService" class="ua.com.itinterview.service.CityService"/>
     <bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" scope="prototype"/>
+    <bean id="resetPasswordService" class="ua.com.itinterview.service.ResetPasswordService"/>
 </beans>

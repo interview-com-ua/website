@@ -400,4 +400,5 @@ public class UserResourceIntegrationTest extends BaseWebIntegrationTest
                 param("email", EMAIL)).
                 andDo(print());
     }
+
 }
