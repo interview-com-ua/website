@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import ua.com.itinterview.dao.ResetPasswordDao;
 import ua.com.itinterview.dao.UserDao;
+import ua.com.itinterview.entity.ResetPasswordEntity;
 import ua.com.itinterview.service.UserService;
 import ua.com.itinterview.web.command.ChangePasswordCommand;
 import ua.com.itinterview.web.command.ResetPasswordCommand;
@@ -118,8 +120,13 @@ public class UserResource extends ValidatedResource
         return view;
     }
 
+    @Autowired
+    private ResetPasswordDao resetPasswordDao;
+
     @RequestMapping(value = "/reset_password", method = RequestMethod.POST)
-    public String resetPassword(@ModelAttribute String email){
+    public String resetPassword(@ModelAttribute ResetPasswordEntity resetPasswordEntity){
+        resetPasswordEntity.setHash("111111");
+        resetPasswordDao.save(resetPasswordEntity);
         return "reset_password_info";
     }
 
