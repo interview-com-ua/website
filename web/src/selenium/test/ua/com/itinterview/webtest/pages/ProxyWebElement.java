@@ -47,7 +47,10 @@ public class ProxyWebElement extends RemoteWebElement
             return element.getText();
         }
     }
-
+    public String getAttribute(String attr){
+        WebElement element = driver.findElement(closure);
+        return element.getAttribute(attr);
+    }
     public void click()
     {
         driver.findElement(closure).click();
@@ -150,5 +153,16 @@ public class ProxyWebElement extends RemoteWebElement
     {
         WebDriverWait wait = new WebDriverWait(driver, seconds);
         assertTrue(wait.until(ExpectedConditions.textToBePresentInElement(closure, text)));
+    }
+
+    public boolean isElementPresent() {
+        boolean result=false;
+        try {
+            driver.findElement(closure);
+            return true;
+        }catch (WebDriverException vde){
+
+        }
+        return false;
     }
 }

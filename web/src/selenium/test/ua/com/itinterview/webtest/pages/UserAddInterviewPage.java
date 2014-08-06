@@ -17,7 +17,7 @@ public class UserAddInterviewPage {
 
     public UserAddInterviewPage(WebDriver driver)
     {
-        saveInterviewButton = new ProxyWebElement(driver, "save_interview");
+        saveInterviewButton = new ProxyWebElement(driver, "btnSaveInterview");
         selectCity= new ProxyWebElement(driver,"city");
         selectCompany = new ProxyWebElement(driver,"company");
         selectTechnology= new ProxyWebElement(driver,"technology");

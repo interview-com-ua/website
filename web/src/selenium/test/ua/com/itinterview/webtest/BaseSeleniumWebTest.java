@@ -1,5 +1,6 @@
 package ua.com.itinterview.webtest;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -91,6 +92,11 @@ public abstract class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTes
         registerUser(email, name, password, password);
     }
 
+    protected void registerRandomUser(){
+        String nameUser= RandomStringUtils.randomAlphabetic(5);
+        String passwordUser=RandomStringUtils.random(6);
+        registerUser(nameUser+"@email.com",nameUser,passwordUser);
+    }
     protected UserProfilePage login(String email, String password)
     {
         open("/register");
