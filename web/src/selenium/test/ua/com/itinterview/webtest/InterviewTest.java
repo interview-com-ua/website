@@ -22,7 +22,7 @@ public class InterviewTest extends BaseSeleniumWebTest {
     private UserListInterviewPage userListInterviewPage;
 
     private static final String COMPANY="COMPANY1";
-    private static final String CITY="CITY1";
+    private static final String CITY="City1";
     private static final String POSITION="Junior Software Engineer";
     private static final String TECHNOLOGY="APL";
     private static final String TEXT_FEEDBACK="Test feedback";
