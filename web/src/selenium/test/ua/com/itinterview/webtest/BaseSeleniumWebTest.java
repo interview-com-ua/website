@@ -39,7 +39,7 @@ public abstract class BaseSeleniumWebTest extends AbstractJUnit4SpringContextTes
     public void setUp()
     {
         driver = new FirefoxDriver();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
         driver.manage().deleteAllCookies();
 
