@@ -1,8 +1,9 @@
 Project Description
 ===================
-Interview-it is a stunning tool that helps applicant improve results of visiting interview.
-All the experience (questions) is stored in interview it service and accessible to repeat in useful form at any time.
-Also, possible to prepare to the interview, repeating questions as a flash cards.
+Interview-It is a stunning tool that helps applicant improve results of visiting interview.
+All the experiences (questions) is stored in interview. it service and accessible to repeat in useful form at any time.
+Also, possible to prepare to the interview, repeating questions as a flash cards.This can be used as warm up for interviews.
+Further gained experiences would be added according to companies.This will be very useful.
 
 Maven settings
 ==============
